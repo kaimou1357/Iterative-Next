@@ -49,7 +49,7 @@ export default function Projects() {
   else
     return (
       <Flowbite>
-        <div className="h-[calc(100vh-16rem)] rounded-lg bg-slate-200 pt-10 dark:bg-slate-900">
+        <div className="h-[calc(100vh-10rem)] rounded-lg bg-slate-200 pt-10 dark:bg-slate-900">
           <div className="container mx-auto flex max-h-[90%] w-[90%] flex-row gap-10 bg-white dark:bg-slate-950 dark:text-white ">
             <div className="relative w-full overflow-auto ">
               <Table hoverable>
