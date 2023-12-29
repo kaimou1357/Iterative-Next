@@ -3,6 +3,7 @@ import { Button, Label, Modal, TextInput } from "flowbite-react";
 import { useDeploymentStore, useToolStore } from "../tool/toolstate";
 import { API_BASE_URL } from "./config";
 import axios from "axios";
+import { BackendClient } from "../../../axios";
 
 export const DeploymentModal = () => {
   const {
@@ -24,8 +25,8 @@ export const DeploymentModal = () => {
   };
 
   const handleCreateDeployment = () => {
-    axios
-      .post(`${API_BASE_URL}/deployments`, {
+    BackendClient
+      .post(`deployments`, {
         project_state_id: projectStateId,
         deployment_name: deploymentName,
         passcode: passcode,

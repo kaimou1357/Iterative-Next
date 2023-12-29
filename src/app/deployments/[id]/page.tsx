@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { Deployment } from "../types";
 import { PasscodeModal } from "@/app/components/PasscodeModal";
 import { Flowbite } from "flowbite-react";
+import { BackendClient } from "../../../../axios";
 
 export default function DeploymentView({ params }: { params: { id: string } }) {
   const deploymentId = params.id;
@@ -22,8 +23,8 @@ export default function DeploymentView({ params }: { params: { id: string } }) {
   }, []);
 
   const fetchInfo = () => {
-    axios
-      .get(`${API_BASE_URL}/deployments/${deploymentId}`)
+    BackendClient
+      .get(`deployments/${deploymentId}`)
       .then((response) => {
         setLoading(false);
         setDeployment(response.data.deployment);
@@ -37,8 +38,8 @@ export default function DeploymentView({ params }: { params: { id: string } }) {
   };
 
   const verifyPassword = (passcode: string) => {
-    axios
-      .get(`${API_BASE_URL}/deployments/${deploymentId}?passcode=${passcode}`)
+    BackendClient
+      .get(`deployments/${deploymentId}?passcode=${passcode}`)
       .then((response) => {
         setLoading(false);
         setDeployment(response.data.deployment);

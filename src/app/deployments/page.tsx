@@ -7,6 +7,7 @@ import { API_BASE_URL } from "../components/config";
 import { Deployment } from "./types";
 import Loading from "../components/loading";
 import Link from "next/link";
+import { BackendClient } from "../../../axios";
 
 export default function Deployments() {
   const [deployments, setDeployments] = useState<Deployment[]>();
@@ -18,8 +19,8 @@ export default function Deployments() {
   }, []);
 
   const fetchDeployments = () => {
-    axios
-      .get(`${API_BASE_URL}/deployments`)
+    BackendClient
+      .get('deployments')
       .then((response) => {
         setDeployments(response.data.deployments);
       })

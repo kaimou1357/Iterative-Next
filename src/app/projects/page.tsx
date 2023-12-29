@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { API_BASE_URL } from "../components/config";
 import Loading from "../components/loading";
 import Link from "next/link";
+import { BackendClient } from "../../../axios";
 
 export type Project = {
   id: string;
@@ -22,8 +23,8 @@ export default function Projects() {
   }, []);
 
   const fetchProjects = () => {
-    axios
-      .get(`${API_BASE_URL}/projects`)
+    BackendClient
+      .get("projects")
       .then((response) => {
         setProjects(response.data.projects);
       })

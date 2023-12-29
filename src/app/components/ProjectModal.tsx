@@ -4,6 +4,7 @@ import { useToolStore } from "../tool/toolstate";
 import { API_BASE_URL } from "./config";
 import axios from "axios";
 import { useState } from "react";
+import { BackendClient } from "../../../axios";
 
 interface ProjectModalProps {
   projectId: string | null;
@@ -15,8 +16,8 @@ export const ProjectModal = ({ projectId }: ProjectModalProps) => {
   const { showToast, setOpenProjectModal, openProjectModal } = useToolStore();
 
   const handleSaveProject = () => {
-    axios
-      .patch(`${API_BASE_URL}/projects`, {
+    BackendClient
+      .patch(`projects`, {
         project_id: projectId,
         project_name: projectName,
       })

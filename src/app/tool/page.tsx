@@ -17,6 +17,7 @@ import { DeploymentModal } from "../components/DeploymentModal";
 import { ToastComponent } from "../components/Toast";
 import { ProjectModal } from "../components/ProjectModal";
 import Loading from "../components/loading";
+import { BackendClient } from "../../../axios";
 let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 
 export default function Tool() {
@@ -56,8 +57,8 @@ export default function Tool() {
 
   async function createProject() {
     setIsLoading(true);
-    const response = await axios.post(
-      `${API_BASE_URL}/projects`,
+    const response = await BackendClient.post(
+      `projects`,
       { project_id: projectId },
       { headers: { "Content-Type": "application/json" } },
     );
@@ -69,8 +70,8 @@ export default function Tool() {
   }
 
   async function refreshRecommendations() {
-    const response = await axios.get(
-      `${API_BASE_URL}/recommendations?project_id=${projectId}`,
+    const response = await BackendClient.get(
+      `recommendations?project_id=${projectId}`,
     );
     setRecommendations(response.data.recommendations);
   }
@@ -81,9 +82,9 @@ export default function Tool() {
 
   const refreshProjectStates = () => {
     setIsLoading(true);
-    axios
+    BackendClient
       .post(
-        `${API_BASE_URL}/projects/project_state`,
+        `projects/project_state`,
         { project_id: projectId },
         { headers: { "Content-Type": "application/json" } },
       )
@@ -119,8 +120,8 @@ export default function Tool() {
 
   async function onResetProject() {
     setIsLoading(true);
-    const response = await axios.post(
-      `${API_BASE_URL}/projects/reset`,
+    const response = await BackendClient.post(
+      `projects/reset`,
       { project_id: projectId },
       { headers: { "Content-Type": "application/json" } },
     );
