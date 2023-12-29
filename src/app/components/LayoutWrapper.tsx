@@ -11,10 +11,10 @@ export default function LayoutWrapper({
 }) {
   const pathname = usePathname();
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <AppNavbar />
       {children}
       {pathname !== "/tool" && <Footers />}
-    </>
+    </div>
   );
 }
