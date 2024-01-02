@@ -16,6 +16,7 @@ import { ToastComponent } from "../components/Toast";
 import { ProjectModal } from "../components/ProjectModal";
 import { BackendClient } from "../../../axios";
 import { LiveCodeEditor } from "../components/LiveCodeEditor";
+import { convertCode } from "./actions";
 let socket: Socket<DefaultEventsMap, DefaultEventsMap> = io(SOCKET_IO_URL);
 
 export default function Tool() {
@@ -107,9 +108,10 @@ export default function Tool() {
     setProjectId(projectId);
   };
 
-  const onLoadClick = (reactCode: string | null) => {
+  const onLoadClick = async (reactCode: string | null) => {
     if (reactCode !== null) {
-      setReactCode(reactCode);
+      const convertedCode = await convertCode(reactCode);
+      setReactCode(convertedCode);
     }
   };
 

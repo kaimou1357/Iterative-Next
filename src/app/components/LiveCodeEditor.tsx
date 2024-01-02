@@ -1,6 +1,4 @@
 import React, { useRef, useEffect } from "react";
-import initializationPromise from "./esbuildInitializer";
-import * as esbuild from "esbuild-wasm";
 
 interface LiveCodeEditorProps {
   code: string | null | undefined;
@@ -16,17 +14,16 @@ export const LiveCodeEditor = ({
   const iframeRef = useRef<any>();
   const updateIframeContent = async () => {
     if (!iframeRef.current || !iframeRef.current.contentDocument) return;
-    let result = null;
     if (code == null) {
       return;
     }
     // await initializationPromise();
-    result = await esbuild.transform(`export default ${code}`, {
-      loader: "jsx",
-      target: "es2015",
-      format: "iife",
-      globalName: "MyApp",
-    });
+    // result = await esbuild.transform(`export default ${code}`, {
+    //   loader: "jsx",
+    //   target: "es2015",
+    //   format: "iife",
+    //   globalName: "MyApp",
+    // });
 
     const cssHead = `
         <link href="https://cdn.jsdelivr.net/npm/daisyui@3.7.6/dist/full.css" rel="stylesheet" type="text/css" />
@@ -46,7 +43,7 @@ export const LiveCodeEditor = ({
         <body>
           <div id="root"></div>
           <script>
-            ${result.code}
+            ${code}
             ReactDOM.render(React.createElement(MyApp.default), document.getElementById('root'));
           </script>
         </body>
