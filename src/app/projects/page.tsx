@@ -23,8 +23,7 @@ export default function Projects() {
   }, []);
 
   const fetchProjects = () => {
-    BackendClient
-      .get("projects")
+    BackendClient.get("projects")
       .then((response) => {
         setProjects(response.data.projects);
       })

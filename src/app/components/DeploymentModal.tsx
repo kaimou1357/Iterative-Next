@@ -25,16 +25,14 @@ export const DeploymentModal = () => {
   };
 
   const handleCreateDeployment = () => {
-    BackendClient
-      .post(`deployments`, {
-        project_state_id: projectStateId,
-        deployment_name: deploymentName,
-        passcode: passcode,
-      })
-      .then((_) => {
-        onCloseModal();
-        showToast("Deployment Created Successfully");
-      });
+    BackendClient.post(`deployments`, {
+      project_state_id: projectStateId,
+      deployment_name: deploymentName,
+      passcode: passcode,
+    }).then((_) => {
+      onCloseModal();
+      showToast("Deployment Created Successfully");
+    });
   };
 
   return (

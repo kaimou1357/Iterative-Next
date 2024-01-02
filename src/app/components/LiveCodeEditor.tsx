@@ -1,31 +1,32 @@
 import React, { useRef, useEffect } from "react";
 import initializationPromise from "./esbuildInitializer";
 import * as esbuild from "esbuild-wasm";
-import { Spinner } from 'flowbite-react';
-
 
 interface LiveCodeEditorProps {
-  code: string | null | undefined,
-  css: string | null,
-  cssFramework: string,
+  code: string | null | undefined;
+  css: string | null;
+  cssFramework: string;
 }
 
-export const LiveCodeEditor = ({ code, css, cssFramework}: LiveCodeEditorProps) => {
+export const LiveCodeEditor = ({
+  code,
+  css,
+  cssFramework,
+}: LiveCodeEditorProps) => {
   const iframeRef = useRef<any>();
   const updateIframeContent = async () => {
     if (!iframeRef.current || !iframeRef.current.contentDocument) return;
-    // initializationPromise(); // Wait for esbuild initialization
     let result = null;
     if (code == null) {
       return;
     }
-    await initializationPromise();
-      result = await esbuild.transform(`export default ${code}`, {
-        loader: "jsx",
-        target: "es2015",
-        format: "iife",
-        globalName: "MyApp",
-      });
+    // await initializationPromise();
+    result = await esbuild.transform(`export default ${code}`, {
+      loader: "jsx",
+      target: "es2015",
+      format: "iife",
+      globalName: "MyApp",
+    });
 
     const cssHead = `
         <link href="https://cdn.jsdelivr.net/npm/daisyui@3.7.6/dist/full.css" rel="stylesheet" type="text/css" />

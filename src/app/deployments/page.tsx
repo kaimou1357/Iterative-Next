@@ -19,8 +19,7 @@ export default function Deployments() {
   }, []);
 
   const fetchDeployments = () => {
-    BackendClient
-      .get('deployments')
+    BackendClient.get("deployments")
       .then((response) => {
         setDeployments(response.data.deployments);
       })

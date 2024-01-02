@@ -16,15 +16,13 @@ export const ProjectModal = ({ projectId }: ProjectModalProps) => {
   const { showToast, setOpenProjectModal, openProjectModal } = useToolStore();
 
   const handleSaveProject = () => {
-    BackendClient
-      .patch(`projects`, {
-        project_id: projectId,
-        project_name: projectName,
-      })
-      .then((_) => {
-        onCloseModal();
-        showToast("Project Saved Successfully");
-      });
+    BackendClient.patch(`projects`, {
+      project_id: projectId,
+      project_name: projectName,
+    }).then((_) => {
+      onCloseModal();
+      showToast("Project Saved Successfully");
+    });
   };
 
   const onCloseModal = () => {

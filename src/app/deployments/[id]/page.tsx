@@ -21,8 +21,7 @@ export default function DeploymentView({ params }: { params: { id: string } }) {
   }, []);
 
   const fetchInfo = () => {
-    BackendClient
-      .get(`deployments/${deploymentId}`)
+    BackendClient.get(`deployments/${deploymentId}`)
       .then((response) => {
         setLoading(false);
         setDeployment(response.data.deployment);
@@ -36,8 +35,7 @@ export default function DeploymentView({ params }: { params: { id: string } }) {
   };
 
   const verifyPassword = (passcode: string) => {
-    BackendClient
-      .get(`deployments/${deploymentId}?passcode=${passcode}`)
+    BackendClient.get(`deployments/${deploymentId}?passcode=${passcode}`)
       .then((response) => {
         setLoading(false);
         setDeployment(response.data.deployment);
