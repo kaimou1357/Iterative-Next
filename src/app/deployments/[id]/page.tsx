@@ -1,13 +1,11 @@
 "use client";
 
-import LiveCodeEditor from "@/app/components/LiveCodeEditor";
-import { API_BASE_URL } from "@/app/components/config";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Deployment } from "../types";
 import { PasscodeModal } from "@/app/components/PasscodeModal";
 import { Flowbite } from "flowbite-react";
 import { BackendClient } from "../../../../axios";
+import { LiveCodeEditor } from "@/app/components/LiveCodeEditor";
 
 export default function DeploymentView({ params }: { params: { id: string } }) {
   const deploymentId = params.id;
@@ -61,11 +59,11 @@ export default function DeploymentView({ params }: { params: { id: string } }) {
           invalidPasscode={invalidPasscode}
         />
       ) : null}
-      <div className="items stretch h-full min-h-screen grow rounded-md">
+      <div className="items stretch h-screen min-h-screen grow rounded-md">
         <LiveCodeEditor
           code={deployment?.react_code}
-          css=""
-          cssFramework="DAISYUI"
+          css={null}
+          cssFramework={"DAISYUI"}
         />
       </div>
     </Flowbite>

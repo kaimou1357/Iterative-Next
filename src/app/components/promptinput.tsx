@@ -9,7 +9,6 @@ import {
   Spinner,
   Textarea,
 } from "flowbite-react";
-import Link from "next/link";
 import Login from "./Login";
 
 interface PromptInputProps {

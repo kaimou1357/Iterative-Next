@@ -1,31 +1,31 @@
 import React, { useRef, useEffect } from "react";
-import initializationPromise from "../components/esbuildInitializer";
+import initializationPromise from "./esbuildInitializer";
 import * as esbuild from "esbuild-wasm";
+import { Spinner } from 'flowbite-react';
 
-const LiveCodeEditor = ({ code, css, cssFramework }) => {
-  const iframeRef = useRef(null);
 
+interface LiveCodeEditorProps {
+  code: string | null | undefined,
+  css: string | null,
+  cssFramework: string,
+}
+
+export const LiveCodeEditor = ({ code, css, cssFramework}: LiveCodeEditorProps) => {
+  const iframeRef = useRef<any>();
   const updateIframeContent = async () => {
     if (!iframeRef.current || !iframeRef.current.contentDocument) return;
     // initializationPromise(); // Wait for esbuild initialization
     let result = null;
-    if (code !== "") {
-      await initializationPromise();
+    if (code == null) {
+      return;
+    }
+    await initializationPromise();
       result = await esbuild.transform(`export default ${code}`, {
         loader: "jsx",
         target: "es2015",
         format: "iife",
         globalName: "MyApp",
       });
-    }
-
-    if (result === null) {
-      return (
-        <div className="grow">
-          <iframe ref={iframeRef} width="100%" height="100%" />
-        </div>
-      );
-    }
 
     const cssHead = `
         <link href="https://cdn.jsdelivr.net/npm/daisyui@3.7.6/dist/full.css" rel="stylesheet" type="text/css" />
@@ -64,5 +64,3 @@ const LiveCodeEditor = ({ code, css, cssFramework }) => {
     </div>
   );
 };
-
-export default LiveCodeEditor;
