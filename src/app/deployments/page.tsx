@@ -61,7 +61,6 @@ export default function Deployments() {
                 </Table.Head>
                 <Table.Body className="divide-y">
                   {deployments &&
-                    deployments.length &&
                     deployments.map((deployment: Deployment) => {
                       return (
                         <Table.Row

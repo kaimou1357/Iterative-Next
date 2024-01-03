@@ -99,7 +99,7 @@ export default function Footers() {
         </div>
         <div className="mx-auto mt-1 flex flex-col gap-1">
           <span className=" justify-items-center text-center text-xs leading-5 text-gray-500">
-            &copy; 2023 Iterative, Inc. All rights reserved.
+            &copy; 2024 Iterative, Inc. All rights reserved.
           </span>
           <div className="flexs mx-auto flex-row">
             <a

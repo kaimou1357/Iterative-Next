@@ -5,6 +5,8 @@ import { API_BASE_URL } from "./config";
 import axios from "axios";
 import { useState } from "react";
 import { BackendClient } from "../../../axios";
+import { redirect } from "next/dist/server/api-utils";
+import { navigatetoProject } from "../actions/actions";
 
 interface ProjectModalProps {
   projectId: string | null;
@@ -16,13 +18,24 @@ export const ProjectModal = ({ projectId }: ProjectModalProps) => {
   const { showToast, setOpenProjectModal, openProjectModal } = useToolStore();
 
   const handleSaveProject = () => {
-    BackendClient.patch(`projects`, {
-      project_id: projectId,
-      project_name: projectName,
-    }).then((_) => {
-      onCloseModal();
-      showToast("Project Saved Successfully");
-    });
+    if (projectId === null) {
+      BackendClient.post('projects', {
+        project_name: projectName
+      }).then((response) => {
+        const projectId = response.data.project.id
+        onCloseModal();
+        navigatetoProject(projectId)
+      });
+    }
+    else {
+      BackendClient.patch(`projects`, {
+        project_id: projectId,
+        project_name: projectName,
+      }).then((_) => {
+        onCloseModal();
+        showToast("Project Saved Successfully");
+      });
+    }
   };
 
   const onCloseModal = () => {
@@ -37,7 +50,7 @@ export const ProjectModal = ({ projectId }: ProjectModalProps) => {
         <Modal.Body>
           <div className="space-y-6">
             <h3 className="text-xl font-medium text-gray-900 dark:text-white">
-              Save your project
+              Create your project
             </h3>
             <div>
               <div className="mb-2 block">
@@ -55,7 +68,7 @@ export const ProjectModal = ({ projectId }: ProjectModalProps) => {
             </div>
             <div className="flex justify-between"></div>
             <div className="w-full">
-              <Button onClick={handleSaveProject}>Save Project</Button>
+              <Button onClick={handleSaveProject}>Create Project</Button>
             </div>
           </div>
         </Modal.Body>

@@ -1,4 +1,5 @@
 'use server'
+import { redirect } from 'next/navigation';
 import { DIGITALOCEAN_SERVERLESS, SERVERLESS_TOKEN } from '../components/config'
 export async function convertCode(code: string) {
   const response = await fetch(DIGITALOCEAN_SERVERLESS + "react/convert?blocking=true&result=true", {
@@ -13,4 +14,8 @@ export async function convertCode(code: string) {
   })
   const result = await response.json();
   return result.code;
+}
+
+export async function navigatetoProject(id: string) {
+  redirect(`/tool/${id}`)
 }

@@ -1,12 +1,14 @@
 "use client";
 
 import axios from "axios";
-import { Flowbite, Table } from "flowbite-react";
+import { Button, Flowbite, Table } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { API_BASE_URL } from "../components/config";
 import Loading from "../components/loading";
 import Link from "next/link";
 import { BackendClient } from "../../../axios";
+import { ProjectModal } from "../components/ProjectModal";
+import { useToolStore } from "../tool/toolstate";
 
 export type Project = {
   id: string;
@@ -16,7 +18,7 @@ export type Project = {
 export default function Projects() {
   const [projects, setProjects] = useState<Project[]>();
   const [error, setError] = useState<string | null>(null);
-  axios.defaults.withCredentials = true;
+  const { setOpenProjectModal,  openProjectModal} = useToolStore();
   // Trigger projects fetching on component mount
   useEffect(() => {
     fetchProjects();
@@ -32,6 +34,10 @@ export default function Projects() {
         setError("Error Fetching projects, please try again");
       });
   };
+
+  const onCreateProjectClick = () => {
+    setOpenProjectModal(true)
+  }
 
   // Show loading spinner while projects are being fetched
   if (!projects) return <Loading />;
@@ -49,7 +55,9 @@ export default function Projects() {
     return (
       <Flowbite>
         <div className="h-[calc(100vh-16rem)] rounded-lg bg-slate-200 pt-10 dark:bg-slate-900">
-          <div className="container mx-auto flex max-h-[90%] w-[90%] flex-row gap-10 bg-white dark:bg-slate-950 dark:text-white ">
+          <div className="container mx-auto flex-col max-h-[90%] w-[90%] flex-row gap-10 dark:bg-slate-950 dark:text-white ">
+          {openProjectModal ? <ProjectModal projectId={null}/> : null }
+          <Button className="mb-2 ml-auto" color="success" onClick={onCreateProjectClick}>New Project</Button>
             <div className="relative w-full overflow-auto ">
               <Table hoverable>
                 <Table.Head>
