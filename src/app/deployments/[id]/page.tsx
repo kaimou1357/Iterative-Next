@@ -6,12 +6,14 @@ import { PasscodeModal } from "@/app/components/PasscodeModal";
 import { Flowbite } from "flowbite-react";
 import { BackendClient } from "../../../../axios";
 import { LiveCodeEditor } from "@/app/components/LiveCodeEditor";
+import { convertCode } from "@/app/actions/actions";
 
 export default function DeploymentView({ params }: { params: { id: string } }) {
   const deploymentId = params.id;
 
   const [loading, setLoading] = useState(false);
-  const [deployment, setDeployment] = useState<Deployment | null>(null);
+
+  const [convertedCode, setConvertedCode] = useState<string | null>(null);
 
   const [openPasswordCollection, setOpenPasswordCollection] = useState(false);
   const [invalidPasscode, setInvalidPasscode] = useState(false);
@@ -24,7 +26,7 @@ export default function DeploymentView({ params }: { params: { id: string } }) {
     BackendClient.get(`deployments/${deploymentId}`)
       .then((response) => {
         setLoading(false);
-        setDeployment(response.data.deployment);
+        convertCodeForDeployment(response.data.deployment)
       })
       .catch((error) => {
         setOpenPasswordCollection(true);
@@ -34,12 +36,17 @@ export default function DeploymentView({ params }: { params: { id: string } }) {
       });
   };
 
+  const convertCodeForDeployment = async(deployment: Deployment) => {
+    const result = await convertCode(deployment.react_code);
+    setConvertedCode(result);
+  }
+
   const verifyPassword = (passcode: string) => {
     BackendClient.get(`deployments/${deploymentId}?passcode=${passcode}`)
       .then((response) => {
         setLoading(false);
-        setDeployment(response.data.deployment);
         setOpenPasswordCollection(false);
+        convertCodeForDeployment(response.data.deployment)
       })
       .catch((error) => {
         setInvalidPasscode(true);
@@ -59,7 +66,7 @@ export default function DeploymentView({ params }: { params: { id: string } }) {
       ) : null}
       <div className="items stretch h-screen min-h-screen grow rounded-md">
         <LiveCodeEditor
-          code={deployment?.react_code}
+          code={convertedCode}
           css={null}
           cssFramework={"DAISYUI"}
         />

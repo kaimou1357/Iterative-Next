@@ -16,7 +16,7 @@ import { ToastComponent } from "../components/Toast";
 import { ProjectModal } from "../components/ProjectModal";
 import { BackendClient } from "../../../axios";
 import { LiveCodeEditor } from "../components/LiveCodeEditor";
-import { convertCode } from "./actions";
+import { convertCode } from "../actions/actions";
 let socket: Socket<DefaultEventsMap, DefaultEventsMap> = io(SOCKET_IO_URL);
 
 export default function Tool() {
@@ -39,7 +39,7 @@ export default function Tool() {
   const { user } = useStytchUser();
 
   useEffect(() => {
-    socket.on("server_recommendation", onServerResponse);
+    socket.on("server_recommendation", onServerRecommendation);
     socket.on("server_code", onServerCode);
     socket.on("project_id", onProjectId);
     return () => {
@@ -76,7 +76,7 @@ export default function Tool() {
     setRecommendations(response.data.recommendations);
   }
 
-  const onServerResponse = () => {
+  const onServerRecommendation = () => {
     refreshRecommendations();
   };
 
@@ -100,7 +100,7 @@ export default function Tool() {
 
   const onServerCode = (response: any) => {
     setLoading(false);
-    setReactCode(response);
+    onLoadClick(response)
     refreshProjectStates();
   };
 

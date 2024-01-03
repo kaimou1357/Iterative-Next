@@ -3,7 +3,7 @@ import { persist, createJSONStorage } from "zustand/middleware";
 
 interface ToolState {
   loading: boolean;
-  reactCode: string;
+  reactCode: string | null;
   recommendations: Recommendation[];
   projectStates: ProjectState[];
   openDeploymentModal: boolean;
@@ -26,7 +26,7 @@ export const useToolStore = create<ToolState>()((set) => ({
   loading: false,
   recommendations: [],
   projectStates: [],
-  reactCode: "",
+  reactCode: null,
   openDeploymentModal: false,
   openProjectModal: false,
   shouldShowToast: false,
@@ -38,7 +38,7 @@ export const useToolStore = create<ToolState>()((set) => ({
     set(() => ({
       prompts: [],
       projectStates: [],
-      reactCode: "",
+      reactCode: null,
       recommendations: [],
     })),
   removeToast: () => set(() => ({ shouldShowToast: false })),
