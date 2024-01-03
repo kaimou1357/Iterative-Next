@@ -12,16 +12,15 @@ export const LiveCodeEditor = ({
   cssFramework,
 }: LiveCodeEditorProps) => {
   const iframeRef = useRef<any>();
-  
+
   const updateIframeContent = async () => {
     if (!iframeRef.current || !iframeRef.current.contentDocument) return;
     const iframeDoc = iframeRef.current.contentDocument;
-  
+
     iframeDoc.open();
     if (code === null) {
-      iframeDoc.write("")
-    }
-    else {
+      iframeDoc.write("");
+    } else {
       const cssHead = `
         <link href="https://cdn.jsdelivr.net/npm/daisyui@3.7.6/dist/full.css" rel="stylesheet" type="text/css" />
         <script src="https://cdn.tailwindcss.com"></script>

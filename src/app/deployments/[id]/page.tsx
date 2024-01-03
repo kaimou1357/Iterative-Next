@@ -26,7 +26,7 @@ export default function DeploymentView({ params }: { params: { id: string } }) {
     BackendClient.get(`deployments/${deploymentId}`)
       .then((response) => {
         setLoading(false);
-        convertCodeForDeployment(response.data.deployment)
+        convertCodeForDeployment(response.data.deployment);
       })
       .catch((error) => {
         setOpenPasswordCollection(true);
@@ -36,17 +36,17 @@ export default function DeploymentView({ params }: { params: { id: string } }) {
       });
   };
 
-  const convertCodeForDeployment = async(deployment: Deployment) => {
+  const convertCodeForDeployment = async (deployment: Deployment) => {
     const result = await convertCode(deployment.react_code);
     setConvertedCode(result);
-  }
+  };
 
   const verifyPassword = (passcode: string) => {
     BackendClient.get(`deployments/${deploymentId}?passcode=${passcode}`)
       .then((response) => {
         setLoading(false);
         setOpenPasswordCollection(false);
-        convertCodeForDeployment(response.data.deployment)
+        convertCodeForDeployment(response.data.deployment);
       })
       .catch((error) => {
         setInvalidPasscode(true);

@@ -18,7 +18,7 @@ export type Project = {
 export default function Projects() {
   const [projects, setProjects] = useState<Project[]>();
   const [error, setError] = useState<string | null>(null);
-  const { setOpenProjectModal,  openProjectModal} = useToolStore();
+  const { setOpenProjectModal, openProjectModal } = useToolStore();
   // Trigger projects fetching on component mount
   useEffect(() => {
     fetchProjects();
@@ -36,8 +36,8 @@ export default function Projects() {
   };
 
   const onCreateProjectClick = () => {
-    setOpenProjectModal(true)
-  }
+    setOpenProjectModal(true);
+  };
 
   // Show loading spinner while projects are being fetched
   if (!projects) return <Loading />;
@@ -56,8 +56,14 @@ export default function Projects() {
       <Flowbite>
         <div className="h-[calc(100vh-16rem)] rounded-lg bg-slate-200 pt-10 dark:bg-slate-900">
           <div className="container mx-auto flex-col max-h-[90%] w-[90%] flex-row gap-10 dark:bg-slate-950 dark:text-white ">
-          {openProjectModal ? <ProjectModal projectId={null}/> : null }
-          <Button className="mb-2 ml-auto" color="success" onClick={onCreateProjectClick}>New Project</Button>
+            {openProjectModal ? <ProjectModal projectId={null} /> : null}
+            <Button
+              className="mb-2 ml-auto"
+              color="success"
+              onClick={onCreateProjectClick}
+            >
+              New Project
+            </Button>
             <div className="relative w-full overflow-auto ">
               <Table hoverable>
                 <Table.Head>

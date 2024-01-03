@@ -19,15 +19,14 @@ export const ProjectModal = ({ projectId }: ProjectModalProps) => {
 
   const handleSaveProject = () => {
     if (projectId === null) {
-      BackendClient.post('projects', {
-        project_name: projectName
+      BackendClient.post("projects", {
+        project_name: projectName,
       }).then((response) => {
-        const projectId = response.data.project.id
+        const projectId = response.data.project.id;
         onCloseModal();
-        navigatetoProject(projectId)
+        navigatetoProject(projectId);
       });
-    }
-    else {
+    } else {
       BackendClient.patch(`projects`, {
         project_id: projectId,
         project_name: projectName,

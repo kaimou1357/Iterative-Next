@@ -100,7 +100,7 @@ export default function Tool() {
 
   const onServerCode = (response: any) => {
     setLoading(false);
-    onLoadClick(response)
+    onLoadClick(response);
     refreshProjectStates();
   };
 
