@@ -17,7 +17,7 @@ export default function LoginPage() {
     }
   }, [user, isInitialized, router]);
   return (
-    <main className="flex min-h-screen items-center justify-center">
+    <main className="flex min-h-[calc(100vh-10rem)] items-center justify-center">
       <Login />
     </main>
   );
