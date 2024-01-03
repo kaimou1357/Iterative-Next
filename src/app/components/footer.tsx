@@ -103,13 +103,13 @@ export default function Footers() {
           </span>
           <div className="flexs mx-auto flex-row">
             <a
-              href="#"
+              href="/privacy"
               className="  text-center text-xs leading-5 text-gray-500 "
             >
               Privacy Policy{" "}
             </a>
             <a
-              href="#"
+              href="/terms-of-service"
               className=" text-center text-xs leading-5 text-gray-500"
             >
               Terms of Service
