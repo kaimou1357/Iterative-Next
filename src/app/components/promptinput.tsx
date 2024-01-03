@@ -9,7 +9,6 @@ import {
   Spinner,
   Textarea,
 } from "flowbite-react";
-import Link from "next/link";
 import Login from "./Login";
 
 interface PromptInputProps {
@@ -18,7 +17,6 @@ interface PromptInputProps {
   onProjectReset: () => void;
   onProjectSaveClicked: (openModal: boolean) => void;
   loading: boolean;
-  isAuthenticated: boolean;
 }
 
 const PromptInput = ({
@@ -27,7 +25,6 @@ const PromptInput = ({
   onPromptSubmit,
   onProjectSaveClicked,
   loading,
-  isAuthenticated,
 }: PromptInputProps) => {
   const [prompt, setPrompt] = useState("");
   const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
@@ -46,13 +43,12 @@ const PromptInput = ({
 
   const onPromptInputSubmit = () => {
     onPromptSubmit(prompt);
-    setPrompt("");
   };
 
   return (
     <Flowbite>
       <div>
-        <div className="mb-2 block">
+        <div className="mt-4 block">
           <Label
             htmlFor="prompt"
             className="text-xl font-bold"
@@ -67,6 +63,8 @@ const PromptInput = ({
           rows={4}
           onChange={onChange}
           value={prompt}
+          disabled={loading}
+          readOnly={loading}
         />
         {loading ? (
           <div>

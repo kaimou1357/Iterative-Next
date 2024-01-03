@@ -9,7 +9,7 @@ export const RecommendationsList = ({ recommendations }: ChatProps) => {
   return (
     <>
       <div className="w-full">
-        <div className="mb-3 w-full text-lg font-bold dark:text-gray-200">
+        <div className="mb-3 w-full text-lg text-center font-bold dark:text-gray-200">
           Iterative Recommendations for you
         </div>
 

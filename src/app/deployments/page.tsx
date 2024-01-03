@@ -19,8 +19,7 @@ export default function Deployments() {
   }, []);
 
   const fetchDeployments = () => {
-    BackendClient
-      .get('deployments')
+    BackendClient.get("deployments")
       .then((response) => {
         setDeployments(response.data.deployments);
       })
@@ -62,7 +61,6 @@ export default function Deployments() {
                 </Table.Head>
                 <Table.Body className="divide-y">
                   {deployments &&
-                    deployments.length &&
                     deployments.map((deployment: Deployment) => {
                       return (
                         <Table.Row

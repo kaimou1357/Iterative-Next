@@ -3,22 +3,21 @@
 import React, { useState } from "react";
 import { RecommendationsList } from "../components/RecommendationsList";
 import io, { Socket } from "socket.io-client";
-import { API_BASE_URL, SOCKET_IO_URL } from "../components/config";
-import LiveCodeEditor from "../components/LiveCodeEditor";
+import { SOCKET_IO_URL } from "../components/config";
 import { useEffect } from "react";
 import { DefaultEventsMap } from "@socket.io/component-emitter";
 import PromptBox from "../components/userprompts";
 import PromptInput from "../components/promptinput";
 import { useProjectStore, useToolStore, ProjectState } from "./toolstate";
 import { useStytchUser } from "@stytch/nextjs";
-import { Button, DarkThemeToggle, Flowbite } from "flowbite-react";
-import axios from "axios";
+import { Flowbite, Spinner } from "flowbite-react";
 import { DeploymentModal } from "../components/DeploymentModal";
 import { ToastComponent } from "../components/Toast";
 import { ProjectModal } from "../components/ProjectModal";
-import Loading from "../components/loading";
 import { BackendClient } from "../../../axios";
-let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
+import { LiveCodeEditor } from "../components/LiveCodeEditor";
+import { convertCode } from "../actions/actions";
+let socket: Socket<DefaultEventsMap, DefaultEventsMap> = io(SOCKET_IO_URL);
 
 export default function Tool() {
   const {
@@ -36,13 +35,11 @@ export default function Tool() {
 
   const { projectId, setProjectId, setProjectName, projectName } =
     useProjectStore();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { user } = useStytchUser();
-  axios.defaults.withCredentials = true;
+
   useEffect(() => {
-    socket = io(SOCKET_IO_URL);
-    socket.on("server_recommendation", onServerResponse);
+    socket.on("server_recommendation", onServerRecommendation);
     socket.on("server_code", onServerCode);
     socket.on("project_id", onProjectId);
     return () => {
@@ -55,18 +52,21 @@ export default function Tool() {
     createProject();
   }, []);
 
-  async function createProject() {
-    setIsLoading(true);
-    const response = await BackendClient.post(
+  function createProject() {
+    BackendClient.post(
       `projects`,
       { project_id: projectId },
       { headers: { "Content-Type": "application/json" } },
-    );
-    setIsLoading(false);
-    setProjectId(response.data.project.id);
-    setProjectName(response.data.project.name);
-    refreshProjectStates();
-    refreshRecommendations();
+    )
+      .then((response) => {
+        setProjectId(response.data.project.id);
+        setProjectName(response.data.project.name);
+        refreshProjectStates();
+        refreshRecommendations();
+      })
+      .catch((err) => {
+        console.log("Failed to create project");
+      });
   }
 
   async function refreshRecommendations() {
@@ -76,35 +76,31 @@ export default function Tool() {
     setRecommendations(response.data.recommendations);
   }
 
-  const onServerResponse = () => {
+  const onServerRecommendation = () => {
     refreshRecommendations();
   };
 
   const refreshProjectStates = () => {
-    setIsLoading(true);
-    BackendClient
-      .post(
-        `projects/project_state`,
-        { project_id: projectId },
-        { headers: { "Content-Type": "application/json" } },
-      )
-      .then((response: any) => {
-        const projectStates = response.data.project_states.map((p: any) => {
-          const pState: ProjectState = {
-            id: p.id,
-            reactCode: p.reactCode,
-            prompt: p.messages[0] ? p.messages[0].content : null,
-          };
-          return pState;
-        });
-        setIsLoading(false);
-        setProjectStates(projectStates);
+    BackendClient.post(
+      `projects/project_state`,
+      { project_id: projectId },
+      { headers: { "Content-Type": "application/json" } },
+    ).then((response: any) => {
+      const projectStates = response.data.project_states.map((p: any) => {
+        const pState: ProjectState = {
+          id: p.id,
+          reactCode: p.reactCode,
+          prompt: p.messages[0] ? p.messages[0].content : null,
+        };
+        return pState;
       });
+      setProjectStates(projectStates);
+    });
   };
 
   const onServerCode = (response: any) => {
     setLoading(false);
-    setReactCode(response);
+    onLoadClick(response);
     refreshProjectStates();
   };
 
@@ -112,20 +108,19 @@ export default function Tool() {
     setProjectId(projectId);
   };
 
-  const onLoadClick = (reactCode: string | null) => {
+  const onLoadClick = async (reactCode: string | null) => {
     if (reactCode !== null) {
-      setReactCode(reactCode);
+      const convertedCode = await convertCode(reactCode);
+      setReactCode(convertedCode);
     }
   };
 
   async function onResetProject() {
-    setIsLoading(true);
-    const response = await BackendClient.post(
+    await BackendClient.post(
       `projects/reset`,
       { project_id: projectId },
       { headers: { "Content-Type": "application/json" } },
     );
-    setIsLoading(false);
     resetProject();
   }
 
@@ -140,10 +135,11 @@ export default function Tool() {
         <ToastComponent />
         <DeploymentModal />
         <ProjectModal projectId={projectId} />
-        <div className=" container mx-auto flex h-[90%] max-h-full flex-row gap-10 dark:text-white ">
+        <div
+          className={`w-[95%] max-w-[95%] 2xl:w-[98%] 2xl:max-w-[98%] max-h-full h-[90%] mx-auto flex flex-row gap-10 dark:text-white `}
+        >
           <div className=" flex w-full justify-between gap-4 pt-10 ">
-            <div className="w-[20%] flex-col items-center bg-slate-200 dark:bg-slate-900 ">
-              {/* <Button color="dark" className="mx-auto">Existing User Prompts</Button> */}
+            <div className="w-[25%] flex-col items-center bg-slate-200 dark:bg-slate-900 ">
               <PromptBox
                 user={user}
                 onLoadClick={onLoadClick}
@@ -153,28 +149,36 @@ export default function Tool() {
             </div>
             <div
               className={`${
-                recommendations.length ? "w-[60%]" : "w-[80%]"
+                recommendations.length ? "w-[50%]" : "w-[80%]"
               } flex h-full flex-col`}
             >
               <h1 className="mx-auto mb-2 text-xl font-bold">{projectName}</h1>
-              <div className="min-h-[72%] max-w-full grow rounded-md border-2 border-solid border-gray-500">
-                <LiveCodeEditor
-                  code={reactCode}
-                  css={undefined}
-                  cssFramework={"DAISYUI"}
-                />
-              </div>
+              {loading ? (
+                <div className="flex text-center grow items-center justify-center">
+                  <div className="flex-col">
+                    <Spinner size="xl" />
+                    <div>Generating... Give us a moment. </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="min-h-[72%] max-w-full grow rounded-md border-2 border-solid border-gray-500 flex">
+                  <LiveCodeEditor
+                    code={reactCode}
+                    css={null}
+                    cssFramework={"DAISYUI"}
+                  />
+                </div>
+              )}
               <PromptInput
                 loading={loading}
                 user={user}
                 onProjectReset={onResetProject}
                 onPromptSubmit={handleSend}
                 onProjectSaveClicked={setOpenProjectModal}
-                isAuthenticated={user !== null}
               />
             </div>
             {recommendations && recommendations.length ? (
-              <div className="w-[20%]">
+              <div className="w-[25%]">
                 <div className="w-full bg-slate-200 text-black dark:bg-slate-900 dark:text-white ">
                   <RecommendationsList recommendations={recommendations} />
                 </div>
@@ -185,7 +189,6 @@ export default function Tool() {
           </div>
         </div>
       </div>
-      {isLoading && <Loading />}
     </Flowbite>
   );
 }
