@@ -6,14 +6,14 @@ export default function banner() {
   return (
     <div className=" h-auto bg-black">
       <div className="">
-        <div className="container inset-0 flex h-auto  flex-col items-center justify-center bg-zinc-950 bg-opacity-80">
-          <div className="mx-auto flex flex-col  gap-10 py-10 sm:py-24 ">
+        <div className="inset-0 flex h-auto  flex-col items-center justify-center bg-zinc-950 bg-opacity-80">
+          <div className="flex flex-col  gap-10 py-10 sm:py-24 ">
             <div className="text-center">
               <h2 className="text-5xl font-bold text-white">Iterative</h2>
-              <p className="my-5 text-lg text-white whitespace-normal">
+              <p className="my-5 text-lg text-white">
                 From Idea to Prototype – Code-Free, Hassle-Free, Instantly.
               </p>
-              <p className="mx-auto my-5 text-md text-white whitespace-normal">
+              <p className="my-5 text-md text-white">
                 Empowering designers and product teams to transform concepts
                 into interactive prototypes effortlessly.
               </p>
