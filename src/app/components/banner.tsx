@@ -1,30 +1,28 @@
-"use client";
-
-import React, { useEffect } from "react";
-import pc from "../../../public/pc.jpg";
-import Image from "next/image";
+import React from "react";
 import Link from "next/link";
-import test from "../../../public/TBD.png";
 import Modal from "./modal";
 
 export default function banner() {
   return (
     <div className=" h-auto bg-black">
       <div className="">
-        <div className=" inset-0 flex h-auto  flex-col items-center justify-center bg-zinc-950 bg-opacity-80">
-          <div className="flex flex-col  gap-10 py-10 sm:py-24 ">
+        <div className="container inset-0 flex h-auto  flex-col items-center justify-center bg-zinc-950 bg-opacity-80">
+          <div className="mx-auto flex flex-col  gap-10 py-10 sm:py-24 ">
             <div className="text-center">
               <h2 className="text-5xl font-bold text-white">Iterative</h2>
-              <p className="   my-5 text-lg text-white">
-                Build amazing applications without writing a single line of
-                code.
+              <p className="my-5 text-lg text-white whitespace-normal">
+                From Idea to Prototype – Code-Free, Hassle-Free, Instantly.
+              </p>
+              <p className="mx-auto my-5 text-md text-white whitespace-normal">
+                Empowering designers and product teams to transform concepts
+                into interactive prototypes effortlessly.
               </p>
 
               <Link
                 href="/tool"
                 className="rounded bg-blue-500 p-2 text-white "
               >
-                Get Started!
+                Start Prototyping Now!
               </Link>
             </div>
 

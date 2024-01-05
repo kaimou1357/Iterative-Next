@@ -11,7 +11,7 @@ export default function Modal() {
           </div>
           <div className="mt-3 text-center sm:mt-5">
             <h2 className="text-lg font-medium leading-6 text-white ">
-              Iterative Coffee Shop
+              SandyTown Coffee Shop
             </h2>
             <div className="mt-2">
               <p className="text-sm text-gray-500 ">

@@ -10,18 +10,11 @@ export default function Home() {
         <Banner />
         <div className=" container mx-auto flex  w-2/3 flex-col items-center justify-center gap-24 py-20 text-center md:flex-row ">
           <div>
-            <h2 className="text-5xl font-bold ">Iterative</h2>
-            <p className="h2 my-5 text-lg ">
-              Build amazing applications without writing a single line of code.
-            </p>
             <Link
               href="/tool"
               className="mr-4 rounded bg-blue-500 p-2 text-white "
             >
-              Try it out!
-            </Link>
-            <Link href="/login" className="rounded bg-blue-500 p-2 text-white ">
-              Sign Up
+              Accelerate Your Product Journey
             </Link>
           </div>
         </div>
@@ -45,12 +38,12 @@ export default function Home() {
                   />
                 </svg>
 
-                <h3 className="h4  fw-bold mb-2">Intuitive Interface</h3>
+                <h3 className="h4  fw-bold mb-2">Clarify Your Vision</h3>
               </div>
-
               <p>
-                Our tool provides a user-friendly interface that allows you to
-                easily create and customize your applications.
+                With Iterative's intuitive interface, seamlessly translate ideas
+                into prototypes, ensuring alignment across all teams without
+                miscommunication.
               </p>
             </div>
 
@@ -72,11 +65,12 @@ export default function Home() {
                   />
                 </svg>
 
-                <h3 className="h4 fw-bold mb-2">No Coding Required</h3>
+                <h3 className="h4 fw-bold mb-2">Bridge Skill Gaps</h3>
               </div>
               <p>
-                You don&apos;t need any coding skills to build powerful and
-                functional applications with our AI-powered tool.
+                Empower your team to build robust prototypes regardless of
+                coding expertise, thanks to Iterative's intelligent AI-assisted
+                development environment.
               </p>
             </div>
             <div className=" mb-4 text-center">
@@ -97,11 +91,12 @@ export default function Home() {
                   />
                 </svg>
 
-                <h3 className="h4 fw-bold mb-2">Fast and Efficient</h3>
+                <h3 className="h4 fw-bold mb-2">Outpace Competitors</h3>
               </div>
               <p>
-                Our tool leverages the power of AI to automate and streamline
-                the application development process, saving you time and effort.
+                Rapid prototype generation means you can test, iterate, and
+                validate ideas with users quicker than ever, drastically
+                shortening the product development cycle.
               </p>
             </div>
           </div>

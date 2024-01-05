@@ -33,23 +33,18 @@ export default function AppNavbar() {
             Sign Out
           </Button>
         ) : (
-          <Button href="/login">Log In</Button>
+          <Button href="/login">Sign up</Button>
         )}
         <Navbar.Toggle />
       </div>
       <Navbar.Collapse>
-        <Navbar.Link href="/tool">Create</Navbar.Link>
         {isAuthenticated ? (
           <>
+            <Navbar.Link href="/tool">Create</Navbar.Link>
             <Navbar.Link href="/projects">Projects</Navbar.Link>
             <Navbar.Link href="/deployments">Deployments</Navbar.Link>
           </>
-        ) : (
-          <>
-            <Navbar.Link href="/login">Projects</Navbar.Link>
-            <Navbar.Link href="/login">Deployments</Navbar.Link>
-          </>
-        )}
+        ) : null}
       </Navbar.Collapse>
     </Navbar>
   );
