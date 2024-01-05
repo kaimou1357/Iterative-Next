@@ -39,7 +39,9 @@ export default function Tool() {
   const { user } = useStytchUser();
 
   const [progressLevel, setProgressLevel] = useState<number>(5);
+  // ref value used to get latest value inside interval callback
   const loadingRef = useRef<boolean>();
+  // ref value used to get latest value inside interval callback
   const progressLevelRef = useRef<number>(5);
 
   useEffect(() => {
@@ -56,10 +58,12 @@ export default function Tool() {
     createProject();
   }, []);
 
+  // update ref value whenever state gets updated
   useEffect(() => {
     loadingRef.current = loading;
   }, [loading])
   
+  // update ref value whenever state gets updated
   useEffect(() => {
     progressLevelRef.current = progressLevel;
   }, [progressLevel])
@@ -140,6 +144,7 @@ export default function Tool() {
   const handleSend = (prompt: string) => {
     setLoading(true);
     const intervalId = setInterval(() => {
+      // use ref values here as state values would not be updated inside callback
       if(loadingRef.current && progressLevelRef.current<91){
         setProgressLevel(prevProgressLevel => prevProgressLevel+5)
       } else if(!loadingRef.current) clearInterval(intervalId)
