@@ -18,5 +18,11 @@ export const BackendClient = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     Authorization: readCookie("stytch_session_jwt"),
+    'Content-Type': 'application/json',
   },
+  transformRequest: [
+    (data) => {
+      return JSON.stringify(data);
+    },
+  ],
 });

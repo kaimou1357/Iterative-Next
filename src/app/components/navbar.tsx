@@ -4,10 +4,12 @@ import { Fragment, useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { useStytchUser, useStytch } from "@stytch/nextjs";
 import { Button, Navbar } from "flowbite-react";
+import { usePathname } from "next/navigation";
 
 export default function AppNavbar() {
   const { user } = useStytchUser();
   const stytchClient = useStytch();
+  const pathname = usePathname();
 
   const handleLogout = useCallback(() => {
     stytchClient.session.revoke();
@@ -15,6 +17,13 @@ export default function AppNavbar() {
 
   const isAuthenticated = user !== null;
 
+  if (pathname.includes("/deployments/")) {
+    return (
+      <Navbar fluid className="flex justify-center">
+        <Button>Build your Prototype</Button>
+      </Navbar>
+    )
+  }
   return (
     <Navbar fluid>
       <Navbar.Brand href="/">

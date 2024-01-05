@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { RecommendationsList } from "../components/RecommendationsList";
 import io, { Socket } from "socket.io-client";
 import { SOCKET_IO_URL } from "../components/config";
@@ -10,7 +10,7 @@ import PromptBox from "../components/userprompts";
 import PromptInput from "../components/promptinput";
 import { useProjectStore, useToolStore, ProjectState } from "./toolstate";
 import { useStytchUser } from "@stytch/nextjs";
-import { Flowbite, Spinner } from "flowbite-react";
+import { Flowbite, Progress } from "flowbite-react";
 import { DeploymentModal } from "../components/DeploymentModal";
 import { ToastComponent } from "../components/Toast";
 import { ProjectModal } from "../components/ProjectModal";
@@ -38,6 +38,10 @@ export default function Tool() {
 
   const { user } = useStytchUser();
 
+  const [progressLevel, setProgressLevel] = useState<number>(5);
+  const loadingRef = useRef<boolean>();
+  const progressLevelRef = useRef<number>(5);
+
   useEffect(() => {
     socket.on("server_recommendation", onServerRecommendation);
     socket.on("server_code", onServerCode);
@@ -51,6 +55,14 @@ export default function Tool() {
   useEffect(() => {
     createProject();
   }, []);
+
+  useEffect(() => {
+    loadingRef.current = loading;
+  }, [loading])
+  
+  useEffect(() => {
+    progressLevelRef.current = progressLevel;
+  }, [progressLevel])
 
   function createProject() {
     BackendClient.post(
@@ -100,6 +112,7 @@ export default function Tool() {
 
   const onServerCode = (response: any) => {
     setLoading(false);
+    setProgressLevel(5)
     onLoadClick(response);
     refreshProjectStates();
   };
@@ -126,6 +139,11 @@ export default function Tool() {
 
   const handleSend = (prompt: string) => {
     setLoading(true);
+    const intervalId = setInterval(() => {
+      if(loadingRef.current && progressLevelRef.current<91){
+        setProgressLevel(prevProgressLevel => prevProgressLevel+5)
+      } else if(!loadingRef.current) clearInterval(intervalId)
+    }, 2000)
     socket.emit("user_message", { description: prompt, project_id: projectId });
   };
 
@@ -156,8 +174,15 @@ export default function Tool() {
               {loading ? (
                 <div className="flex text-center grow items-center justify-center">
                   <div className="flex-col">
-                    <Spinner size="xl" />
-                    <div>Generating... Give us a moment. </div>
+                    <Progress
+                      progress={progressLevel}
+                      progressLabelPosition="inside"
+                      textLabel="Generating... Give us a moment."
+                      textLabelPosition="outside"
+                      size="lg"
+                      labelProgress
+                      labelText
+                    />
                   </div>
                 </div>
               ) : (
@@ -178,7 +203,7 @@ export default function Tool() {
               />
             </div>
             {recommendations && recommendations.length ? (
-              <div className="w-[25%]">
+              <div className="w-[15%]">
                 <div className="w-full bg-slate-200 text-black dark:bg-slate-900 dark:text-white ">
                   <RecommendationsList recommendations={recommendations} />
                 </div>

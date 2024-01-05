@@ -43,6 +43,7 @@ const PromptInput = ({
 
   const onPromptInputSubmit = () => {
     onPromptSubmit(prompt);
+    setPrompt('')
   };
 
   return (
@@ -52,13 +53,13 @@ const PromptInput = ({
           <Label
             htmlFor="prompt"
             className="text-xl font-bold"
-            value="What do you want to build?"
+            value="Describe your idea in a few words.."
           />
         </div>
         <Textarea
           className="mb-2"
           id="prompt"
-          placeholder="Tell us your thoughts"
+          placeholder="Build an app that.."
           required
           rows={4}
           onChange={onChange}
@@ -77,15 +78,15 @@ const PromptInput = ({
           <div>
             <div className="flex flex-row gap-1 ">
               <Button onClick={() => onPromptInputSubmit()} size={"sm"}>
-                Generate Code
+                Build
               </Button>
 
               <Button color="failure" onClick={() => onProjectReset()}>
-                Reset
+                Clear Idea
               </Button>
 
               <Button color="success" onClick={handleSaveProject}>
-                Save Project
+                Save Progress
               </Button>
             </div>
           </div>

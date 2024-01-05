@@ -18,14 +18,15 @@ export type Project = {
 export default function Projects() {
   const [projects, setProjects] = useState<Project[]>();
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
   const { setOpenProjectModal, openProjectModal } = useToolStore();
   // Trigger projects fetching on component mount
   useEffect(() => {
     fetchProjects();
   }, []);
 
-  const fetchProjects = () => {
-    BackendClient.get("projects")
+  const fetchProjects = async () => {
+    await BackendClient.get("projects")
       .then((response) => {
         setProjects(response.data.projects);
       })
@@ -33,18 +34,35 @@ export default function Projects() {
         console.error("Error Fetching projects");
         setError("Error Fetching projects, please try again");
       });
+    setLoading(false);
   };
 
   const onCreateProjectClick = () => {
     setOpenProjectModal(true);
   };
 
+  const handleDelete = async (project_id: string) => {
+    setLoading(true);
+    await BackendClient.delete("projects", { data: { project_id } }).then(response => {
+      // filter project from frontend if successfully deleted from backend
+      const filterProjects = projects?.filter(project => {
+        return project.id !== project_id;
+      })
+      setProjects(filterProjects);
+    })
+    .catch(error => {
+      // set error so it can be displayed on the UI
+      setError(error)
+    });
+    setLoading(false);
+  };
+
   // Show loading spinner while projects are being fetched
-  if (!projects) return <Loading />;
+  if (loading) return <Loading />;
   // Show error message if error is thrown by server
   if (error)
     return (
-      <div className="h-[calc(100vh-16rem)] rounded-lg bg-slate-200 pt-10 dark:bg-slate-900">
+      <div className="h-[calc(100vh-10rem)] rounded-lg bg-slate-200 pt-10 dark:bg-slate-900">
         <p aria-label="Error message" className="text-center text-xl">
           {error}
         </p>
@@ -54,7 +72,7 @@ export default function Projects() {
   else
     return (
       <Flowbite>
-        <div className="h-[calc(100vh-16rem)] rounded-lg bg-slate-200 pt-10 dark:bg-slate-900">
+        <div className="h-[calc(100vh-10rem)] rounded-lg bg-slate-200 pt-10 dark:bg-slate-900">
           <div className="container mx-auto flex-col max-h-[90%] w-[90%] flex-row gap-10 dark:bg-slate-950 dark:text-white ">
             {openProjectModal ? <ProjectModal projectId={null} /> : null}
             <Button
@@ -73,6 +91,9 @@ export default function Projects() {
                   <Table.HeadCell scope="col" className="px-6 py-3">
                     Open Project
                   </Table.HeadCell>
+                  <Table.HeadCell scope="col" className="px-6 py-3">
+                    Action
+                  </Table.HeadCell>
                 </Table.Head>
                 <Table.Body className="divide-y">
                   {projects &&
@@ -90,6 +111,9 @@ export default function Projects() {
                             <Link href={`/tool/${project.id}`}>
                               Open in Tool
                             </Link>
+                          </Table.Cell>
+                          <Table.Cell className="px-6 py-4">
+                            <Button color="failure" size={'xs'} onClick={() => handleDelete(project.id)}>Delete</Button>
                           </Table.Cell>
                         </Table.Row>
                       );
