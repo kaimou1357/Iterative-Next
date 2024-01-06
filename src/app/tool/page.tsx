@@ -22,6 +22,8 @@ let socket: Socket<DefaultEventsMap, DefaultEventsMap> = io(SOCKET_IO_URL);
 export default function Tool() {
   const {
     loading,
+    progressLevel,
+    setProgressLevel,
     setLoading,
     setProjectStates,
     projectStates,
@@ -38,7 +40,6 @@ export default function Tool() {
 
   const { user } = useStytchUser();
 
-  const [progressLevel, setProgressLevel] = useState<number>(5);
   // ref value used to get latest value inside interval callback
   const loadingRef = useRef<boolean>();
   // ref value used to get latest value inside interval callback
@@ -146,7 +147,7 @@ export default function Tool() {
     const intervalId = setInterval(() => {
       // use ref values here as state values would not be updated inside callback
       if(loadingRef.current && progressLevelRef.current<91){
-        setProgressLevel(prevProgressLevel => prevProgressLevel+5)
+        setProgressLevel(progressLevelRef.current+5)
       } else if(!loadingRef.current) clearInterval(intervalId)
     }, 2000)
     socket.emit("user_message", { description: prompt, project_id: projectId });

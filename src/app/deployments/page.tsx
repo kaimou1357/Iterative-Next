@@ -8,9 +8,10 @@ import { Deployment } from "./types";
 import Loading from "../components/loading";
 import Link from "next/link";
 import { BackendClient } from "../../../axios";
+import { useDeploymentStore } from "../tool/toolstate";
 
 export default function Deployments() {
-  const [deployments, setDeployments] = useState<Deployment[]>();
+  const { deployments, setDeployments, setFilteredDeployments } = useDeploymentStore();
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   axios.defaults.withCredentials = true;
@@ -34,13 +35,8 @@ export default function Deployments() {
   const handleDelete = async (deployment_id: string) => {
     setLoading(true);
     await BackendClient.delete("deployments", { data: { deployment_id } }).then(response => {
-      // Handle the response
-      console.log('deleted deployment: ', response)
       // filter deployment from frontend if successfully deleted from backend
-      const filterDeployments = deployments?.filter(deployment => {
-        return deployment.id !== deployment_id
-      });
-      setDeployments(filterDeployments);
+      setFilteredDeployments(deployment_id, deployments)
     })
     .catch(error => {
       // Handle the error

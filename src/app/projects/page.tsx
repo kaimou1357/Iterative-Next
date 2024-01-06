@@ -8,15 +8,10 @@ import Loading from "../components/loading";
 import Link from "next/link";
 import { BackendClient } from "../../../axios";
 import { ProjectModal } from "../components/ProjectModal";
-import { useToolStore } from "../tool/toolstate";
-
-export type Project = {
-  id: string;
-  name: string;
-};
+import { ProjectObj, useProjectStore, useToolStore } from "../tool/toolstate";
 
 export default function Projects() {
-  const [projects, setProjects] = useState<Project[]>();
+  const { projects, setFilteredProjects, setProjects } = useProjectStore();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const { setOpenProjectModal, openProjectModal } = useToolStore();
@@ -45,10 +40,7 @@ export default function Projects() {
     setLoading(true);
     await BackendClient.delete("projects", { data: { project_id } }).then(response => {
       // filter project from frontend if successfully deleted from backend
-      const filterProjects = projects?.filter(project => {
-        return project.id !== project_id;
-      })
-      setProjects(filterProjects);
+      setFilteredProjects(project_id, projects);
     })
     .catch(error => {
       // set error so it can be displayed on the UI
@@ -97,8 +89,8 @@ export default function Projects() {
                 </Table.Head>
                 <Table.Body className="divide-y">
                   {projects &&
-                    projects.length &&
-                    projects.map((project: Project) => {
+                    projects.length ?
+                    projects.map((project: ProjectObj) => {
                       return (
                         <Table.Row
                           key={project.id}
@@ -117,7 +109,7 @@ export default function Projects() {
                           </Table.Cell>
                         </Table.Row>
                       );
-                    })}
+                    }): <></>}
                 </Table.Body>
               </Table>
             </div>

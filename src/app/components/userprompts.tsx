@@ -60,6 +60,7 @@ const UserPrompts = ({
               </Button>
               
               <Button
+                onClick={() => { }}
                 color="failure"
                 size={"xs"}
                 // className="my-auto rounded-full bg-purple-700 p-3 text-sm text-white dark:bg-cyan-500 "
