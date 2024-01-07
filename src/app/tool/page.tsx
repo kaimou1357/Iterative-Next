@@ -185,6 +185,7 @@ export default function Tool() {
                       progressLabelPosition="inside"
                       textLabel="Generating... Give us a moment."
                       textLabelPosition="outside"
+                      className="bg-slate-700"
                       size="lg"
                       labelProgress
                       labelText

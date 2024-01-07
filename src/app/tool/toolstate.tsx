@@ -4,6 +4,7 @@ import { Deployment } from "../deployments/types";
 
 interface ToolState {
   loading: boolean;
+  prompt: string;
   showRecommendations: boolean;
   progressLevel: number;
   reactCode: string | null;
@@ -15,6 +16,7 @@ interface ToolState {
   toastMessage: string;
 
   showToast: (message: string) => void;
+  setPrompt: (value: string) => void;
   removeToast: () => void;
   setReactCode: (code: string) => void;
   setLoading: (isLoading: boolean) => void;
@@ -29,6 +31,7 @@ interface ToolState {
 
 export const useToolStore = create<ToolState>()((set) => ({
   loading: false,
+  prompt: "",
   recommendations: [],
   showRecommendations: false,
   progressLevel: 5,
@@ -48,6 +51,7 @@ export const useToolStore = create<ToolState>()((set) => ({
       reactCode: null,
       recommendations: [],
     })),
+  setPrompt: (value) => set(() => ({ prompt: value })),
   removeToast: () => set(() => ({ shouldShowToast: false })),
   setOpenDeploymentModal: (openModal: boolean) =>
     set(() => ({ openDeploymentModal: openModal })),

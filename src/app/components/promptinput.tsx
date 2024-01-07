@@ -10,6 +10,7 @@ import {
   Textarea,
 } from "flowbite-react";
 import Login from "./Login";
+import { useToolStore } from "../tool/toolstate";
 
 interface PromptInputProps {
   user: any;
@@ -26,7 +27,7 @@ const PromptInput = ({
   onProjectSaveClicked,
   loading,
 }: PromptInputProps) => {
-  const [prompt, setPrompt] = useState("");
+  const { prompt, setPrompt } = useToolStore();
   const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
 
   const onChange = (

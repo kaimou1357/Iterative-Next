@@ -1,5 +1,5 @@
 "use client";
-import { Accordion } from "flowbite-react";
+import { Accordion, Button } from "flowbite-react";
 import { useToolStore } from "../tool/toolstate";
 
 interface ChatProps {
@@ -7,7 +7,7 @@ interface ChatProps {
 }
 
 export const RecommendationsList = ({ recommendations }: ChatProps) => {
-  const { showRecommendations, setShowRecommendations } = useToolStore();
+  const { showRecommendations, setShowRecommendations, setPrompt } = useToolStore();
 
   return (
     <>
@@ -21,9 +21,9 @@ export const RecommendationsList = ({ recommendations }: ChatProps) => {
         </button>
 
         <div id="dropdown" className={`z-10 ${!showRecommendations && 'hidden'} absolute top-12 right-0 bg-white w-[20vw] divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700`}>
-          <span className="text-xs font-light text-center">Based on your vision, here are actionable insights to refine your prototype:</span>
+          <span className="text-xs font-light text-center flex justify-self-center p-2">Based on your vision, here are actionable insights to refine your prototype:</span>
           <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
-            <Accordion className="max-h-[70vh] overflow-y-auto min-w-[50%] pb-2">
+            <Accordion className="max-h-[70vh] overflow-y-auto min-w-[50%] pb-2 border-none">
               {recommendations.map((r, idx) => (
                 <Accordion.Panel>
                     <div key={r.id}>
@@ -34,6 +34,7 @@ export const RecommendationsList = ({ recommendations }: ChatProps) => {
                         <p className="mb-2 max-h-[100px] overflow-y-auto text-black sm:max-h-[200px] xl:max-h-[100px] dark:text-gray-400">
                           {r.description}
                         </p>
+                        <Button color="blue" onClick={() => setPrompt(r.description)}>Copy</Button>
                       </Accordion.Content>
                     </div>
                 </Accordion.Panel>
