@@ -47,6 +47,11 @@ const PromptInput = ({
     setPrompt("");
   };
 
+  const onSuccessfulLogin = () => {
+    setShowLoginModal(false);
+    window.location.reload();
+  }
+
   return (
     <Flowbite>
       <div>
@@ -102,7 +107,7 @@ const PromptInput = ({
           <Modal.Header>Please login</Modal.Header>
           <Modal.Body className="w-full">
             <div className="flex w-full justify-center">
-              <Login />
+              <Login onLoginSuccess={onSuccessfulLogin} />
             </div>
           </Modal.Body>
         </Modal>

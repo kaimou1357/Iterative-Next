@@ -28,6 +28,11 @@ const UserPrompts = ({
   const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
   const { removePrompt } = useToolStore();
 
+  const onSuccessfulLogin = () => {
+    setShowLoginModal(false);
+    window.location.reload();
+  }
+
   const onCreateDeploymentClick = (projectStateId: number) => {
     if (!user) setShowLoginModal(true);
     else {
@@ -92,7 +97,7 @@ const UserPrompts = ({
           <Modal.Header>Please login</Modal.Header>
           <Modal.Body>
             <div className="flex w-full justify-center">
-              <Login onLoginSuccess={() => setShowLoginModal(false)} />
+              <Login onLoginSuccess={onSuccessfulLogin} />
             </div>
           </Modal.Body>
         </Modal>
