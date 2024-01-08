@@ -5,6 +5,7 @@ import { ProjectState, useDeploymentStore } from "../tool/toolstate";
 import { useState } from "react";
 import Link from "next/link";
 import Login from "./Login";
+import { BackendClient } from "../../../axios";
 
 interface UserPromptsProps {
   user: any;
@@ -30,11 +31,11 @@ const UserPrompts = ({
     }
   };
   return (
-    <div className="w-full">
+    <div className="w-full h-full">
       <div className="mb-3 text-xl font-bold text-center">
-        Existing User Prompts
+        Design Journey
       </div>
-      <ul className="flex max-h w-full flex-col gap-4 overflow-y-auto rounded-md ">
+      <ul className="flex max-h-full w-full flex-col gap-4 overflow-y-auto rounded-md ">
         {projectStates.map((p, idx) => (
           <div key={idx} className="flex flex-col">
             <h5 className="text-1xl truncate font-bold tracking-tight text-gray-900 dark:text-white">
@@ -56,6 +57,15 @@ const UserPrompts = ({
                 // className="my-auto rounded-full bg-purple-700 p-3 text-sm text-white dark:bg-cyan-500 "
               >
                 Create Deployment
+              </Button>
+              
+              <Button
+                onClick={() => { }}
+                color="failure"
+                size={"xs"}
+                // className="my-auto rounded-full bg-purple-700 p-3 text-sm text-white dark:bg-cyan-500 "
+              >
+                Delete
               </Button>
             </div>
           </div>
