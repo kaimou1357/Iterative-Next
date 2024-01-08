@@ -146,8 +146,8 @@ export default function Tool() {
     setLoading(true);
     const intervalId = setInterval(() => {
       // use ref values here as state values would not be updated inside callback
-      if (loadingRef.current && progressLevelRef.current < 91) {
-        setProgressLevel(progressLevelRef.current + 5);
+      if (loadingRef.current && progressLevelRef.current < 99) {
+        setProgressLevel(progressLevelRef.current + 2);
       } else if (!loadingRef.current) clearInterval(intervalId);
     }, 2000);
     socket.emit("user_message", { description: prompt, project_id: projectId });
@@ -182,12 +182,10 @@ export default function Tool() {
                   <div className="flex-col">
                     <Progress
                       progress={progressLevel}
-                      progressLabelPosition="inside"
                       textLabel="Generating... Give us a moment."
                       textLabelPosition="outside"
                       className="bg-slate-700"
                       size="lg"
-                      labelProgress
                       labelText
                     />
                   </div>
