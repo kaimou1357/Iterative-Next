@@ -62,12 +62,12 @@ export default function Tool() {
   // update ref value whenever state gets updated
   useEffect(() => {
     loadingRef.current = loading;
-  }, [loading])
-  
+  }, [loading]);
+
   // update ref value whenever state gets updated
   useEffect(() => {
     progressLevelRef.current = progressLevel;
-  }, [progressLevel])
+  }, [progressLevel]);
 
   function createProject() {
     BackendClient.post(
@@ -117,7 +117,7 @@ export default function Tool() {
 
   const onServerCode = (response: any) => {
     setLoading(false);
-    setProgressLevel(5)
+    setProgressLevel(5);
     onLoadClick(response);
     refreshProjectStates();
   };
@@ -146,10 +146,10 @@ export default function Tool() {
     setLoading(true);
     const intervalId = setInterval(() => {
       // use ref values here as state values would not be updated inside callback
-      if(loadingRef.current && progressLevelRef.current<91){
-        setProgressLevel(progressLevelRef.current+5)
-      } else if(!loadingRef.current) clearInterval(intervalId)
-    }, 2000)
+      if (loadingRef.current && progressLevelRef.current < 91) {
+        setProgressLevel(progressLevelRef.current + 5);
+      } else if (!loadingRef.current) clearInterval(intervalId);
+    }, 2000);
     socket.emit("user_message", { description: prompt, project_id: projectId });
   };
 

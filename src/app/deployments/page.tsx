@@ -11,7 +11,8 @@ import { BackendClient } from "../../../axios";
 import { useDeploymentStore } from "../tool/toolstate";
 
 export default function Deployments() {
-  const { deployments, setDeployments, setFilteredDeployments } = useDeploymentStore();
+  const { deployments, setDeployments, setFilteredDeployments } =
+    useDeploymentStore();
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   axios.defaults.withCredentials = true;
@@ -34,18 +35,19 @@ export default function Deployments() {
 
   const handleDelete = async (deployment_id: string) => {
     setLoading(true);
-    await BackendClient.delete("deployments", { data: { deployment_id } }).then(response => {
-      // filter deployment from frontend if successfully deleted from backend
-      setFilteredDeployments(deployment_id, deployments)
-    })
-    .catch(error => {
-      // Handle the error
-      console.log('error deployment: ', error);
-      // set error so it can be displayed on the UI
-      setError(error);
-    });
+    await BackendClient.delete("deployments", { data: { deployment_id } })
+      .then((response) => {
+        // filter deployment from frontend if successfully deleted from backend
+        setFilteredDeployments(deployment_id, deployments);
+      })
+      .catch((error) => {
+        // Handle the error
+        console.log("error deployment: ", error);
+        // set error so it can be displayed on the UI
+        setError(error);
+      });
     setLoading(false);
-  }
+  };
 
   // Show error message if error is thrown by server
   if (error)
@@ -95,12 +97,21 @@ export default function Deployments() {
                             {deployment.password}
                           </Table.Cell>
                           <Table.Cell className="px-6 py-4 text-blue-600 underline underline-offset-2">
-                            <Link target="_blank" href={`/deployments/${deployment.id}`}>
+                            <Link
+                              target="_blank"
+                              href={`/deployments/${deployment.id}`}
+                            >
                               Open
                             </Link>
                           </Table.Cell>
                           <Table.Cell className="px-6 py-4">
-                            <Button color="failure" size={'xs'} onClick={() => handleDelete(deployment.id)}>Delete</Button>
+                            <Button
+                              color="failure"
+                              size={"xs"}
+                              onClick={() => handleDelete(deployment.id)}
+                            >
+                              Delete
+                            </Button>
                           </Table.Cell>
                         </Table.Row>
                       );

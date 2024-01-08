@@ -20,9 +20,11 @@ export default function AppNavbar() {
   if (pathname.includes("/deployments/")) {
     return (
       <Navbar fluid className="flex justify-center">
-        <Link href={'/tool'}><Button>Build your Prototype</Button></Link>
+        <Link href={"/tool"}>
+          <Button>Build your Prototype</Button>
+        </Link>
       </Navbar>
-    )
+    );
   }
   return (
     <Navbar fluid>

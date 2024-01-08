@@ -44,7 +44,7 @@ const PromptInput = ({
 
   const onPromptInputSubmit = () => {
     onPromptSubmit(prompt);
-    setPrompt('')
+    setPrompt("");
   };
 
   return (

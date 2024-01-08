@@ -27,6 +27,7 @@ interface ToolState {
   setOpenDeploymentModal: (openModal: boolean) => void;
   setOpenProjectModal: (openModal: boolean) => void;
   resetProject: () => void;
+  removePrompt: (promptId: number) => void;
 }
 
 export const useToolStore = create<ToolState>()((set) => ({
@@ -59,13 +60,19 @@ export const useToolStore = create<ToolState>()((set) => ({
     set(() => ({ openProjectModal: openModal })),
   setReactCode: (code) => set(() => ({ reactCode: code })),
   setLoading: (isLoading) => set(() => ({ loading: isLoading })),
-  setShowRecommendations: (value: boolean) => set(() => ({ showRecommendations: value })),
+  setShowRecommendations: (value: boolean) =>
+    set(() => ({ showRecommendations: value })),
   setProgressLevel: (value: number) => set({ progressLevel: value }),
   setProjectStates: (projectStates: ProjectState[]) =>
     set(() => ({ projectStates: projectStates })),
   setRecommendations: (newRecommendations: Recommendation[]) => {
     set(() => ({
       recommendations: newRecommendations,
+    }));
+  },
+  removePrompt: (promptId: number) => {
+    set((state) => ({
+      projectStates: state.projectStates.filter((ps) => ps.id !== promptId),
     }));
   },
 }));
@@ -113,12 +120,13 @@ export const useProjectStore = create<Project>()(
       projectId: null,
       projectName: "",
       setProjects: (projects) => set({ projects }),
-      setFilteredProjects: (id, projects) => set(() => {
-        const filterProjects = projects?.filter(project => {
-          return project.id !== id;
-        })
-        return { projects: filterProjects }
-      }),
+      setFilteredProjects: (id, projects) =>
+        set(() => {
+          const filterProjects = projects?.filter((project) => {
+            return project.id !== id;
+          });
+          return { projects: filterProjects };
+        }),
       setProjectId: (id: string | null) => set({ projectId: id }),
       setProjectName: (name: string) => set({ projectName: name }),
     }),
@@ -136,12 +144,13 @@ export const useDeploymentStore = create<DeploymentState>()((set) => ({
   projectStateId: null,
   modalOpen: false,
   setDeployments: (deployments) => set(() => ({ deployments })),
-  setFilteredDeployments: (id, deployments) => set(() => {
-    const filteredDeployments =  deployments?.filter(deployment => {
-      return deployment.id !== id
-    });
-    return { deployments: filteredDeployments }
-  }),
+  setFilteredDeployments: (id, deployments) =>
+    set(() => {
+      const filteredDeployments = deployments?.filter((deployment) => {
+        return deployment.id !== id;
+      });
+      return { deployments: filteredDeployments };
+    }),
   setDeploymentName: (deploymentName) =>
     set(() => ({ deploymentName: deploymentName })),
   setPasscode: (passcode) => set(() => ({ passcode: passcode })),

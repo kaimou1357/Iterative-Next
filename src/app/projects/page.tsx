@@ -38,14 +38,15 @@ export default function Projects() {
 
   const handleDelete = async (project_id: string) => {
     setLoading(true);
-    await BackendClient.delete("projects", { data: { project_id } }).then(response => {
-      // filter project from frontend if successfully deleted from backend
-      setFilteredProjects(project_id, projects);
-    })
-    .catch(error => {
-      // set error so it can be displayed on the UI
-      setError(error)
-    });
+    await BackendClient.delete("projects", { data: { project_id } })
+      .then((response) => {
+        // filter project from frontend if successfully deleted from backend
+        setFilteredProjects(project_id, projects);
+      })
+      .catch((error) => {
+        // set error so it can be displayed on the UI
+        setError(error);
+      });
     setLoading(false);
   };
 
@@ -88,8 +89,7 @@ export default function Projects() {
                   </Table.HeadCell>
                 </Table.Head>
                 <Table.Body className="divide-y">
-                  {projects &&
-                    projects.length ?
+                  {projects && projects.length ? (
                     projects.map((project: ProjectObj) => {
                       return (
                         <Table.Row
@@ -105,11 +105,20 @@ export default function Projects() {
                             </Link>
                           </Table.Cell>
                           <Table.Cell className="px-6 py-4">
-                            <Button color="failure" size={'xs'} onClick={() => handleDelete(project.id)}>Delete</Button>
+                            <Button
+                              color="failure"
+                              size={"xs"}
+                              onClick={() => handleDelete(project.id)}
+                            >
+                              Delete
+                            </Button>
                           </Table.Cell>
                         </Table.Row>
                       );
-                    }): <></>}
+                    })
+                  ) : (
+                    <></>
+                  )}
                 </Table.Body>
               </Table>
             </div>
