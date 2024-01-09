@@ -31,7 +31,7 @@ const UserPrompts = ({
   const onSuccessfulLogin = () => {
     setShowLoginModal(false);
     window.location.reload();
-  }
+  };
 
   const onCreateDeploymentClick = (projectStateId: number) => {
     if (!user) setShowLoginModal(true);
@@ -55,7 +55,10 @@ const UserPrompts = ({
       <ul className="flex max-h-full w-full flex-col gap-4 overflow-y-auto rounded-md ">
         {projectStates.map((p, idx) => (
           <div key={idx} className="flex flex-col">
-            <h5 className="text-1xl truncate font-bold tracking-tight text-gray-900 dark:text-white">
+            <h5
+              data-tooltip-target="tooltip_default"
+              className="text-1xl text-wrap font-bold tracking-tight text-gray-900 dark:text-white"
+            >
               {p.prompt}
             </h5>
             <div className="flex flex-wrap gap-1">

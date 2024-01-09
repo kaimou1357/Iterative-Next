@@ -28,7 +28,10 @@ export default function banner() {
 
             <div className="mt-5 flex flex-col justify-center">
               <div className="flex h-96 w-auto justify-center rounded bg-gray-900 ">
-                <div className=" mx-10 flex  animate-masking  flex-col items-center justify-center overflow-hidden   rounded delay-[2000ms] ">
+                <div
+                  className=" mx-10 flex  animate-masking  flex-col items-center justify-center overflow-hidden  rounded delay-[2000ms] "
+                  style={{ animationDelay: "3s" }}
+                >
                   <Modal />
                 </div>
               </div>

@@ -23,14 +23,6 @@ export const LiveCodeEditor = ({
     } else {
       const cssHead = `
         <script src="https://cdn.tailwindcss.com"></script>
-        <style>
-          footer {
-            position: sticky !important;
-          }
-          .iterativeBody > .container {
-            height: 100vh;
-          }
-        </style>
       `;
       iframeDoc.write(`
         <html>

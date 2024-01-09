@@ -50,7 +50,7 @@ const PromptInput = ({
   const onSuccessfulLogin = () => {
     setShowLoginModal(false);
     window.location.reload();
-  }
+  };
 
   return (
     <Flowbite>
