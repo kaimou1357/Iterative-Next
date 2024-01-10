@@ -12,7 +12,6 @@ export const LiveCodeEditor = ({
   cssFramework,
 }: LiveCodeEditorProps) => {
   const iframeRef = useRef<any>();
-
   const updateIframeContent = async () => {
     if (!iframeRef.current || !iframeRef.current.contentDocument) return;
     const iframeDoc = iframeRef.current.contentDocument;

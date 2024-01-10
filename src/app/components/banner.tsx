@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import Modal from "./modal";
+import { TypeAnimation } from "react-type-animation";
 
 export default function banner() {
+  const [showBanner, setShowBanner] = useState<boolean>(false);
   return (
     <div className=" h-auto bg-black">
       <div className="">
@@ -28,27 +30,36 @@ export default function banner() {
 
             <div className="mt-5 flex flex-col justify-center">
               <div className="flex h-96 w-auto justify-center rounded bg-gray-900 ">
-                <div
-                  className=" mx-10 flex  animate-masking  flex-col items-center justify-center overflow-hidden  rounded delay-[2000ms] "
-                  style={{ animationDelay: "3s" }}
-                >
-                  <Modal />
-                </div>
+                {showBanner ? (
+                  <div className=" mx-10 flex  animate-masking  flex-col items-center justify-center overflow-hidden  rounded delay-[500ms] ">
+                    <Modal />
+                  </div>
+                ) : null}
               </div>
-              <div className="rounded-lg border border-white pr-3">
-                <div className="w-100 ">
-                  <p className="my-3 ml-3 animate-typing overflow-hidden whitespace-nowrap border-r-4 border-r-white text-lg text-white ">
-                    Build me something that users can accept for a rewards
-                    program.
-                  </p>
-                </div>
+              <div className="rounded-lg border border-white pr-3 p-2">
+                <TypeAnimation
+                  className="p-2 my-3 ml-3 text-md text-white "
+                  sequence={[
+                    1000,
+                    "Build me something that users can accept for a rewards program.",
+                    () => {
+                      setShowBanner(true);
+                    },
+                    5000,
+                    "",
+                    () => {
+                      setShowBanner(false);
+                    },
+                  ]}
+                  speed={60}
+                  omitDeletionAnimation={true}
+                  repeat={Infinity}
+                />
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      {/* <Image src={pc} width={1920} height={1080} alt="Picture of the author" /> */}
     </div>
   );
 }

@@ -17,6 +17,8 @@ import { ProjectModal } from "../components/ProjectModal";
 import { BackendClient } from "../../../axios";
 import { LiveCodeEditor } from "../components/LiveCodeEditor";
 import { convertCode } from "../actions/actions";
+import { TextLoop } from "easy-react-text-loop";
+import { loadingWords } from "../components/loadingWords";
 let socket: Socket<DefaultEventsMap, DefaultEventsMap> = io(SOCKET_IO_URL);
 
 export default function Tool() {
@@ -180,16 +182,20 @@ export default function Tool() {
             >
               <h1 className="mx-auto mb-2 text-xl font-bold">{projectName}</h1>
               {loading ? (
-                <div className="flex text-center grow items-center justify-center">
-                  <div className="flex-col">
-                    <Progress
-                      progress={progressLevel}
-                      textLabel="Generating... Give us a moment."
-                      textLabelPosition="outside"
-                      className="bg-slate-700"
-                      size="lg"
-                      labelText
-                    />
+                <div className="flex text-center grow items-center justify-center rounded-md border-2 border-solid border-gray-500">
+                  <div className="basis-3/4 relative flex-col flex">
+                    <TextLoop>
+                      {loadingWords.map((phrase: string) => (
+                        <span>{phrase}</span>
+                      ))}
+                    </TextLoop>
+                    <div>
+                      <Progress
+                        progress={progressLevel}
+                        className="bg-slate-700 mt-6"
+                        size="lg"
+                      />
+                    </div>
                   </div>
                 </div>
               ) : (
