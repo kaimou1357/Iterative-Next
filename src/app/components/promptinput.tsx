@@ -44,7 +44,6 @@ const PromptInput = ({
 
   const onPromptInputSubmit = () => {
     onPromptSubmit(prompt);
-    setPrompt("");
   };
 
   const onSuccessfulLogin = () => {

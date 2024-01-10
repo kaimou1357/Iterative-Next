@@ -33,6 +33,7 @@ export default function Tool() {
     setRecommendations,
     resetProject,
     setOpenProjectModal,
+    setPrompt,
   } = useToolStore();
 
   const { projectId, setProjectId, setProjectName, projectName } =
@@ -120,6 +121,7 @@ export default function Tool() {
     setProgressLevel(5);
     onLoadClick(response);
     refreshProjectStates();
+    setPrompt("");
   };
 
   const onProjectId = (projectId: any) => {
