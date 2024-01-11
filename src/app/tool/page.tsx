@@ -18,7 +18,11 @@ import { BackendClient } from "../../../axios";
 import { LiveCodeEditor } from "../components/LiveCodeEditor";
 import { convertCode } from "../actions/actions";
 import { TextLoop } from "easy-react-text-loop";
-import { loadingWords } from "../components/loadingWords";
+import {
+  loadingWord,
+  loadingWords,
+  shuffleLoading,
+} from "../components/loadingWords";
 let socket: Socket<DefaultEventsMap, DefaultEventsMap> = io(SOCKET_IO_URL);
 
 export default function Tool() {
@@ -47,6 +51,9 @@ export default function Tool() {
   const loadingRef = useRef<boolean>();
   // ref value used to get latest value inside interval callback
   const progressLevelRef = useRef<number>(5);
+
+  const loadingWord =
+    loadingWords[Math.floor(Math.random() * loadingWords.length)];
 
   useEffect(() => {
     socket.on("server_recommendation", onServerRecommendation);
@@ -185,9 +192,7 @@ export default function Tool() {
                 <div className="flex text-center grow items-center justify-center rounded-md border-2 border-solid border-gray-500">
                   <div className="basis-3/4 relative flex-col flex">
                     <TextLoop>
-                      {loadingWords.map((phrase: string) => (
-                        <span>{phrase}</span>
-                      ))}
+                      <span>{loadingWord}</span>
                     </TextLoop>
                     <div>
                       <Progress
