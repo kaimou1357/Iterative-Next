@@ -19,9 +19,7 @@ import { LiveCodeEditor } from "../components/LiveCodeEditor";
 import { convertCode } from "../actions/actions";
 import { TextLoop } from "easy-react-text-loop";
 import {
-  loadingWord,
   loadingWords,
-  shuffleLoading,
 } from "../components/loadingWords";
 let socket: Socket<DefaultEventsMap, DefaultEventsMap> = io(SOCKET_IO_URL);
 
