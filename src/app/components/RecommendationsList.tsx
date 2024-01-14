@@ -45,7 +45,7 @@ export const RecommendationsList = ({ recommendations }: ChatProps) => {
           id="dropdown"
           className={`z-10 ${
             !showRecommendations && "hidden"
-          } absolute top-12 right-0 bg-white w-[20vw] divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700`}
+          } absolute top-12 right-0 bg-white w-[20vw] divide-y divide-gray-100 rounded-lg shadow`}
         >
           <span className="text-xs font-light text-center flex justify-self-center p-2">
             Based on your vision, here are actionable insights to refine your

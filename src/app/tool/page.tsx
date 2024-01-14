@@ -18,9 +18,8 @@ import { BackendClient } from "../../../axios";
 import { LiveCodeEditor } from "../components/LiveCodeEditor";
 import { convertCode } from "../actions/actions";
 import { TextLoop } from "easy-react-text-loop";
-import {
-  loadingWords,
-} from "../components/loadingWords";
+import { loadingWords } from "../components/loadingWords";
+import { ToolNavbar } from "../components/ToolNavbar";
 let socket: Socket<DefaultEventsMap, DefaultEventsMap> = io(SOCKET_IO_URL);
 
 export default function Tool() {
@@ -164,21 +163,48 @@ export default function Tool() {
 
   return (
     <Flowbite>
-      <div className="h-[calc(100vh-62px)] bg-slate-200 dark:bg-slate-900 ">
+      <div className="flex gap-4 p-4">
         <ToastComponent />
         <DeploymentModal />
         <ProjectModal projectId={projectId} />
-        <div
-          className={`w-[95%] max-w-[95%] 2xl:w-[98%] 2xl:max-w-[98%] max-h-full h-[90%] mx-auto flex flex-row gap-10 dark:text-white `}
-        >
-          <div className=" flex w-full justify-between gap-4 pt-10 ">
-            <div className="w-[25%] flex-col items-center bg-slate-200 dark:bg-slate-900 ">
-              <PromptBox
-                user={user}
-                onLoadClick={onLoadClick}
-                projectStates={projectStates}
-                authenticated={user !== null}
-              />
+
+        <div className="flex-none w-20 bg-gray-50 rounded-lg p-3">
+          <button
+            data-drawer-show="drawer-example"
+            aria-controls="drawer-example"
+          >
+            Test Drawer Button
+          </button>
+          <PromptBox
+            user={user}
+            onLoadClick={onLoadClick}
+            projectStates={projectStates}
+            authenticated={user !== null}
+          />
+        </div>
+        <div className="flex flex-col gap-8 flex-1 w-80">
+          <div className="flex flex-col bg-gray-50 rounded-lg p-3 gap-3">
+            <ToolNavbar />
+            <LiveCodeEditor
+              code={reactCode}
+              css={null}
+              cssFramework={"DAISYUI"}
+            />
+          </div>
+          <div className="z-40 w-full flex justify-center origin-bottom">
+            <PromptInput
+              loading={loading}
+              user={user}
+              onProjectReset={onResetProject}
+              onPromptSubmit={handleSend}
+              onProjectSaveClicked={setOpenProjectModal}
+            />
+          </div>
+        </div>
+
+        {/* <div className=" flex w-full justify-between gap-4 pt-10 ">
+            <div className="w-[25%] flex-col items-center">
+              
             </div>
             <div
               className={`${
@@ -203,11 +229,7 @@ export default function Tool() {
                 </div>
               ) : (
                 <div className="min-h-[72%] max-w-full grow rounded-md border-2 border-solid border-gray-500 flex">
-                  <LiveCodeEditor
-                    code={reactCode}
-                    css={null}
-                    cssFramework={"DAISYUI"}
-                  />
+                  
                 </div>
               )}
               <PromptInput
@@ -217,18 +239,17 @@ export default function Tool() {
                 onPromptSubmit={handleSend}
                 onProjectSaveClicked={setOpenProjectModal}
               />
-            </div>
-            {recommendations && recommendations.length ? (
-              <div className="w-[15%]">
-                <div className="w-full bg-slate-200 text-black dark:bg-slate-900 dark:text-white ">
-                  <RecommendationsList recommendations={recommendations} />
+              {recommendations && recommendations.length ? (
+                <div className="w-[15%]">
+                  <div className="w-full text-black dark:text-white ">
+                    <RecommendationsList recommendations={recommendations} />
+                  </div>
                 </div>
-              </div>
-            ) : (
-              <></>
-            )}
-          </div>
-        </div>
+              ) : (
+                <></>
+              )}
+            </div>
+          </div> */}
       </div>
     </Flowbite>
   );

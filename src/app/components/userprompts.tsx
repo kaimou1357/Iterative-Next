@@ -1,6 +1,7 @@
 "use client";
 
 import { Button, Modal } from "flowbite-react";
+import { Drawer } from "rsuite";
 import {
   ProjectState,
   useDeploymentStore,
@@ -50,9 +51,11 @@ const UserPrompts = ({
   };
 
   return (
-    <div className="w-full h-full">
-      <div className="mb-3 text-xl font-bold text-center">Design Journey</div>
-      <ul className="flex max-h-full w-full flex-col gap-4 overflow-y-auto rounded-md ">
+    <Drawer placement={"left"} open={true} onClose={() => {}}>
+      <Drawer.Header>
+        <Drawer.Title>Design Journey</Drawer.Title>
+      </Drawer.Header>
+      <Drawer.Body>
         {projectStates.map((p, idx) => (
           <div key={idx} className="flex flex-col">
             <h5
@@ -69,12 +72,10 @@ const UserPrompts = ({
               >
                 Load
               </Button>
-
               <Button
                 onClick={() => onCreateDeploymentClick(p.id)}
                 color="purple"
                 size={"xs"}
-                // className="my-auto rounded-full bg-purple-700 p-3 text-sm text-white dark:bg-cyan-500 "
               >
                 Create Deployment
               </Button>
@@ -83,29 +84,14 @@ const UserPrompts = ({
                 onClick={() => onRemovePromptClick(p.id)}
                 color="failure"
                 size={"xs"}
-                // className="my-auto rounded-full bg-purple-700 p-3 text-sm text-white dark:bg-cyan-500 "
               >
                 Delete
               </Button>
             </div>
           </div>
         ))}
-      </ul>
-      {showLoginModal && (
-        <Modal
-          dismissible
-          show={showLoginModal}
-          onClose={() => setShowLoginModal(false)}
-        >
-          <Modal.Header>Please login</Modal.Header>
-          <Modal.Body>
-            <div className="flex w-full justify-center">
-              <Login onLoginSuccess={onSuccessfulLogin} />
-            </div>
-          </Modal.Body>
-        </Modal>
-      )}
-    </div>
+      </Drawer.Body>
+    </Drawer>
   );
 };
 

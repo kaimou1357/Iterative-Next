@@ -40,11 +40,13 @@ export default function AppNavbar() {
       </Navbar.Brand>
       <div className="flex md:order-2">
         {isAuthenticated ? (
-          <Button onClick={handleLogout} href="">
+          <Button color="dark" onClick={handleLogout} href="">
             Sign Out
           </Button>
         ) : (
-          <Button href="/login">Sign up</Button>
+          <Button color="dark" href="/login">
+            Sign up
+          </Button>
         )}
         <Navbar.Toggle />
       </div>

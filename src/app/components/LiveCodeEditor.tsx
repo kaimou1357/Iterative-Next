@@ -49,7 +49,7 @@ export const LiveCodeEditor = ({
   }, [code, css, cssFramework]);
 
   return (
-    <div className="h-full max-h-full grow">
+    <div className="border-none rounded-lg bg-white">
       <iframe ref={iframeRef} width="100%" height="100%" />
     </div>
   );
