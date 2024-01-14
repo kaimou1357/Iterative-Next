@@ -6,7 +6,16 @@ import { BackendClient } from "../../../axios";
 import { ProjectModal } from "../components/ProjectModal";
 import { ProjectObj, useProjectStore } from "../tool/toolstate";
 import { useDisclosure } from "@mantine/hooks";
-import { AppShellMain, Button, Table, TableTbody, TableTd, TableTh, TableThead, TableTr } from "@mantine/core";
+import {
+  AppShellMain,
+  Button,
+  Table,
+  TableTbody,
+  TableTd,
+  TableTh,
+  TableThead,
+  TableTr,
+} from "@mantine/core";
 
 export default function Projects() {
   const { projects, setFilteredProjects, setProjects } = useProjectStore();
@@ -29,7 +38,6 @@ export default function Projects() {
       });
     setLoading(false);
   };
-
 
   const handleDelete = async (project_id: string) => {
     setLoading(true);
@@ -57,51 +65,44 @@ export default function Projects() {
       </div>
     );
   const items = projects.map((project: ProjectObj) => {
-    return <TableTr key={project.id}>
-      <TableTd>{project.name}</TableTd>
-      <TableTd>
-        <Link href={`/tool/${project.id}`}>
-          Open in Tool
-        </Link>
-      </TableTd>
-      <TableTd>
-      <Button
-          variant="filled"
-          color="red"
-          size={"xs"}
-          onClick={() => handleDelete(project.id)}
-        >
-          Delete
-      </Button>
-      </TableTd>
-    </TableTr>
-  })
+    return (
+      <TableTr key={project.id}>
+        <TableTd>{project.name}</TableTd>
+        <TableTd>
+          <Link
+            className="underline text-blue-400"
+            href={`/tool/${project.id}`}
+          >
+            Open in Tool
+          </Link>
+        </TableTd>
+        <TableTd>
+          <Button
+            variant="filled"
+            color="red"
+            size={"xs"}
+            onClick={() => handleDelete(project.id)}
+          >
+            Delete Project
+          </Button>
+        </TableTd>
+      </TableTr>
+    );
+  });
   // Show projects table if projects are fetched correctly
   return (
     <AppShellMain>
       <div className="flex flex-col items-start">
         <ProjectModal projectId={null} opened={opened} onClose={toggle} />
-          <Table>
-            <TableThead>
-              <TableTh>
-                Project Name
-              </TableTh>
-              <TableTh>
-                Open Project
-              </TableTh>
-              <TableTh>
-                Delete Project
-              </TableTh>
-            </TableThead>
-            <TableTbody>
-              {items}
-            </TableTbody>
-          </Table>
-          <Button
-            className="mt-4"
-            variant='filled'
-            onClick={toggle}
-          >
+        <Table>
+          <TableThead>
+            <TableTh>Project Name</TableTh>
+            <TableTh>Open Project</TableTh>
+            <TableTh>Actions</TableTh>
+          </TableThead>
+          <TableTbody>{items}</TableTbody>
+        </Table>
+        <Button className="mt-4" variant="filled" onClick={toggle}>
           New Project
         </Button>
       </div>

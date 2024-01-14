@@ -7,7 +7,16 @@ import Loading from "../components/loading";
 import Link from "next/link";
 import { BackendClient } from "../../../axios";
 import { useDeploymentStore } from "../tool/toolstate";
-import { AppShellMain, Button, Table, TableTbody, TableTd, TableTh, TableThead, TableTr } from "@mantine/core";
+import {
+  AppShellMain,
+  Button,
+  Table,
+  TableTbody,
+  TableTd,
+  TableTh,
+  TableThead,
+  TableTr,
+} from "@mantine/core";
 
 export default function Deployments() {
   const { deployments, setDeployments, setFilteredDeployments } =
@@ -61,46 +70,38 @@ export default function Deployments() {
   if (loading) return <Loading />;
   // Show deployments table if deployments are fetched correctly
   const items = deployments.map((deployment: Deployment) => {
-    const {id, name} = deployment;
-    return <TableTr key={id}>
-      <TableTd>{name}</TableTd>
-      <TableTd>
-        <Link href={`/tool/${id}`}>
-          Open in Tool
-        </Link>
-      </TableTd>
-      <TableTd>
-      <Button
-          variant="filled"
-          color="red"
-          size={"xs"}
-          onClick={() => handleDelete(id)}
-        >
-          Delete
-      </Button>
-      </TableTd>
-    </TableTr>
-  })
+    const { id, name } = deployment;
     return (
-      <AppShellMain>
-        <div className="flex flex-col items-start">
-          <Table>
-            <TableThead>
-              <TableTh>
-                Prototype Name
-              </TableTh>
-              <TableTh>
-                Passcode
-              </TableTh>
-              <TableTh>
-                Access
-              </TableTh>
-            </TableThead>
-            <TableTbody>
-              {items}
-            </TableTbody>
-          </Table>
-        </div>
-      </AppShellMain>
+      <TableTr key={id}>
+        <TableTd>{name}</TableTd>
+        <TableTd>
+          <Link href={`/tool/${id}`}>Open in Tool</Link>
+        </TableTd>
+        <TableTd>
+          <Button
+            variant="filled"
+            color="red"
+            size={"xs"}
+            onClick={() => handleDelete(id)}
+          >
+            Delete
+          </Button>
+        </TableTd>
+      </TableTr>
     );
+  });
+  return (
+    <AppShellMain>
+      <div className="flex flex-col items-start">
+        <Table>
+          <TableThead>
+            <TableTh>Prototype Name</TableTh>
+            <TableTh>Passcode</TableTh>
+            <TableTh>Access</TableTh>
+          </TableThead>
+          <TableTbody>{items}</TableTbody>
+        </Table>
+      </div>
+    </AppShellMain>
+  );
 }
