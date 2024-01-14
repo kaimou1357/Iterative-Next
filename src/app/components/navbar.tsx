@@ -4,7 +4,7 @@ import { useCallback } from "react";
 import Link from "next/link";
 import { useStytchUser, useStytch } from "@stytch/nextjs";
 import { Navbar } from "flowbite-react";
-import { Button } from "@mantine/core"
+import { Button } from "@mantine/core";
 import { usePathname } from "next/navigation";
 import { AppShell } from "@mantine/core";
 

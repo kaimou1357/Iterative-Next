@@ -1,4 +1,4 @@
-import { Button } from "@mantine/core";
+import { Button, Paper } from "@mantine/core";
 
 interface ToolbarNavbarProps {
   handleProjectClear: () => void;
@@ -14,7 +14,9 @@ export const ToolNavbar = ({
     <>
       <div className="flex items-center gap-8 justify-center items-center">
         <div className="flex items-center flex-1 w-full justify-start flex-initial text-sm text-ellipsis">
-          Test Prompt Here.
+          <Paper p="sm" shadow="xs" radius="xl" withBorder padding="sm">
+            Test Prompt Here.
+          </Paper>
         </div>
         <div className="flex flex-1 items-center gap-2 w-full w-auto ml-auto ">
           <Button variant="outline" onClick={handleProjectClear}>

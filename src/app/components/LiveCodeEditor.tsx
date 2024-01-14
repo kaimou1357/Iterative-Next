@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from "react";
+import { Paper } from "@mantine/core";
 
 interface LiveCodeEditorProps {
   code: string | null | undefined;
@@ -43,8 +44,8 @@ export const LiveCodeEditor = ({ code, cssFramework }: LiveCodeEditorProps) => {
   }, [code, cssFramework]);
 
   return (
-    <div className="border-none rounded-lg bg-white w-full h-full">
+    <Paper shadow="xs" p="md" className="w-full h-full">
       <iframe ref={iframeRef} width="100%" height="100%" />
-    </div>
+    </Paper>
   );
 };
