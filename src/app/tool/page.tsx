@@ -170,7 +170,7 @@ export default function Tool() {
 
   return (
     <AppShellMain>
-      <div className="flex gap-4 p-4">
+      <div className="flex grow gap-4 p-4 h-[85vh]">
         <ToastComponent />
         <DeploymentModal
           opened={openShareProject}
@@ -213,7 +213,7 @@ export default function Tool() {
           opened={openedIterations}
         />
         <div className="flex flex-col gap-8 flex-1 w-80">
-          <div className="flex flex-col bg-gray-50 rounded-lg p-3 gap-3">
+          <div className="flex flex-col bg-gray-50 rounded-lg p-3 gap-3 h-[85vh]">
             <ToolNavbar
               handleProjectClear={onResetProject}
               onSaveClick={toggleSaveProject}
