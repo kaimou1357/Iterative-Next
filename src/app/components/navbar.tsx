@@ -3,7 +3,8 @@ import { useCallback } from "react";
 
 import Link from "next/link";
 import { useStytchUser, useStytch } from "@stytch/nextjs";
-import { Button, Navbar } from "flowbite-react";
+import { Navbar } from "flowbite-react";
+import { Button } from "@mantine/core"
 import { usePathname } from "next/navigation";
 import { AppShell } from "@mantine/core";
 
@@ -44,11 +45,11 @@ export default function AppNavbar() {
         </Navbar.Brand>
         <div className="flex md:order-2">
           {isAuthenticated ? (
-            <Button color="dark" onClick={handleLogout} href="">
+            <Button component={Link} onClick={handleLogout} href="">
               Sign Out
             </Button>
           ) : (
-            <Button color="dark" href="/login">
+            <Button component={Link} href="/login">
               Sign up
             </Button>
           )}
