@@ -1,16 +1,12 @@
 "use client";
-
-import axios from "axios";
-import { Button, Flowbite, Table } from "flowbite-react";
 import { useEffect, useState } from "react";
-import { API_BASE_URL } from "../components/config";
 import Loading from "../components/loading";
 import Link from "next/link";
 import { BackendClient } from "../../../axios";
 import { ProjectModal } from "../components/ProjectModal";
-import { ProjectObj, useProjectStore, useToolStore } from "../tool/toolstate";
+import { ProjectObj, useProjectStore } from "../tool/toolstate";
 import { useDisclosure } from "@mantine/hooks";
-import { AppShellMain } from "@mantine/core";
+import { AppShellMain, Button, Table, TableTbody, TableTd, TableTh, TableThead, TableTr } from "@mantine/core";
 
 export default function Projects() {
   const { projects, setFilteredProjects, setProjects } = useProjectStore();
@@ -60,69 +56,55 @@ export default function Projects() {
         </p>
       </div>
     );
+  const items = projects.map((project: ProjectObj) => {
+    return <TableTr key={project.id}>
+      <TableTd>{project.name}</TableTd>
+      <TableTd>
+        <Link href={`/tool/${project.id}`}>
+          Open in Tool
+        </Link>
+      </TableTd>
+      <TableTd>
+      <Button
+          variant="filled"
+          color="red"
+          size={"xs"}
+          onClick={() => handleDelete(project.id)}
+        >
+          Delete
+      </Button>
+      </TableTd>
+    </TableTr>
+  })
   // Show projects table if projects are fetched correctly
-  else
-    return (
-      <AppShellMain>
-        <div className="h-[calc(100vh-10rem)] rounded-lg pt-10">
-          <div className="container mx-auto flex-col max-h-[90%] w-[90%] flex-row gap-10 dark:bg-slate-950 dark:text-white ">
-            <ProjectModal projectId={null} opened={opened} onClose={toggle} />
-            <Button
-              className="mb-2 ml-auto"
-              color="success"
-              onClick={toggle}
-            >
-              New Project
-            </Button>
-            <div className="relative w-full overflow-auto ">
-              <Table hoverable>
-                <Table.Head>
-                  <Table.HeadCell scope="col" className="px-6 py-3">
-                    Project Name
-                  </Table.HeadCell>
-                  <Table.HeadCell scope="col" className="px-6 py-3">
-                    Open Project
-                  </Table.HeadCell>
-                  <Table.HeadCell scope="col" className="px-6 py-3">
-                    Action
-                  </Table.HeadCell>
-                </Table.Head>
-                <Table.Body className="divide-y">
-                  {projects && projects.length ? (
-                    projects.map((project: ProjectObj) => {
-                      return (
-                        <Table.Row
-                          key={project.id}
-                          className="bg-white dark:border-gray-700 dark:bg-gray-800"
-                        >
-                          <Table.Cell className="px-6 py-4">
-                            {project.name}
-                          </Table.Cell>
-                          <Table.Cell className="px-6 py-4 text-blue-600 underline underline-offset-2">
-                            <Link href={`/tool/${project.id}`}>
-                              Open in Tool
-                            </Link>
-                          </Table.Cell>
-                          <Table.Cell className="px-6 py-4">
-                            <Button
-                              color="failure"
-                              size={"xs"}
-                              onClick={() => handleDelete(project.id)}
-                            >
-                              Delete
-                            </Button>
-                          </Table.Cell>
-                        </Table.Row>
-                      );
-                    })
-                  ) : (
-                    <></>
-                  )}
-                </Table.Body>
-              </Table>
-            </div>
-          </div>
-        </div>
-      </AppShellMain>
-    );
+  return (
+    <AppShellMain>
+      <div className="flex flex-col items-start">
+        <ProjectModal projectId={null} opened={opened} onClose={toggle} />
+          <Table>
+            <TableThead>
+              <TableTh>
+                Project Name
+              </TableTh>
+              <TableTh>
+                Open Project
+              </TableTh>
+              <TableTh>
+                Delete Project
+              </TableTh>
+            </TableThead>
+            <TableTbody>
+              {items}
+            </TableTbody>
+          </Table>
+          <Button
+            className="mt-4"
+            variant='filled'
+            onClick={toggle}
+          >
+          New Project
+        </Button>
+      </div>
+    </AppShellMain>
+  );
 }

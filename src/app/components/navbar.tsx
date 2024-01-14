@@ -45,7 +45,7 @@ export default function AppNavbar() {
         </Navbar.Brand>
         <div className="flex md:order-2">
           {isAuthenticated ? (
-            <Button component={Link} onClick={handleLogout} href="">
+            <Button variant="outline" component={Link} onClick={handleLogout} href="">
               Sign Out
             </Button>
           ) : (
@@ -58,7 +58,7 @@ export default function AppNavbar() {
         <Navbar.Collapse>
           {isAuthenticated ? (
             <>
-              <Navbar.Link href="/tool">Create</Navbar.Link>
+              <Navbar.Link href="/tool">Build</Navbar.Link>
               <Navbar.Link href="/projects">Projects</Navbar.Link>
               <Navbar.Link href="/deployments">Deployments</Navbar.Link>
             </>
