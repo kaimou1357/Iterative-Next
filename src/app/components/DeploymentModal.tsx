@@ -1,5 +1,12 @@
 "use client";
-import { Button, Modal, ModalBody, ModalHeader, ModalTitle, TextInput } from "@mantine/core";
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalHeader,
+  ModalTitle,
+  TextInput,
+} from "@mantine/core";
 import { useDeploymentStore, useToolStore } from "../tool/toolstate";
 import { BackendClient } from "../../../axios";
 
@@ -7,7 +14,7 @@ interface DeploymentModalProps {
   opened: boolean;
   onClose: () => void;
 }
-export const DeploymentModal = ({opened, onClose}: DeploymentModalProps) => {
+export const DeploymentModal = ({ opened, onClose }: DeploymentModalProps) => {
   const {
     passcode,
     deploymentName,
@@ -45,29 +52,29 @@ export const DeploymentModal = ({opened, onClose}: DeploymentModalProps) => {
             </h3>
           </ModalTitle>
         </ModalHeader>
-        
+
         <ModalBody>
-            <div className="flex flex-col gap-2">
-              <TextInput
-                label="Prototype Name"
-                placeholder="My First Prototype"
-                value={deploymentName}
-                onChange={(event) => {
-                  setDeploymentName(event.target.value);
-                }}
-              />
-              <TextInput
-                label="Password"
-                placeholder="123456"
-                value={passcode}
-                onChange={(event) => {
-                  setPasscode(event.target.value);
-                }}
-              />
-              <Button className="mt-2" onClick={handleCreateDeployment}>
-                Create Deployment
-              </Button>
-            </div>
+          <div className="flex flex-col gap-2">
+            <TextInput
+              label="Prototype Name"
+              placeholder="My First Prototype"
+              value={deploymentName}
+              onChange={(event) => {
+                setDeploymentName(event.target.value);
+              }}
+            />
+            <TextInput
+              label="Password"
+              placeholder="123456"
+              value={passcode}
+              onChange={(event) => {
+                setPasscode(event.target.value);
+              }}
+            />
+            <Button className="mt-2" onClick={handleCreateDeployment}>
+              Create Deployment
+            </Button>
+          </div>
         </ModalBody>
       </Modal>
     </>

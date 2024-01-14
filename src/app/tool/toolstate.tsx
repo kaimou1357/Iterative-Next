@@ -5,13 +5,10 @@ import { Deployment } from "../deployments/types";
 interface ToolState {
   loading: boolean;
   prompt: string;
-  showRecommendations: boolean;
   progressLevel: number;
   reactCode: string | null;
   recommendations: Recommendation[];
   projectStates: ProjectState[];
-  openDeploymentModal: boolean;
-  openProjectModal: boolean;
   shouldShowToast: boolean;
   toastMessage: string;
 
@@ -20,12 +17,9 @@ interface ToolState {
   removeToast: () => void;
   setReactCode: (code: string) => void;
   setLoading: (isLoading: boolean) => void;
-  setShowRecommendations: (value: boolean) => void;
   setProgressLevel: (value: number) => void;
   setRecommendations: (recommendations: Recommendation[]) => void;
   setProjectStates: (projectStates: ProjectState[]) => void;
-  setOpenDeploymentModal: (openModal: boolean) => void;
-  setOpenProjectModal: (openModal: boolean) => void;
   resetProject: () => void;
   removePrompt: (promptId: number) => void;
 }
@@ -34,12 +28,9 @@ export const useToolStore = create<ToolState>()((set) => ({
   loading: false,
   prompt: "",
   recommendations: [],
-  showRecommendations: false,
   progressLevel: 5,
   projectStates: [],
   reactCode: null,
-  openDeploymentModal: false,
-  openProjectModal: false,
   shouldShowToast: false,
   toastMessage: "",
 
@@ -54,14 +45,8 @@ export const useToolStore = create<ToolState>()((set) => ({
     })),
   setPrompt: (value) => set(() => ({ prompt: value })),
   removeToast: () => set(() => ({ shouldShowToast: false })),
-  setOpenDeploymentModal: (openModal: boolean) =>
-    set(() => ({ openDeploymentModal: openModal })),
-  setOpenProjectModal: (openModal: boolean) =>
-    set(() => ({ openProjectModal: openModal })),
   setReactCode: (code) => set(() => ({ reactCode: code })),
   setLoading: (isLoading) => set(() => ({ loading: isLoading })),
-  setShowRecommendations: (value: boolean) =>
-    set(() => ({ showRecommendations: value })),
   setProgressLevel: (value: number) => set({ progressLevel: value }),
   setProjectStates: (projectStates: ProjectState[]) =>
     set(() => ({ projectStates: projectStates })),

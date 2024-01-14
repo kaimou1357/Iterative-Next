@@ -1,5 +1,12 @@
 "use client";
-import { Modal, Button, TextInput, ModalTitle, ModalHeader, ModalBody } from "@mantine/core";
+import {
+  Modal,
+  Button,
+  TextInput,
+  ModalTitle,
+  ModalHeader,
+  ModalBody,
+} from "@mantine/core";
 import { useState } from "react";
 import { BackendClient } from "../../../axios";
 import { navigatetoProject } from "../actions/actions";
@@ -39,25 +46,27 @@ export const ProjectModal = ({
   return (
     <>
       <Modal opened={opened} size="md" onClose={onClose}>
-      <ModalHeader>
+        <ModalHeader>
           <ModalTitle>
             <h3 className="text-xl font-medium text-gray-900 dark:text-white">
-            Create your project
+              Create your project
             </h3>
           </ModalTitle>
         </ModalHeader>
         <ModalBody>
-        <div className="flex flex-col gap-2">
-          <TextInput
-            label="Project Name"
-            placeholder="My First Project"
-            value={projectName}
-            onChange={(event) => {
-              setProjectName(event.target.value);
-            }}
-          />
-          <Button className="mt-2" onClick={handleSaveProject}>Create Project</Button>
-        </div>
+          <div className="flex flex-col gap-2">
+            <TextInput
+              label="Project Name"
+              placeholder="My First Project"
+              value={projectName}
+              onChange={(event) => {
+                setProjectName(event.target.value);
+              }}
+            />
+            <Button className="mt-2" onClick={handleSaveProject}>
+              Create Project
+            </Button>
+          </div>
         </ModalBody>
       </Modal>
     </>

@@ -7,7 +7,6 @@ interface PromptInputProps {
   user: any;
   onPromptSubmit: (prompt: string) => void;
   onProjectReset: () => void;
-  onProjectSaveClicked: (openModal: boolean) => void;
   loading: boolean;
 }
 
@@ -15,7 +14,6 @@ const PromptInput = ({
   user,
   onProjectReset,
   onPromptSubmit,
-  onProjectSaveClicked,
   loading,
 }: PromptInputProps) => {
   const { prompt, setPrompt } = useToolStore();
@@ -25,12 +23,6 @@ const PromptInput = ({
     event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
   ) => {
     setPrompt(event.currentTarget.value);
-  };
-
-  const handleSaveProject = () => {
-    if (!user) {
-      setShowLoginModal(true);
-    } else onProjectSaveClicked(true);
   };
 
   const onPromptInputSubmit = () => {
@@ -55,7 +47,7 @@ const PromptInput = ({
         disabled={loading}
         readOnly={loading}
       />
-      <Button fullWidth variant="filled">
+      <Button onClick={onPromptInputSubmit} fullWidth variant="filled">
         Build!
       </Button>
     </div>

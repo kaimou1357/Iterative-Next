@@ -37,7 +37,6 @@ export default function Tool() {
     recommendations,
     setRecommendations,
     resetProject,
-    setOpenProjectModal,
     setPrompt,
   } = useToolStore();
 
@@ -173,7 +172,10 @@ export default function Tool() {
     <AppShellMain>
       <div className="flex gap-4 p-4">
         <ToastComponent />
-        <DeploymentModal opened={openShareProject} onClose={toggleShareProject}/>
+        <DeploymentModal
+          opened={openShareProject}
+          onClose={toggleShareProject}
+        />
         <ProjectModal
           projectId={projectId}
           opened={openSaveProject}
@@ -217,11 +219,7 @@ export default function Tool() {
               onSaveClick={toggleSaveProject}
               onShareClick={toggleShareProject}
             />
-            <LiveCodeEditor
-              code={reactCode}
-              css={null}
-              cssFramework={"DAISYUI"}
-            />
+            <LiveCodeEditor code={reactCode} cssFramework={"DAISYUI"} />
           </div>
           <div className="z-40 w-full flex justify-center origin-bottom">
             <PromptInput
@@ -229,43 +227,9 @@ export default function Tool() {
               user={user}
               onProjectReset={onResetProject}
               onPromptSubmit={handleSend}
-              onProjectSaveClicked={setOpenProjectModal}
             />
           </div>
         </div>
-
-        {/* <div className=" flex w-full justify-between gap-4 pt-10 ">
-            <div className="w-[25%] flex-col items-center">
-              
-            </div>
-            <div
-              className={`${
-                recommendations.length ? "w-[50%]" : "w-[80%]"
-              } flex h-full flex-col`}
-            >
-              <h1 className="mx-auto mb-2 text-xl font-bold">{projectName}</h1>
-              {loading ? (
-                <div className="flex text-center grow items-center justify-center rounded-md border-2 border-solid border-gray-500">
-                  <div className="basis-3/4 relative flex-col flex">
-                    <TextLoop>
-                      <span>{loadingWord}</span>
-                    </TextLoop>
-                    <div>
-                      <Progress
-                        progress={progressLevel}
-                        className="bg-slate-700 mt-6"
-                        size="lg"
-                      />
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <div className="min-h-[72%] max-w-full grow rounded-md border-2 border-solid border-gray-500 flex">
-                  
-                </div>
-              )}
-            </div>
-          </div> */}
       </div>
     </AppShellMain>
   );
