@@ -7,6 +7,8 @@ import { SOCKET_IO_URL } from "../components/config";
 import { useEffect } from "react";
 import { DefaultEventsMap } from "@socket.io/component-emitter";
 import PromptBox from "../components/userprompts";
+import ArrowRightLineIcon from '@rsuite/icons/ArrowRightLine';
+import { ButtonGroup, IconButton } from 'rsuite';
 import PromptInput from "../components/promptinput";
 import { useProjectStore, useToolStore, ProjectState } from "./toolstate";
 import { useStytchUser } from "@stytch/nextjs";
@@ -167,21 +169,20 @@ export default function Tool() {
         <ToastComponent />
         <DeploymentModal />
         <ProjectModal projectId={projectId} />
-
-        <div className="flex-none w-20 bg-gray-50 rounded-lg p-3">
-          <button
-            data-drawer-show="drawer-example"
-            aria-controls="drawer-example"
-          >
-            Test Drawer Button
-          </button>
-          <PromptBox
+        <ButtonGroup className="flex flex-col gap-2" vertical>
+          <IconButton icon={<ArrowRightLineIcon />} placement="right">
+            My Design Journey
+          </IconButton>
+          <IconButton icon={<ArrowRightLineIcon />} placement="right">
+            Potential Iterations
+          </IconButton>
+        </ButtonGroup>
+        <PromptBox
             user={user}
             onLoadClick={onLoadClick}
             projectStates={projectStates}
             authenticated={user !== null}
           />
-        </div>
         <div className="flex flex-col gap-8 flex-1 w-80">
           <div className="flex flex-col bg-gray-50 rounded-lg p-3 gap-3">
             <ToolNavbar />

@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 import StytchProvider from "./components/StytchProvider";
 import { Work_Sans } from "next/font/google";
-import { Container, Header, Footer, Content } from "rsuite";
+import { CustomProvider} from "rsuite";
 import AppNavbar from "./components/navbar";
+import 'rsuite/dist/rsuite-no-reset.min.css';
 import PageFooter from "./components/PageFooter";
 
 const font = Work_Sans({ subsets: ["latin"] });
@@ -21,17 +22,19 @@ export default function RootLayout({
 }) {
   return (
     <StytchProvider>
-      <main className={font.className}>
-        <Container className="flex flex-col h-screen">
-          <Header>
-            <AppNavbar />
-          </Header>
-          <Content className="grow">{children}</Content>
-          <Footer>
-            <PageFooter />
-          </Footer>
-        </Container>
-      </main>
+      <html lang="en">
+        <body>
+          <CustomProvider>
+            <div className="flex flex-col h-lvh">
+              <AppNavbar />
+              <div className="grow">
+                {children}
+              </div>
+              <PageFooter />
+            </div>
+          </CustomProvider>
+        </body>
+      </html>
     </StytchProvider>
   );
 }

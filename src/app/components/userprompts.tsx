@@ -51,7 +51,7 @@ const UserPrompts = ({
   };
 
   return (
-    <Drawer placement={"left"} open={true} onClose={() => {}}>
+    <Drawer placement={"left"} open={false} onClose={() => {}}>
       <Drawer.Header>
         <Drawer.Title>Design Journey</Drawer.Title>
       </Drawer.Header>
