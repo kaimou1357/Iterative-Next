@@ -9,12 +9,14 @@ import Link from "next/link";
 import { BackendClient } from "../../../axios";
 import { ProjectModal } from "../components/ProjectModal";
 import { ProjectObj, useProjectStore, useToolStore } from "../tool/toolstate";
+import { useDisclosure } from "@mantine/hooks";
+import { AppShellMain } from "@mantine/core";
 
 export default function Projects() {
   const { projects, setFilteredProjects, setProjects } = useProjectStore();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const { setOpenProjectModal, openProjectModal } = useToolStore();
+  const [opened, { toggle }] = useDisclosure();
   // Trigger projects fetching on component mount
   useEffect(() => {
     fetchProjects();
@@ -32,9 +34,6 @@ export default function Projects() {
     setLoading(false);
   };
 
-  const onCreateProjectClick = () => {
-    setOpenProjectModal(true);
-  };
 
   const handleDelete = async (project_id: string) => {
     setLoading(true);
@@ -55,7 +54,7 @@ export default function Projects() {
   // Show error message if error is thrown by server
   if (error)
     return (
-      <div className="h-[calc(100vh-10rem)] rounded-lg bg-slate-200 pt-10 dark:bg-slate-900">
+      <div className="h-[calc(100vh-10rem)] rounded-lg pt-10">
         <p aria-label="Error message" className="text-center text-xl">
           {error}
         </p>
@@ -64,14 +63,14 @@ export default function Projects() {
   // Show projects table if projects are fetched correctly
   else
     return (
-      <Flowbite>
-        <div className="h-[calc(100vh-10rem)] rounded-lg bg-slate-200 pt-10 dark:bg-slate-900">
+      <AppShellMain>
+        <div className="h-[calc(100vh-10rem)] rounded-lg pt-10">
           <div className="container mx-auto flex-col max-h-[90%] w-[90%] flex-row gap-10 dark:bg-slate-950 dark:text-white ">
-            {openProjectModal ? <ProjectModal projectId={null} /> : null}
+            <ProjectModal projectId={null} opened={opened} onClose={toggle} />
             <Button
               className="mb-2 ml-auto"
               color="success"
-              onClick={onCreateProjectClick}
+              onClick={toggle}
             >
               New Project
             </Button>
@@ -124,6 +123,6 @@ export default function Projects() {
             </div>
           </div>
         </div>
-      </Flowbite>
+      </AppShellMain>
     );
 }
