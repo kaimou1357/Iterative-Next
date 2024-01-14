@@ -95,9 +95,11 @@ export default function Deployments() {
       <div className="flex flex-col items-start">
         <Table>
           <TableThead>
-            <TableTh>Prototype Name</TableTh>
-            <TableTh>Passcode</TableTh>
-            <TableTh>Access</TableTh>
+            <TableTr>
+              <TableTh>Prototype Name</TableTh>
+              <TableTh>Passcode</TableTh>
+              <TableTh>Access</TableTh>
+            </TableTr>
           </TableThead>
           <TableTbody>{items}</TableTbody>
         </Table>

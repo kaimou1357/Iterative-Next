@@ -9,6 +9,7 @@ import { useDisclosure } from "@mantine/hooks";
 import {
   AppShellMain,
   Button,
+  Paper,
   Table,
   TableTbody,
   TableTd,
@@ -94,17 +95,19 @@ export default function Projects() {
     <AppShellMain>
       <div className="flex flex-col items-start">
         <ProjectModal projectId={null} opened={opened} onClose={toggle} />
-        <Table>
+        <Button className="mb-4" variant="filled" onClick={toggle}>
+          New Project
+        </Button>
+        <Table withRowBorders={true}>
           <TableThead>
-            <TableTh>Project Name</TableTh>
-            <TableTh>Open Project</TableTh>
-            <TableTh>Actions</TableTh>
+            <TableTr>
+              <TableTh>Project Name</TableTh>
+              <TableTh>Open Project</TableTh>
+              <TableTh>Actions</TableTh>
+            </TableTr>
           </TableThead>
           <TableTbody>{items}</TableTbody>
         </Table>
-        <Button className="mt-4" variant="filled" onClick={toggle}>
-          New Project
-        </Button>
       </div>
     </AppShellMain>
   );
