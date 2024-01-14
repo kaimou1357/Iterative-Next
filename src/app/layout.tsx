@@ -28,7 +28,12 @@ export default function RootLayout({
         </head>
         <body>
           <MantineProvider>
-            <AppShell header={{ height: 60 }} padding="md">
+            <AppShell
+              withBorder={false}
+              header={{ height: 60 }}
+              navbar={{ width: 200, breakpoint: "sm" }}
+              padding="md"
+            >
               <AppNavbar />
               {children}
               <PageFooter />

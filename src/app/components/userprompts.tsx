@@ -1,6 +1,5 @@
 "use client";
 
-import { useDisclosure } from "@mantine/hooks";
 import { Drawer, Button } from "@mantine/core";
 
 import {
@@ -9,27 +8,26 @@ import {
   useToolStore,
 } from "../tool/toolstate";
 import { useState } from "react";
-import Link from "next/link";
-import Login from "./Login";
 import { BackendClient } from "../../../axios";
 
 interface UserPromptsProps {
   user: any;
+  opened: boolean;
+  toggle: () => void;
   projectStates: ProjectState[];
-  authenticated: boolean;
   onLoadClick: (reactCode: string | null) => void;
 }
 
 const UserPrompts = ({
   user,
   projectStates,
-  authenticated,
+  opened,
+  toggle,
   onLoadClick,
 }: UserPromptsProps) => {
   const { setProjectStateId, setDeploymentModalOpen } = useDeploymentStore();
   const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
   const { removePrompt } = useToolStore();
-  const [opened, { open, close }] = useDisclosure(false);
 
   const onSuccessfulLogin = () => {
     setShowLoginModal(false);
@@ -53,7 +51,7 @@ const UserPrompts = ({
   };
 
   return (
-    <Drawer opened={opened} onClose={close} title={"Design Journey"}>
+    <Drawer opened={opened} onClose={toggle} title={"Design Journey"}>
       <Drawer.Body>
         {projectStates.map((p, idx) => (
           <div key={idx} className="flex flex-col">

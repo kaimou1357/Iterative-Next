@@ -1,21 +1,21 @@
 "use client";
-import { Button, Label, Modal, TextInput } from "flowbite-react";
-import { useToolStore } from "../tool/toolstate";
-import { API_BASE_URL } from "./config";
-import axios from "axios";
+import { Modal, Button, TextInput } from "@mantine/core";
 import { useState } from "react";
 import { BackendClient } from "../../../axios";
-import { redirect } from "next/dist/server/api-utils";
 import { navigatetoProject } from "../actions/actions";
 
 interface ProjectModalProps {
   projectId: string | null;
+  opened: boolean;
+  onClose: () => void;
 }
 
-export const ProjectModal = ({ projectId }: ProjectModalProps) => {
+export const ProjectModal = ({
+  projectId,
+  opened,
+  onClose,
+}: ProjectModalProps) => {
   const [projectName, setProjectName] = useState<string>("");
-
-  const { showToast, setOpenProjectModal, openProjectModal } = useToolStore();
 
   const handleSaveProject = () => {
     if (projectId === null) {
@@ -23,7 +23,7 @@ export const ProjectModal = ({ projectId }: ProjectModalProps) => {
         project_name: projectName,
       }).then((response) => {
         const projectId = response.data.project.id;
-        onCloseModal();
+        onClose();
         navigatetoProject(projectId);
       });
     } else {
@@ -31,46 +31,33 @@ export const ProjectModal = ({ projectId }: ProjectModalProps) => {
         project_id: projectId,
         project_name: projectName,
       }).then((_) => {
-        onCloseModal();
-        showToast("Project Saved Successfully");
+        onClose();
       });
     }
   };
 
-  const onCloseModal = () => {
-    setProjectName("");
-    setOpenProjectModal(false);
-  };
-
   return (
     <>
-      <Modal show={openProjectModal} size="md" onClose={onCloseModal} popup>
-        <Modal.Header />
-        <Modal.Body>
-          <div className="space-y-6">
-            <h3 className="text-xl font-medium text-gray-900 dark:text-white">
-              Create your project
-            </h3>
-            <div>
-              <div className="mb-2 block">
-                <Label htmlFor="project" value="Project Name" />
-              </div>
-              <TextInput
-                id="name"
-                placeholder="My First Project"
-                value={projectName}
-                onChange={(event) => {
-                  setProjectName(event.target.value);
-                }}
-                required
-              />
-            </div>
-            <div className="flex justify-between"></div>
-            <div className="w-full">
-              <Button onClick={handleSaveProject}>Create Project</Button>
-            </div>
+      <Modal opened={opened} size="md" onClose={onClose}>
+        <div className="space-y-6">
+          <h3 className="text-xl font-medium text-gray-900 dark:text-white">
+            Create your project
+          </h3>
+          <div>
+            <TextInput
+              label="Project Name"
+              placeholder="My First Project"
+              value={projectName}
+              onChange={(event) => {
+                setProjectName(event.target.value);
+              }}
+            />
           </div>
-        </Modal.Body>
+          <div className="flex justify-between"></div>
+          <div className="w-full">
+            <Button onClick={handleSaveProject}>Create Project</Button>
+          </div>
+        </div>
       </Modal>
     </>
   );

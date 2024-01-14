@@ -19,7 +19,9 @@ import { convertCode } from "../actions/actions";
 import { TextLoop } from "easy-react-text-loop";
 import { loadingWords } from "../components/loadingWords";
 import { ToolNavbar } from "../components/ToolNavbar";
-import { AppShell, AppShellMain } from "@mantine/core";
+import { ArrowRight } from "tabler-icons-react";
+import { AppShellMain, AppShellNavbar, Button } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 let socket: Socket<DefaultEventsMap, DefaultEventsMap> = io(SOCKET_IO_URL);
 
 export default function Tool() {
@@ -38,6 +40,12 @@ export default function Tool() {
     setOpenProjectModal,
     setPrompt,
   } = useToolStore();
+
+  const [openedDesignJourney, { toggle: toggleDesignJourney }] =
+    useDisclosure();
+  const [openedIterations, { toggle: toggleIterations }] = useDisclosure();
+  const [openSaveProject, { toggle: toggleSaveProject }] = useDisclosure();
+  const [openShareProject, { toggle: toggleShareProject }] = useDisclosure();
 
   const { projectId, setProjectId, setProjectName, projectName } =
     useProjectStore();
@@ -166,16 +174,49 @@ export default function Tool() {
       <div className="flex gap-4 p-4">
         <ToastComponent />
         <DeploymentModal />
-        <ProjectModal projectId={projectId} />
+        <ProjectModal
+          projectId={projectId}
+          opened={openSaveProject}
+          onClose={toggleSaveProject}
+        />
+
+        <AppShellNavbar>
+          <Button
+            className="mb-2"
+            variant="light"
+            onClick={toggleDesignJourney}
+            rightSection={<ArrowRight size={14} />}
+          >
+            My Design Journey
+          </Button>
+          <Button
+            variant="light"
+            onClick={toggleIterations}
+            rightSection={<ArrowRight size={14} />}
+          >
+            Potential Iterations
+          </Button>
+        </AppShellNavbar>
+
         <PromptBox
           user={user}
+          opened={openedDesignJourney}
+          toggle={toggleDesignJourney}
           onLoadClick={onLoadClick}
           projectStates={projectStates}
-          authenticated={user !== null}
+        />
+        <RecommendationsList
+          recommendations={recommendations}
+          toggle={toggleIterations}
+          opened={openedIterations}
         />
         <div className="flex flex-col gap-8 flex-1 w-80">
           <div className="flex flex-col bg-gray-50 rounded-lg p-3 gap-3">
-            <ToolNavbar />
+            <ToolNavbar
+              handleProjectClear={onResetProject}
+              onSaveClick={toggleSaveProject}
+              onShareClick={toggleShareProject}
+            />
             <LiveCodeEditor
               code={reactCode}
               css={null}
@@ -222,22 +263,6 @@ export default function Tool() {
                 <div className="min-h-[72%] max-w-full grow rounded-md border-2 border-solid border-gray-500 flex">
                   
                 </div>
-              )}
-              <PromptInput
-                loading={loading}
-                user={user}
-                onProjectReset={onResetProject}
-                onPromptSubmit={handleSend}
-                onProjectSaveClicked={setOpenProjectModal}
-              />
-              {recommendations && recommendations.length ? (
-                <div className="w-[15%]">
-                  <div className="w-full text-black dark:text-white ">
-                    <RecommendationsList recommendations={recommendations} />
-                  </div>
-                </div>
-              ) : (
-                <></>
               )}
             </div>
           </div> */}

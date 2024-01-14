@@ -30,7 +30,7 @@ export default function AppNavbar() {
     );
   }
   return (
-    <AppShell.Header>
+    <AppShell.Header withBorder={false}>
       <Navbar fluid>
         <Navbar.Brand href="/">
           <img

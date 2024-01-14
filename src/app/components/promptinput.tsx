@@ -1,9 +1,6 @@
 "use client";
 import { ChangeEvent, useState } from "react";
-import { Badge } from "flowbite-react";
 import { Button, Textarea } from "@mantine/core";
-import { RxArrowRight } from "react-icons/rx";
-import Login from "./Login";
 import { useToolStore } from "../tool/toolstate";
 
 interface PromptInputProps {
@@ -58,7 +55,7 @@ const PromptInput = ({
         disabled={loading}
         readOnly={loading}
       />
-      <Button fullWidth variant="filled" color="rgba(0, 0, 0, 1)">
+      <Button fullWidth variant="filled">
         Build!
       </Button>
     </div>
