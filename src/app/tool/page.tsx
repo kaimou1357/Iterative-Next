@@ -7,12 +7,9 @@ import { SOCKET_IO_URL } from "../components/config";
 import { useEffect } from "react";
 import { DefaultEventsMap } from "@socket.io/component-emitter";
 import PromptBox from "../components/userprompts";
-import ArrowRightLineIcon from '@rsuite/icons/ArrowRightLine';
-import { ButtonGroup, IconButton } from 'rsuite';
 import PromptInput from "../components/promptinput";
 import { useProjectStore, useToolStore, ProjectState } from "./toolstate";
 import { useStytchUser } from "@stytch/nextjs";
-import { Flowbite, Progress } from "flowbite-react";
 import { DeploymentModal } from "../components/DeploymentModal";
 import { ToastComponent } from "../components/Toast";
 import { ProjectModal } from "../components/ProjectModal";
@@ -22,6 +19,7 @@ import { convertCode } from "../actions/actions";
 import { TextLoop } from "easy-react-text-loop";
 import { loadingWords } from "../components/loadingWords";
 import { ToolNavbar } from "../components/ToolNavbar";
+import { AppShell, AppShellMain } from "@mantine/core";
 let socket: Socket<DefaultEventsMap, DefaultEventsMap> = io(SOCKET_IO_URL);
 
 export default function Tool() {
@@ -164,25 +162,17 @@ export default function Tool() {
   };
 
   return (
-    <Flowbite>
+    <AppShellMain>
       <div className="flex gap-4 p-4">
         <ToastComponent />
         <DeploymentModal />
         <ProjectModal projectId={projectId} />
-        <ButtonGroup className="flex flex-col gap-2" vertical>
-          <IconButton icon={<ArrowRightLineIcon />} placement="right">
-            My Design Journey
-          </IconButton>
-          <IconButton icon={<ArrowRightLineIcon />} placement="right">
-            Potential Iterations
-          </IconButton>
-        </ButtonGroup>
         <PromptBox
-            user={user}
-            onLoadClick={onLoadClick}
-            projectStates={projectStates}
-            authenticated={user !== null}
-          />
+          user={user}
+          onLoadClick={onLoadClick}
+          projectStates={projectStates}
+          authenticated={user !== null}
+        />
         <div className="flex flex-col gap-8 flex-1 w-80">
           <div className="flex flex-col bg-gray-50 rounded-lg p-3 gap-3">
             <ToolNavbar />
@@ -252,6 +242,6 @@ export default function Tool() {
             </div>
           </div> */}
       </div>
-    </Flowbite>
+    </AppShellMain>
   );
 }

@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import "./globals.css";
 import StytchProvider from "./components/StytchProvider";
 import { Work_Sans } from "next/font/google";
-import { CustomProvider} from "rsuite";
 import AppNavbar from "./components/navbar";
-import 'rsuite/dist/rsuite-no-reset.min.css';
+import "@mantine/core/styles.css";
 import PageFooter from "./components/PageFooter";
+import { AppShell, ColorSchemeScript, MantineProvider } from "@mantine/core";
 
 const font = Work_Sans({ subsets: ["latin"] });
 
@@ -23,16 +23,17 @@ export default function RootLayout({
   return (
     <StytchProvider>
       <html lang="en">
+        <head>
+          <ColorSchemeScript />
+        </head>
         <body>
-          <CustomProvider>
-            <div className="flex flex-col h-lvh">
+          <MantineProvider>
+            <AppShell header={{ height: 60 }} padding="md">
               <AppNavbar />
-              <div className="grow">
-                {children}
-              </div>
+              {children}
               <PageFooter />
-            </div>
-          </CustomProvider>
+            </AppShell>
+          </MantineProvider>
         </body>
       </html>
     </StytchProvider>

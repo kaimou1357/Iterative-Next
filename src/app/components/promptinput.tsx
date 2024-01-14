@@ -1,15 +1,7 @@
 "use client";
 import { ChangeEvent, useState } from "react";
 import { Badge } from "flowbite-react";
-import {
-  Button,
-  DarkThemeToggle,
-  Flowbite,
-  Label,
-  Modal,
-  Spinner,
-  Textarea,
-} from "flowbite-react";
+import { Button, Textarea } from "@mantine/core";
 import { RxArrowRight } from "react-icons/rx";
 import Login from "./Login";
 import { useToolStore } from "../tool/toolstate";
@@ -56,15 +48,17 @@ const PromptInput = ({
   return (
     <div className="flex flex-col w-full items-center justify-center gap-2 max-w-[500px]">
       <Textarea
+        className="w-full"
         id="prompt"
         placeholder="Build me a coffee order management system"
-        required
+        radius="xl"
+        autosize
         onChange={onChange}
         value={prompt}
         disabled={loading}
         readOnly={loading}
       />
-      <Button color="dark" className="w-full">
+      <Button fullWidth variant="filled" color="rgba(0, 0, 0, 1)">
         Build!
       </Button>
     </div>

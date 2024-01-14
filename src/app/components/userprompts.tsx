@@ -1,7 +1,8 @@
 "use client";
 
-import { Button, Modal } from "flowbite-react";
-import { Drawer } from "rsuite";
+import { useDisclosure } from "@mantine/hooks";
+import { Drawer, Button } from "@mantine/core";
+
 import {
   ProjectState,
   useDeploymentStore,
@@ -28,6 +29,7 @@ const UserPrompts = ({
   const { setProjectStateId, setDeploymentModalOpen } = useDeploymentStore();
   const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
   const { removePrompt } = useToolStore();
+  const [opened, { open, close }] = useDisclosure(false);
 
   const onSuccessfulLogin = () => {
     setShowLoginModal(false);
@@ -51,10 +53,7 @@ const UserPrompts = ({
   };
 
   return (
-    <Drawer placement={"left"} open={false} onClose={() => {}}>
-      <Drawer.Header>
-        <Drawer.Title>Design Journey</Drawer.Title>
-      </Drawer.Header>
+    <Drawer opened={opened} onClose={close} title={"Design Journey"}>
       <Drawer.Body>
         {projectStates.map((p, idx) => (
           <div key={idx} className="flex flex-col">
@@ -65,25 +64,19 @@ const UserPrompts = ({
               {p.prompt}
             </h5>
             <div className="flex flex-wrap gap-1">
-              <Button
-                onClick={() => onLoadClick(p.reactCode)}
-                color="success"
-                size={"xs"}
-              >
+              <Button onClick={() => onLoadClick(p.reactCode)} variant="filled">
                 Load
               </Button>
               <Button
                 onClick={() => onCreateDeploymentClick(p.id)}
-                color="purple"
-                size={"xs"}
+                variant="filled"
               >
                 Create Deployment
               </Button>
 
               <Button
                 onClick={() => onRemovePromptClick(p.id)}
-                color="failure"
-                size={"xs"}
+                variant="filled"
               >
                 Delete
               </Button>

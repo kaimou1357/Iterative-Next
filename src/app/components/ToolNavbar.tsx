@@ -1,4 +1,4 @@
-import { Button, Dropdown } from "flowbite-react";
+import { Button } from "@mantine/core";
 
 export const ToolNavbar = () => {
   return (
@@ -8,12 +8,8 @@ export const ToolNavbar = () => {
           Test Prompt Here.
         </div>
         <div className="flex flex-1 items-center gap-2 w-full w-auto ml-auto ">
-          <Button size="xs" color="light">
-            Save
-          </Button>
-          <Button size="xs" color="success">
-            Share
-          </Button>
+          <Button variant="outline">Save</Button>
+          <Button variant="filled">Share</Button>
         </div>
       </div>
     </>
