@@ -173,7 +173,7 @@ export default function Tool() {
     <AppShellMain>
       <div className="flex gap-4 p-4">
         <ToastComponent />
-        <DeploymentModal />
+        <DeploymentModal opened={openShareProject} onClose={toggleShareProject}/>
         <ProjectModal
           projectId={projectId}
           opened={openSaveProject}
