@@ -1,5 +1,5 @@
 "use client";
-import { Button, Modal, TextInput } from "@mantine/core";
+import { Button, Modal, ModalBody, ModalHeader, ModalTitle, TextInput } from "@mantine/core";
 import { useDeploymentStore, useToolStore } from "../tool/toolstate";
 import { BackendClient } from "../../../axios";
 
@@ -38,12 +38,15 @@ export const DeploymentModal = ({opened, onClose}: DeploymentModalProps) => {
   return (
     <>
       <Modal opened={opened} size="md" onClose={onCloseModal}>
-        <Modal.Header />
-        <Modal.Body>
-          <div className="space-y-6">
+        <ModalHeader>
+          <ModalTitle>
             <h3 className="text-xl font-medium text-gray-900 dark:text-white">
-              Create a New Deployment
+              Create a New Prototype
             </h3>
+          </ModalTitle>
+        </ModalHeader>
+        
+        <ModalBody>
             <div className="flex flex-col gap-2">
               <TextInput
                 label="Prototype Name"
@@ -61,15 +64,11 @@ export const DeploymentModal = ({opened, onClose}: DeploymentModalProps) => {
                   setPasscode(event.target.value);
                 }}
               />
-            </div>
-            <div className="flex justify-between"></div>
-            <div className="w-full">
-              <Button onClick={handleCreateDeployment}>
+              <Button className="mt-2" onClick={handleCreateDeployment}>
                 Create Deployment
               </Button>
             </div>
-          </div>
-        </Modal.Body>
+        </ModalBody>
       </Modal>
     </>
   );
