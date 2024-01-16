@@ -28,8 +28,8 @@ export default function RootLayout({
             <AppShell
               withBorder={false}
               header={{ height: 60 }}
-              navbar={{ width: 200, breakpoint: "sm" }}
-              footer={{ height: 50}}
+              navbar={{ width: 50, breakpoint: "sm" }}
+              footer={{ height: 50 }}
               padding="md"
             >
               <AppNavbar />

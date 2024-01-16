@@ -22,6 +22,7 @@ import { ToolNavbar } from "../components/ToolNavbar";
 import { ArrowRight } from "tabler-icons-react";
 import { AppShellMain, AppShellNavbar, Button } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { Sidebar } from "../components/Sidebar";
 let socket: Socket<DefaultEventsMap, DefaultEventsMap> = io(SOCKET_IO_URL);
 
 export default function Tool() {
@@ -183,21 +184,11 @@ export default function Tool() {
         />
 
         <AppShellNavbar>
-          <Button
-            className="mb-2"
-            variant="light"
-            onClick={toggleDesignJourney}
-            rightSection={<ArrowRight size={14} />}
-          >
-            My Design Journey
-          </Button>
-          <Button
-            variant="light"
-            onClick={toggleIterations}
-            rightSection={<ArrowRight size={14} />}
-          >
-            Potential Iterations
-          </Button>
+          <Sidebar
+            opened={true}
+            onDesignJourneyClick={toggleDesignJourney}
+            onPotentialIterationClick={toggleIterations}
+          />
         </AppShellNavbar>
 
         <PromptBox

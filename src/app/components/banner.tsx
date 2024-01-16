@@ -21,11 +21,7 @@ export default function banner() {
                 into interactive prototypes effortlessly.
               </p>
 
-              <Button
-                component={Link}
-                variant="filled"
-                href="/tool"
-              >
+              <Button component={Link} variant="filled" href="/tool">
                 Start Prototyping Now!
               </Button>
             </div>
