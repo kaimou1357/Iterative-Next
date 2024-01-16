@@ -19,7 +19,6 @@ import { convertCode } from "../actions/actions";
 import { TextLoop } from "easy-react-text-loop";
 import { loadingWords } from "../components/loadingWords";
 import { ToolNavbar } from "../components/ToolNavbar";
-import { ArrowRight } from "tabler-icons-react";
 import { AppShellMain, AppShellNavbar, Button } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { Sidebar } from "../components/Sidebar";
@@ -51,6 +50,8 @@ export default function Tool() {
     useProjectStore();
 
   const { user } = useStytchUser();
+
+  const shouldShowCanvas = projectStates.length > 0;
 
   // ref value used to get latest value inside interval callback
   const loadingRef = useRef<boolean>();
@@ -171,47 +172,48 @@ export default function Tool() {
 
   return (
     <AppShellMain>
-      <div className="flex grow gap-4 p-4 h-[85vh]">
-        <ToastComponent />
-        <DeploymentModal
-          opened={openShareProject}
-          onClose={toggleShareProject}
-        />
-        <ProjectModal
-          projectId={projectId}
-          opened={openSaveProject}
-          onClose={toggleSaveProject}
-        />
+      <ToastComponent />
+      <DeploymentModal opened={openShareProject} onClose={toggleShareProject} />
+      <ProjectModal
+        projectId={projectId}
+        opened={openSaveProject}
+        onClose={toggleSaveProject}
+      />
 
-        <AppShellNavbar>
-          <Sidebar
-            opened={true}
-            onDesignJourneyClick={toggleDesignJourney}
-            onPotentialIterationClick={toggleIterations}
-          />
-        </AppShellNavbar>
+      <RecommendationsList
+        recommendations={recommendations}
+        toggle={toggleIterations}
+        opened={openedIterations}
+      />
 
-        <PromptBox
-          user={user}
-          opened={openedDesignJourney}
-          toggle={toggleDesignJourney}
-          onLoadClick={onLoadClick}
-          projectStates={projectStates}
+      <PromptBox
+        user={user}
+        opened={openedDesignJourney}
+        toggle={toggleDesignJourney}
+        onLoadClick={onLoadClick}
+        projectStates={projectStates}
+      />
+
+      <AppShellNavbar>
+        <Sidebar
+          opened={shouldShowCanvas}
+          onDesignJourneyClick={toggleDesignJourney}
+          onPotentialIterationClick={toggleIterations}
         />
-        <RecommendationsList
-          recommendations={recommendations}
-          toggle={toggleIterations}
-          opened={openedIterations}
-        />
-        <div className="flex flex-col gap-8 flex-1 w-80">
-          <div className="flex flex-col bg-gray-50 rounded-lg p-3 gap-3 h-[85vh]">
-            <ToolNavbar
-              handleProjectClear={onResetProject}
-              onSaveClick={toggleSaveProject}
-              onShareClick={toggleShareProject}
-            />
-            <LiveCodeEditor code={reactCode} cssFramework={"DAISYUI"} />
-          </div>
+      </AppShellNavbar>
+      <div className="flex flex-col gap-4 p-4 h-[80vh]">
+        <div className="flex flex-col gap-8 grow items-center justify-center">
+          {shouldShowCanvas ? (
+            <div className="flex flex-col grow w-full bg-gray-50 rounded-lg p-3 gap-3">
+              <ToolNavbar
+                handleProjectClear={onResetProject}
+                onSaveClick={toggleSaveProject}
+                onShareClick={toggleShareProject}
+              />
+              <LiveCodeEditor code={reactCode} />
+            </div>
+          ) : null}
+
           <div className="z-40 w-full flex justify-center origin-bottom">
             <PromptInput
               loading={loading}

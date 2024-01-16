@@ -3,10 +3,9 @@ import { Paper } from "@mantine/core";
 
 interface LiveCodeEditorProps {
   code: string | null | undefined;
-  cssFramework: string;
 }
 
-export const LiveCodeEditor = ({ code, cssFramework }: LiveCodeEditorProps) => {
+export const LiveCodeEditor = ({ code }: LiveCodeEditorProps) => {
   const iframeRef = useRef<any>();
   const updateIframeContent = async () => {
     if (!iframeRef.current || !iframeRef.current.contentDocument) return;
@@ -41,7 +40,7 @@ export const LiveCodeEditor = ({ code, cssFramework }: LiveCodeEditorProps) => {
 
   useEffect(() => {
     updateIframeContent();
-  }, [code, cssFramework]);
+  }, [code]);
 
   return (
     <Paper shadow="xs" p="md" className="w-full h-full">

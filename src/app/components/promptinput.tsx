@@ -47,7 +47,12 @@ const PromptInput = ({
         disabled={loading}
         readOnly={loading}
       />
-      <Button onClick={onPromptInputSubmit} fullWidth variant="filled">
+      <Button
+        onClick={onPromptInputSubmit}
+        loading={loading}
+        fullWidth
+        variant="filled"
+      >
         Build!
       </Button>
     </div>
