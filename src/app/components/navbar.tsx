@@ -35,13 +35,10 @@ export default function AppNavbar() {
       <Navbar fluid>
         <Navbar.Brand href="/">
           <img
-            src="/favicon.png"
-            className="mr-3 h-6 sm:h-9"
+            src="/iterative-logo.png"
+            className="mr-3 h-12"
             alt="Iterative Logo"
           />
-          <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
-            Iterative
-          </span>
         </Navbar.Brand>
         <div className="flex md:order-2">
           {isAuthenticated ? (

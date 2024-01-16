@@ -1,13 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import StytchProvider from "./components/StytchProvider";
-import { Work_Sans } from "next/font/google";
 import AppNavbar from "./components/navbar";
 import "@mantine/core/styles.css";
 import PageFooter from "./components/PageFooter";
 import { AppShell, ColorSchemeScript, MantineProvider } from "@mantine/core";
-
-const font = Work_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Iterative",
@@ -32,6 +29,7 @@ export default function RootLayout({
               withBorder={false}
               header={{ height: 60 }}
               navbar={{ width: 200, breakpoint: "sm" }}
+              footer={{ height: 50}}
               padding="md"
             >
               <AppNavbar />
