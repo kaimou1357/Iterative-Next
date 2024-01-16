@@ -65,11 +65,7 @@ export default function DeploymentView({ params }: { params: { id: string } }) {
         />
       ) : null}
       <div className="items stretch h-screen min-h-screen grow rounded-md">
-        <LiveCodeEditor
-          code={convertedCode}
-          css={null}
-          cssFramework={"DAISYUI"}
-        />
+        <LiveCodeEditor code={convertedCode} />
       </div>
     </Flowbite>
   );

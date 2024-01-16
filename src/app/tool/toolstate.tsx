@@ -45,6 +45,7 @@ export const useToolStore = create<ToolState>()((set) => ({
       projectStates: [],
       reactCode: null,
       recommendations: [],
+      activeProjectState: null,
     })),
   setPrompt: (value) => set(() => ({ prompt: value })),
   setActiveProjectState: (projectState: ProjectState) =>
