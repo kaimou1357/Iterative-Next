@@ -1,6 +1,16 @@
 "use client";
 
-import { Drawer, Button } from "@mantine/core";
+import {
+  Drawer,
+  Button,
+  Card,
+  Group,
+  Text,
+  Menu,
+  ActionIcon,
+  rem,
+} from "@mantine/core";
+import { Dots, Trash } from "tabler-icons-react";
 
 import {
   ProjectState,
@@ -52,34 +62,52 @@ const UserPrompts = ({
 
   return (
     <Drawer opened={opened} onClose={toggle} title={"Design Journey"}>
-      <Drawer.Body>
+      <Drawer.Body className="flex flex-col gap-4">
         {projectStates.map((p, idx) => (
-          <div key={idx} className="flex flex-col">
-            <h5
-              data-tooltip-target="tooltip_default"
-              className="text-1xl text-wrap font-bold tracking-tight text-gray-900 dark:text-white"
-            >
-              {p.prompt}
-            </h5>
-            <div className="flex flex-wrap gap-1">
-              <Button onClick={() => onLoadClick(p)} variant="filled">
-                Load
-              </Button>
-              <Button
-                onClick={() => onCreateDeploymentClick(p.id)}
-                variant="filled"
-              >
-                Create Deployment
-              </Button>
+          <Card key={idx} shadow="sm" padding="lg" radius="md" withBorder>
+            <Card.Section inheritPadding py="xs">
+              <Group justify="end">
+                <Menu withinPortal position="bottom-end" shadow="sm">
+                  <Menu.Target>
+                    <ActionIcon variant="subtle" color="gray">
+                      <Dots style={{ width: rem(16), height: rem(16) }} />
+                    </ActionIcon>
+                  </Menu.Target>
 
+                  <Menu.Dropdown>
+                    <Menu.Item
+                      leftSection={
+                        <Trash style={{ width: rem(14), height: rem(14) }} />
+                      }
+                      color="red"
+                    >
+                      Delete
+                    </Menu.Item>
+                  </Menu.Dropdown>
+                </Menu>
+              </Group>
+            </Card.Section>
+            <Text size="sm" c="dimmed" mb="6">
+              {p.prompt}
+            </Text>
+            <Group justify="space-around">
               <Button
-                onClick={() => onRemovePromptClick(p.id)}
+                fullWidth
+                mt="md"
+                radius="md"
+                onClick={() => onLoadClick(p)}
                 variant="filled"
               >
-                Delete
+                Load in Canvas
               </Button>
-            </div>
-          </div>
+              {/* <Button
+                  onClick={() => onRemovePromptClick(p.id)}
+                  variant="filled"
+                >
+                  Delete
+                </Button> */}
+            </Group>
+          </Card>
         ))}
       </Drawer.Body>
     </Drawer>

@@ -1,4 +1,4 @@
-import { create, useStore } from "zustand";
+import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { Deployment } from "../deployments/types";
 
