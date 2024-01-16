@@ -11,6 +11,7 @@ interface ToolState {
   projectStates: ProjectState[];
   shouldShowToast: boolean;
   toastMessage: string;
+  activeProjectState: ProjectState | null;
 
   showToast: (message: string) => void;
   setPrompt: (value: string) => void;
@@ -22,6 +23,7 @@ interface ToolState {
   setProjectStates: (projectStates: ProjectState[]) => void;
   resetProject: () => void;
   removePrompt: (promptId: number) => void;
+  setActiveProjectState: (projectState: ProjectState) => void;
 }
 
 export const useToolStore = create<ToolState>()((set) => ({
@@ -33,6 +35,7 @@ export const useToolStore = create<ToolState>()((set) => ({
   reactCode: null,
   shouldShowToast: false,
   toastMessage: "",
+  activeProjectState: null,
 
   showToast: (message) =>
     set(() => ({ shouldShowToast: true, toastMessage: message })),
@@ -44,6 +47,8 @@ export const useToolStore = create<ToolState>()((set) => ({
       recommendations: [],
     })),
   setPrompt: (value) => set(() => ({ prompt: value })),
+  setActiveProjectState: (projectState: ProjectState) =>
+    set(() => ({ activeProjectState: projectState })),
   removeToast: () => set(() => ({ shouldShowToast: false })),
   setReactCode: (code) => set(() => ({ reactCode: code })),
   setLoading: (isLoading) => set(() => ({ loading: isLoading })),
@@ -63,7 +68,7 @@ export const useToolStore = create<ToolState>()((set) => ({
 }));
 
 export interface ProjectState {
-  reactCode: string | null;
+  reactCode: string;
   prompt: string;
   id: number;
 }

@@ -38,6 +38,8 @@ export default function Tool() {
     setRecommendations,
     resetProject,
     setPrompt,
+    activeProjectState,
+    setActiveProjectState,
   } = useToolStore();
 
   const [openedDesignJourney, { toggle: toggleDesignJourney }] =
@@ -50,8 +52,6 @@ export default function Tool() {
     useProjectStore();
 
   const { user } = useStytchUser();
-
-  const shouldShowCanvas = projectStates.length > 0;
 
   // ref value used to get latest value inside interval callback
   const loadingRef = useRef<boolean>();
@@ -74,6 +74,20 @@ export default function Tool() {
   useEffect(() => {
     createProject();
   }, []);
+
+  useEffect(() => {
+    const convertCodeFromServer = async () => {
+      if (activeProjectState !== null) {
+        const code = activeProjectState.reactCode;
+        const convertedCode = await convertCode(code);
+        setReactCode(convertedCode);
+      }
+    };
+
+    convertCodeFromServer();
+
+    return () => {};
+  }, [activeProjectState]);
 
   // update ref value whenever state gets updated
   useEffect(() => {
@@ -118,7 +132,7 @@ export default function Tool() {
       `projects/project_state`,
       { project_id: projectId },
       { headers: { "Content-Type": "application/json" } },
-    ).then((response: any) => {
+    ).then(async (response: any) => {
       const projectStates = response.data.project_states.map((p: any) => {
         const pState: ProjectState = {
           id: p.id,
@@ -128,13 +142,15 @@ export default function Tool() {
         return pState;
       });
       setProjectStates(projectStates);
+      if (projectStates.length > 0) {
+        setActiveProjectState(projectStates[projectStates.length - 1]);
+      }
     });
   };
 
   const onServerCode = (response: any) => {
     setLoading(false);
     setProgressLevel(5);
-    onLoadClick(response);
     refreshProjectStates();
     setPrompt("");
   };
@@ -143,11 +159,9 @@ export default function Tool() {
     setProjectId(projectId);
   };
 
-  const onLoadClick = async (reactCode: string | null) => {
-    if (reactCode !== null) {
-      const convertedCode = await convertCode(reactCode);
-      setReactCode(convertedCode);
-    }
+  const onLoadClick = async (projectState: ProjectState) => {
+    setActiveProjectState(projectState);
+    toggleDesignJourney();
   };
 
   async function onResetProject() {
@@ -196,19 +210,20 @@ export default function Tool() {
 
       <AppShellNavbar>
         <Sidebar
-          opened={shouldShowCanvas}
+          opened={activeProjectState !== null}
           onDesignJourneyClick={toggleDesignJourney}
           onPotentialIterationClick={toggleIterations}
         />
       </AppShellNavbar>
       <div className="flex flex-col gap-4 p-4 h-[80vh]">
         <div className="flex flex-col gap-8 grow items-center justify-center">
-          {shouldShowCanvas ? (
+          {activeProjectState ? (
             <div className="flex flex-col grow w-full bg-gray-50 rounded-lg p-3 gap-3">
               <ToolNavbar
                 handleProjectClear={onResetProject}
                 onSaveClick={toggleSaveProject}
                 onShareClick={toggleShareProject}
+                prompt={activeProjectState.prompt}
               />
               <LiveCodeEditor code={reactCode} />
             </div>

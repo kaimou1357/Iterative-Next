@@ -15,7 +15,7 @@ interface UserPromptsProps {
   opened: boolean;
   toggle: () => void;
   projectStates: ProjectState[];
-  onLoadClick: (reactCode: string | null) => void;
+  onLoadClick: (projectState: ProjectState) => void;
 }
 
 const UserPrompts = ({
@@ -62,7 +62,7 @@ const UserPrompts = ({
               {p.prompt}
             </h5>
             <div className="flex flex-wrap gap-1">
-              <Button onClick={() => onLoadClick(p.reactCode)} variant="filled">
+              <Button onClick={() => onLoadClick(p)} variant="filled">
                 Load
               </Button>
               <Button
