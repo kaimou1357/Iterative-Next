@@ -1,4 +1,5 @@
-import { Button, Paper } from "@mantine/core";
+import { ActionIcon, Button, Menu, Paper, rem } from "@mantine/core";
+import { Dots, Trash } from "tabler-icons-react";
 
 interface ToolbarNavbarProps {
   prompt: string;
@@ -21,9 +22,25 @@ export const ToolNavbar = ({
           </Paper>
         </div>
         <div className="flex flex-1 items-center gap-2 w-full w-auto ml-auto ">
-          <Button variant="outline" onClick={handleProjectClear}>
-            Clear Project
-          </Button>
+          <Menu withinPortal position="bottom-end" shadow="sm">
+            <Menu.Target>
+              <ActionIcon variant="subtle" color="gray">
+                <Dots style={{ width: rem(16), height: rem(16) }} />
+              </ActionIcon>
+            </Menu.Target>
+
+            <Menu.Dropdown>
+              <Menu.Item
+                leftSection={
+                  <Trash style={{ width: rem(14), height: rem(14) }} />
+                }
+                color="red"
+                onClick={handleProjectClear}
+              >
+                Clear Project
+              </Menu.Item>
+            </Menu.Dropdown>
+          </Menu>
           <Button variant="outline" onClick={onSaveClick}>
             Save
           </Button>
