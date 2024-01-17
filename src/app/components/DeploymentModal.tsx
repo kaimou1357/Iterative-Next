@@ -9,21 +9,17 @@ import {
 } from "@mantine/core";
 import { useDeploymentStore, useToolStore } from "../tool/toolstate";
 import { BackendClient } from "../../../axios";
+import { notifications } from "@mantine/notifications";
 
 interface DeploymentModalProps {
   opened: boolean;
   onClose: () => void;
 }
 export const DeploymentModal = ({ opened, onClose }: DeploymentModalProps) => {
-  const {
-    passcode,
-    deploymentName,
-    setPasscode,
-    setDeploymentName,
-    projectStateId,
-  } = useDeploymentStore();
+  const { passcode, deploymentName, setPasscode, setDeploymentName } =
+    useDeploymentStore();
 
-  const { showToast } = useToolStore();
+  const { activeProjectState } = useToolStore();
 
   const onCloseModal = () => {
     setDeploymentName("");
@@ -33,13 +29,24 @@ export const DeploymentModal = ({ opened, onClose }: DeploymentModalProps) => {
 
   const handleCreateDeployment = () => {
     BackendClient.post(`deployments`, {
-      project_state_id: projectStateId,
+      project_state_id: activeProjectState?.id,
       deployment_name: deploymentName,
       passcode: passcode,
-    }).then((_) => {
-      onCloseModal();
-      showToast("Deployment Created Successfully");
-    });
+    })
+      .then((_) => {
+        onCloseModal();
+        notifications.show({
+          title: "Prototype Created Successfully!",
+          message: "Head over to the prototypes tab to see it in action!",
+        });
+      })
+      .catch(() => {
+        notifications.show({
+          color: "red",
+          title: "Something went wrong!",
+          message: "Failed to create prototype",
+        });
+      });
   };
 
   return (

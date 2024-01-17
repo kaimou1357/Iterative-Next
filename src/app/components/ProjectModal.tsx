@@ -10,6 +10,7 @@ import {
 import { useState } from "react";
 import { BackendClient } from "../../../axios";
 import { navigatetoProject } from "../actions/actions";
+import { notifications } from "@mantine/notifications";
 
 interface ProjectModalProps {
   projectId: string | null;
@@ -37,9 +38,21 @@ export const ProjectModal = ({
       BackendClient.patch(`projects`, {
         project_id: projectId,
         project_name: projectName,
-      }).then((_) => {
-        onClose();
-      });
+      })
+        .then((_) => {
+          onClose();
+          notifications.show({
+            title: "Project Created Successfully",
+            message:
+              "Head over to the projects tab to see all your projects in one place!",
+          });
+        })
+        .catch(() => {
+          notifications.show({
+            message: "Failed to create project",
+            color: "red",
+          });
+        });
     }
   };
 

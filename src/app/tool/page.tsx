@@ -11,7 +11,6 @@ import PromptInput from "../components/promptinput";
 import { useProjectStore, useToolStore, ProjectState } from "./toolstate";
 import { useStytchUser } from "@stytch/nextjs";
 import { DeploymentModal } from "../components/DeploymentModal";
-import { ToastComponent } from "../components/Toast";
 import { ProjectModal } from "../components/ProjectModal";
 import { BackendClient } from "../../../axios";
 import { LiveCodeEditor } from "../components/LiveCodeEditor";
@@ -27,8 +26,6 @@ let socket: Socket<DefaultEventsMap, DefaultEventsMap> = io(SOCKET_IO_URL);
 export default function Tool() {
   const {
     loading,
-    progressLevel,
-    setProgressLevel,
     setLoading,
     setProjectStates,
     projectStates,
@@ -48,8 +45,7 @@ export default function Tool() {
   const [openSaveProject, { toggle: toggleSaveProject }] = useDisclosure();
   const [openShareProject, { toggle: toggleShareProject }] = useDisclosure();
 
-  const { projectId, setProjectId, setProjectName, projectName } =
-    useProjectStore();
+  const { projectId, setProjectId, setProjectName } = useProjectStore();
 
   const { user } = useStytchUser();
 
@@ -132,7 +128,6 @@ export default function Tool() {
 
   const onServerCode = () => {
     setLoading(false);
-    setProgressLevel(5);
     refreshProjectStates();
     setPrompt("");
   };
@@ -162,7 +157,6 @@ export default function Tool() {
 
   return (
     <AppShellMain>
-      <ToastComponent />
       <DeploymentModal opened={openShareProject} onClose={toggleShareProject} />
       <ProjectModal
         projectId={projectId}
@@ -201,12 +195,14 @@ export default function Tool() {
                 onShareClick={toggleShareProject}
                 prompt={activeProjectState.prompt}
               />
-              {true ? (
+              {loading ? (
                 <GenerationProgressbar />
               ) : (
                 <LiveCodeEditor code={reactCode} />
               )}
             </div>
+          ) : loading ? (
+            <GenerationProgressbar />
           ) : null}
 
           <div className="z-40 w-full flex justify-center origin-bottom">

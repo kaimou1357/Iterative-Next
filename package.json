@@ -17,6 +17,7 @@
     "@heroicons/react": "^2.1.1",
     "@mantine/core": "^7.4.1",
     "@mantine/hooks": "^7.4.1",
+    "@mantine/notifications": "^7.4.1",
     "@stytch/nextjs": "^15.0.0",
     "@stytch/vanilla-js": "^3.3.0",
     "axios": "^1.6.2",

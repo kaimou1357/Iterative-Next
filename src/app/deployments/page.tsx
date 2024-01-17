@@ -70,12 +70,15 @@ export default function Deployments() {
   if (loading) return <Loading />;
   // Show deployments table if deployments are fetched correctly
   const items = deployments.map((deployment: Deployment) => {
-    const { id, name } = deployment;
+    const { id, name, password } = deployment;
     return (
       <TableTr key={id}>
         <TableTd>{name}</TableTd>
+        <TableTd>{password}</TableTd>
         <TableTd>
-          <Link href={`/tool/${id}`}>Open in Tool</Link>
+          <Link className="underline" href={`/deployments/${id}`}>
+            Open Prototype
+          </Link>
         </TableTd>
         <TableTd>
           <Button

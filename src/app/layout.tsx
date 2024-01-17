@@ -5,6 +5,8 @@ import AppNavbar from "./components/navbar";
 import "@mantine/core/styles.css";
 import PageFooter from "./components/PageFooter";
 import { AppShell, ColorSchemeScript, MantineProvider } from "@mantine/core";
+import { Notifications } from "@mantine/notifications";
+import "@mantine/notifications/styles.css";
 
 export const metadata: Metadata = {
   title: "Iterative",
@@ -25,6 +27,7 @@ export default function RootLayout({
         </head>
         <body>
           <MantineProvider>
+            <Notifications />
             <AppShell
               withBorder={false}
               header={{ height: 60 }}
