@@ -16,12 +16,12 @@ import { ProjectModal } from "../components/ProjectModal";
 import { BackendClient } from "../../../axios";
 import { LiveCodeEditor } from "../components/LiveCodeEditor";
 import { convertCode } from "../actions/actions";
-import { TextLoop } from "easy-react-text-loop";
-import { loadingWords } from "../components/loadingWords";
+
 import { ToolNavbar } from "../components/ToolNavbar";
 import { AppShellMain, AppShellNavbar, Button } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { Sidebar } from "../components/Sidebar";
+import { GenerationProgressbar } from "../components/GenerationProgressbar";
 let socket: Socket<DefaultEventsMap, DefaultEventsMap> = io(SOCKET_IO_URL);
 
 export default function Tool() {
@@ -53,14 +53,6 @@ export default function Tool() {
 
   const { user } = useStytchUser();
 
-  // ref value used to get latest value inside interval callback
-  const loadingRef = useRef<boolean>();
-  // ref value used to get latest value inside interval callback
-  const progressLevelRef = useRef<number>(5);
-
-  const loadingWord =
-    loadingWords[Math.floor(Math.random() * loadingWords.length)];
-
   useEffect(() => {
     socket.on("server_recommendation", onServerRecommendation);
     socket.on("server_code", onServerCode);
@@ -88,16 +80,6 @@ export default function Tool() {
 
     return () => {};
   }, [activeProjectState]);
-
-  // update ref value whenever state gets updated
-  useEffect(() => {
-    loadingRef.current = loading;
-  }, [loading]);
-
-  // update ref value whenever state gets updated
-  useEffect(() => {
-    progressLevelRef.current = progressLevel;
-  }, [progressLevel]);
 
   function createProject() {
     BackendClient.post(
@@ -175,12 +157,6 @@ export default function Tool() {
 
   const handleSend = (prompt: string) => {
     setLoading(true);
-    const intervalId = setInterval(() => {
-      // use ref values here as state values would not be updated inside callback
-      if (loadingRef.current && progressLevelRef.current < 99) {
-        setProgressLevel(progressLevelRef.current + 2);
-      } else if (!loadingRef.current) clearInterval(intervalId);
-    }, 2000);
     socket.emit("user_message", { description: prompt, project_id: projectId });
   };
 
@@ -218,14 +194,18 @@ export default function Tool() {
       <div className="flex flex-col gap-4 p-4 h-[80vh]">
         <div className="flex flex-col gap-8 grow items-center justify-center">
           {activeProjectState ? (
-            <div className="flex flex-col grow w-full bg-gray-50 rounded-lg p-3 gap-3">
+            <div className="flex flex-col grow w-full bg-gray-50 rounded-lg p-3 gap-3 self-stretch">
               <ToolNavbar
                 handleProjectClear={onResetProject}
                 onSaveClick={toggleSaveProject}
                 onShareClick={toggleShareProject}
                 prompt={activeProjectState.prompt}
               />
-              <LiveCodeEditor code={reactCode} />
+              {true ? (
+                <GenerationProgressbar />
+              ) : (
+                <LiveCodeEditor code={reactCode} />
+              )}
             </div>
           ) : null}
 

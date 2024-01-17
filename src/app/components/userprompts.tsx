@@ -76,6 +76,7 @@ const UserPrompts = ({
 
                   <Menu.Dropdown>
                     <Menu.Item
+                      onClick={() => onRemovePromptClick(p.id)}
                       leftSection={
                         <Trash style={{ width: rem(14), height: rem(14) }} />
                       }
