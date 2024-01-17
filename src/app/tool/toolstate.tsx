@@ -12,6 +12,7 @@ interface ToolState {
   shouldShowToast: boolean;
   toastMessage: string;
   activeProjectState: ProjectState | null;
+  hasUnreadIteration: boolean;
 
   showToast: (message: string) => void;
   setPrompt: (value: string) => void;
@@ -24,6 +25,7 @@ interface ToolState {
   resetProject: () => void;
   removePrompt: (promptId: number) => void;
   setActiveProjectState: (projectState: ProjectState) => void;
+  resetUnreadIterationState: () => void;
 }
 
 export const useToolStore = create<ToolState>()((set) => ({
@@ -36,6 +38,7 @@ export const useToolStore = create<ToolState>()((set) => ({
   shouldShowToast: false,
   toastMessage: "",
   activeProjectState: null,
+  hasUnreadIteration: false,
 
   showToast: (message) =>
     set(() => ({ shouldShowToast: true, toastMessage: message })),
@@ -59,6 +62,12 @@ export const useToolStore = create<ToolState>()((set) => ({
   setRecommendations: (newRecommendations: Recommendation[]) => {
     set(() => ({
       recommendations: newRecommendations,
+      hasUnreadIteration: true,
+    }));
+  },
+  resetUnreadIterationState: () => {
+    set(() => ({
+      hasUnreadIteration: false,
     }));
   },
   removePrompt: (promptId: number) => {

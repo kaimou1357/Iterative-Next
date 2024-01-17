@@ -148,7 +148,7 @@ export default function Tool() {
     });
   };
 
-  const onServerCode = (response: any) => {
+  const onServerCode = () => {
     setLoading(false);
     setProgressLevel(5);
     refreshProjectStates();

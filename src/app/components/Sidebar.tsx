@@ -1,16 +1,23 @@
-import { Tooltip, UnstyledButton, Stack, rem } from "@mantine/core";
-import { useState } from "react";
+import { Tooltip, UnstyledButton, Stack, rem, Badge } from "@mantine/core";
 import { ArrowIteration, FilePencil } from "tabler-icons-react";
 import classes from "./Sidebar.module.css";
+import { useToolStore } from "../tool/toolstate";
 
 interface NavbarLinkProps {
   icon: typeof ArrowIteration | typeof FilePencil;
   label: string;
   active?: boolean;
   onClick?(): void;
+  notification?: boolean;
 }
 
-function NavbarLink({ icon: Icon, label, active, onClick }: NavbarLinkProps) {
+function NavbarLink({
+  icon: Icon,
+  label,
+  active,
+  onClick,
+  notification,
+}: NavbarLinkProps) {
   return (
     <Tooltip label={label} position="right" transitionProps={{ duration: 0 }}>
       <UnstyledButton
@@ -19,6 +26,11 @@ function NavbarLink({ icon: Icon, label, active, onClick }: NavbarLinkProps) {
         data-active={active || undefined}
       >
         <Icon style={{ width: rem(20), height: rem(20) }} />
+        {notification ? (
+          <Badge size="sm" circle>
+            !
+          </Badge>
+        ) : null}
       </UnstyledButton>
     </Tooltip>
   );
@@ -35,6 +47,7 @@ export const Sidebar = ({
   onDesignJourneyClick,
   onPotentialIterationClick,
 }: SidebarProps) => {
+  const { resetUnreadIterationState, hasUnreadIteration } = useToolStore();
   const data = [
     {
       icon: FilePencil,
@@ -48,9 +61,18 @@ export const Sidebar = ({
     },
   ];
 
-  const links = data.map((link, index) => (
-    <NavbarLink {...link} key={link.label} onClick={link.onClick} />
-  ));
+  const links = data.map((link, index) => {
+    // Only notify for the potential iterations.
+    const notification = index === 1 && hasUnreadIteration;
+    return (
+      <NavbarLink
+        {...link}
+        key={link.label}
+        onClick={link.onClick}
+        notification={notification}
+      />
+    );
+  });
 
   return opened ? (
     <nav className={classes.navbar}>
