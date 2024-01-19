@@ -11,6 +11,8 @@ import { useState } from "react";
 import { BackendClient } from "../../../axios";
 import { navigatetoProject } from "../actions/actions";
 import { notifications } from "@mantine/notifications";
+import { useStytchUser } from "@stytch/nextjs";
+import Login from "./Login";
 
 interface ProjectModalProps {
   projectId: string | null;
@@ -24,6 +26,7 @@ export const ProjectModal = ({
   onClose,
 }: ProjectModalProps) => {
   const [projectName, setProjectName] = useState<string>("");
+  const { user } = useStytchUser();
 
   const handleSaveProject = () => {
     if (projectId === null) {
@@ -56,32 +59,47 @@ export const ProjectModal = ({
     }
   };
 
+  const onSuccessfulLogin = () => {
+    onClose();
+    window.location.reload();
+  };
+
   return (
     <>
-      <Modal opened={opened} size="md" onClose={onClose}>
-        <ModalHeader>
-          <ModalTitle>
-            <h3 className="text-xl font-medium text-gray-900 dark:text-white">
-              Create your project
-            </h3>
-          </ModalTitle>
-        </ModalHeader>
-        <ModalBody>
-          <div className="flex flex-col gap-2">
-            <TextInput
-              label="Project Name"
-              placeholder="My First Project"
-              value={projectName}
-              onChange={(event) => {
-                setProjectName(event.target.value);
-              }}
-            />
-            <Button className="mt-2" onClick={handleSaveProject}>
-              Create Project
-            </Button>
-          </div>
-        </ModalBody>
-      </Modal>
+      {user ? (
+        <Modal opened={opened} size="md" onClose={onClose}>
+          <ModalHeader>
+            <ModalTitle>
+              <h3 className="text-xl font-medium text-gray-900 dark:text-white">
+                Create your project
+              </h3>
+            </ModalTitle>
+          </ModalHeader>
+          <ModalBody>
+            <div className="flex flex-col gap-2">
+              <TextInput
+                label="Project Name"
+                placeholder="My First Project"
+                value={projectName}
+                onChange={(event) => {
+                  setProjectName(event.target.value);
+                }}
+              />
+              <Button className="mt-2" onClick={handleSaveProject}>
+                Create Project
+              </Button>
+            </div>
+          </ModalBody>
+        </Modal>
+      ) : (
+        <Modal opened={opened} size="md" onClose={onClose}>
+          <ModalBody>
+            <div className="flex w-full justify-center">
+              <Login onLoginSuccess={onSuccessfulLogin} />
+            </div>
+          </ModalBody>
+        </Modal>
+      )}
     </>
   );
 };

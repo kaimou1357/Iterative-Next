@@ -62,7 +62,7 @@ export default function AppNavbar() {
             <>
               <Navbar.Link href="/tool">Build</Navbar.Link>
               <Navbar.Link href="/projects">Projects</Navbar.Link>
-              <Navbar.Link href="/deployments">Deployments</Navbar.Link>
+              <Navbar.Link href="/deployments">Prototypes</Navbar.Link>
             </>
           ) : null}
         </Navbar.Collapse>
