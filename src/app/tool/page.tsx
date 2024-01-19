@@ -115,14 +115,7 @@ export default function Tool() {
       { project_id: projectIdStorage },
       { headers: { "Content-Type": "application/json" } },
     ).then(async (response: any) => {
-      const projectStates = response.data.project_states.map((p: any) => {
-        const pState: ProjectState = {
-          id: p.id,
-          reactCode: p.reactCode,
-          prompt: p.messages[0] ? p.messages[0].content : null,
-        };
-        return pState;
-      });
+      const projectStates = response.data.project_states;
       setProjectStates(projectStates);
       if (projectStates.length > 0) {
         setActiveProjectState(projectStates[projectStates.length - 1]);
@@ -171,7 +164,7 @@ export default function Tool() {
         recommendations={recommendations}
         toggle={toggleIterations}
         opened={openedIterations}
-      />
+      /> 
 
       <PromptBox
         user={user}
@@ -196,7 +189,7 @@ export default function Tool() {
                 handleProjectClear={onResetProject}
                 onSaveClick={toggleSaveProject}
                 onShareClick={toggleShareProject}
-                prompt={activeProjectState.prompt}
+                prompt={activeProjectState.messages[0].content}
               />
               {loading ? (
                 <GenerationProgressbar />

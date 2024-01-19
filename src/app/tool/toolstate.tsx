@@ -79,8 +79,12 @@ export const useToolStore = create<ToolState>()((set) => ({
 
 export interface ProjectState {
   reactCode: string;
-  prompt: string;
+  messages: ProjectStateMessage[];
   id: number;
+}
+
+export interface ProjectStateMessage {
+  content: string
 }
 
 export type ProjectObj = {

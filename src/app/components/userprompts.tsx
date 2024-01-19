@@ -89,7 +89,7 @@ const UserPrompts = ({
               </Group>
             </Card.Section>
             <Text size="sm" c="dimmed" mb="6">
-              {p.prompt}
+              {p.messages[0].content}
             </Text>
             <Group justify="space-around">
               <Button
