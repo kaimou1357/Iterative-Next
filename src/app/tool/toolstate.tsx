@@ -92,8 +92,8 @@ interface Project {
   projects: ProjectObj[];
   setProjects: (projects: ProjectObj[]) => void;
   setFilteredProjects: (id: string, projects: ProjectObj[]) => void;
-  projectId: string | null;
-  setProjectId: (id: string | null) => void;
+  projectIdStorage: string | null;
+  setProjectIdStorage: (id: string) => string;
   projectName: string;
   setProjectName: (name: string) => void;
 }
@@ -117,7 +117,7 @@ export const useProjectStore = create<Project>()(
   persist(
     (set, get) => ({
       projects: [],
-      projectId: null,
+      projectIdStorage: null,
       projectName: "",
       setProjects: (projects) => set({ projects }),
       setFilteredProjects: (id, projects) =>
@@ -127,7 +127,10 @@ export const useProjectStore = create<Project>()(
           });
           return { projects: filterProjects };
         }),
-      setProjectId: (id: string | null) => set({ projectId: id }),
+      setProjectIdStorage: (id: string) => {
+        set({ projectIdStorage: id });
+        return id;
+      },
       setProjectName: (name: string) => set({ projectName: name }),
     }),
     {

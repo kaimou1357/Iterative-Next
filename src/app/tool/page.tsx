@@ -21,6 +21,7 @@ import { AppShellMain, AppShellNavbar, Button } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { Sidebar } from "../components/Sidebar";
 import { GenerationProgressbar } from "../components/GenerationProgressbar";
+import { PromptSuggestions } from "../components/PromptSuggestions";
 let socket: Socket<DefaultEventsMap, DefaultEventsMap> = io(SOCKET_IO_URL);
 
 export default function Tool() {
@@ -45,14 +46,15 @@ export default function Tool() {
   const [openSaveProject, { toggle: toggleSaveProject }] = useDisclosure();
   const [openShareProject, { toggle: toggleShareProject }] = useDisclosure();
 
-  const { projectId, setProjectId, setProjectName } = useProjectStore();
+  const { setProjectIdStorage } = useProjectStore();
+
+  const projectIdStorage = useProjectStore((state) => state.projectIdStorage);
 
   const { user } = useStytchUser();
 
   useEffect(() => {
     socket.on("server_recommendation", onServerRecommendation);
     socket.on("server_code", onServerCode);
-    socket.on("project_id", onProjectId);
     return () => {
       socket.disconnect();
     };
@@ -77,17 +79,19 @@ export default function Tool() {
     return () => {};
   }, [activeProjectState]);
 
+  useEffect(() => {
+    refreshProjectStates();
+    refreshRecommendations();
+  }, [projectIdStorage]);
+
   function createProject() {
     BackendClient.post(
       `projects`,
-      { project_id: projectId },
+      { project_id: projectIdStorage },
       { headers: { "Content-Type": "application/json" } },
     )
       .then((response) => {
-        setProjectId(response.data.project.id);
-        setProjectName(response.data.project.name);
-        refreshProjectStates();
-        refreshRecommendations();
+        setProjectIdStorage(response.data.project.id);
       })
       .catch((err) => {
         console.log("Failed to create project");
@@ -96,7 +100,7 @@ export default function Tool() {
 
   async function refreshRecommendations() {
     const response = await BackendClient.get(
-      `recommendations?project_id=${projectId}`,
+      `recommendations?project_id=${projectIdStorage}`,
     );
     setRecommendations(response.data.recommendations);
   }
@@ -108,7 +112,7 @@ export default function Tool() {
   const refreshProjectStates = () => {
     BackendClient.post(
       `projects/project_state`,
-      { project_id: projectId },
+      { project_id: projectIdStorage },
       { headers: { "Content-Type": "application/json" } },
     ).then(async (response: any) => {
       const projectStates = response.data.project_states.map((p: any) => {
@@ -132,10 +136,6 @@ export default function Tool() {
     setPrompt("");
   };
 
-  const onProjectId = (projectId: any) => {
-    setProjectId(projectId);
-  };
-
   const onLoadClick = async (projectState: ProjectState) => {
     setActiveProjectState(projectState);
     toggleDesignJourney();
@@ -144,7 +144,7 @@ export default function Tool() {
   async function onResetProject() {
     await BackendClient.post(
       `projects/reset`,
-      { project_id: projectId },
+      { project_id: projectIdStorage },
       { headers: { "Content-Type": "application/json" } },
     );
     resetProject();
@@ -152,14 +152,17 @@ export default function Tool() {
 
   const handleSend = (prompt: string) => {
     setLoading(true);
-    socket.emit("user_message", { description: prompt, project_id: projectId });
+    socket.emit("user_message", {
+      description: prompt,
+      project_id: projectIdStorage,
+    });
   };
 
   return (
     <AppShellMain>
       <DeploymentModal opened={openShareProject} onClose={toggleShareProject} />
       <ProjectModal
-        projectId={projectId}
+        projectId={projectIdStorage}
         opened={openSaveProject}
         onClose={toggleSaveProject}
       />
@@ -205,7 +208,7 @@ export default function Tool() {
             <GenerationProgressbar />
           ) : null}
 
-          <div className="z-40 w-full flex justify-center origin-bottom">
+          <div className="z-40 w-full flex justify-center origin-bottom items-center">
             <PromptInput
               loading={loading}
               user={user}
@@ -213,6 +216,7 @@ export default function Tool() {
               onPromptSubmit={handleSend}
             />
           </div>
+          {activeProjectState ? null : <PromptSuggestions />}
         </div>
       </div>
     </AppShellMain>

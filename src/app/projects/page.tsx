@@ -103,7 +103,7 @@ export default function Projects() {
             <TableTr>
               <TableTh>Project Name</TableTh>
               <TableTh>Open Project</TableTh>
-              <TableTh>Actions</TableTh>
+              <TableTh></TableTh>
             </TableTr>
           </TableThead>
           <TableTbody>{items}</TableTbody>

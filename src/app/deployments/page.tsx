@@ -10,6 +10,7 @@ import { useDeploymentStore } from "../tool/toolstate";
 import {
   AppShellMain,
   Button,
+  Paper,
   Table,
   TableTbody,
   TableTd,
@@ -87,7 +88,7 @@ export default function Deployments() {
             size={"xs"}
             onClick={() => handleDelete(id)}
           >
-            Delete
+            Delete Prototype
           </Button>
         </TableTd>
       </TableTr>
@@ -102,6 +103,7 @@ export default function Deployments() {
               <TableTh>Prototype Name</TableTh>
               <TableTh>Passcode</TableTh>
               <TableTh>Access</TableTh>
+              <TableTh />
             </TableTr>
           </TableThead>
           <TableTbody>{items}</TableTbody>

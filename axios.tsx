@@ -17,7 +17,7 @@ function readCookie(name: string) {
 export const BackendClient = axios.create({
   baseURL: API_BASE_URL,
   headers: {
-    Authorization: readCookie("stytch_session_jwt"),
+    AuthorizationSession: readCookie("stytch_session"),
     "Content-Type": "application/json",
   },
   transformRequest: [
