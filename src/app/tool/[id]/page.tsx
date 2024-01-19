@@ -4,9 +4,9 @@ import { useProjectStore } from "../toolstate";
 
 export default function ProjectView({ params }: { params: { id: string } }) {
   const projectId = params.id;
-  const { setProjectId } = useProjectStore();
+  const { setProjectIdStorage } = useProjectStore();
 
-  setProjectId(projectId);
+  setProjectIdStorage(projectId);
 
   redirect("/tool");
 }
