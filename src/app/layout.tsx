@@ -7,6 +7,7 @@ import PageFooter from "./components/PageFooter";
 import { AppShell, ColorSchemeScript, MantineProvider } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import "@mantine/notifications/styles.css";
+import LayoutWrapper from "./components/LayoutWrapper";
 
 export const metadata: Metadata = {
   title: "Iterative",
@@ -28,17 +29,7 @@ export default function RootLayout({
         <body>
           <MantineProvider>
             <Notifications />
-            <AppShell
-              withBorder={false}
-              header={{ height: 60 }}
-              navbar={{ width: 50, breakpoint: "sm" }}
-              footer={{ height: 50 }}
-              padding="md"
-            >
-              <AppNavbar />
-              {children}
-              <PageFooter />
-            </AppShell>
+            <LayoutWrapper children={children} />
           </MantineProvider>
         </body>
       </html>

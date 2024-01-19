@@ -26,6 +26,7 @@ export const PromptSuggestions = () => {
         key={data.label}
         variant="outline"
         radius="xl"
+        size="xs"
         rightSection={<ArrowBearRight size={14} />}
         onClick={() => setPrompt(data.prompt)}
       >

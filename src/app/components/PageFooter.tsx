@@ -13,10 +13,10 @@ export default function PageFooter() {
     </Anchor>
   ));
   return (
-    <AppShellFooter>
-      <div className="flex w-full px-4">
+    <>
+      <div className="flex w-full p-4">
         <Group className="ml-auto">{items}</Group>
       </div>
-    </AppShellFooter>
+    </>
   );
 }
