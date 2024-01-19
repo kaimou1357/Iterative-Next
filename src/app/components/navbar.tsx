@@ -55,7 +55,9 @@ export default function AppNavbar() {
               Sign up
             </Button>
           )}
-          <Navbar.Toggle />
+          {isAuthenticated ? (
+            <Navbar.Toggle className="sm:hidden ml-2" />
+          ) : null}
         </div>
         <Navbar.Collapse>
           {isAuthenticated ? (

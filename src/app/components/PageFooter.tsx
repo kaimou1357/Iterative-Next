@@ -15,13 +15,6 @@ export default function PageFooter() {
   return (
     <AppShellFooter>
       <div className="flex w-full px-4">
-        <Image
-          src={"/iterative-logo.png"}
-          w="auto"
-          fit="contain"
-          h={50}
-        ></Image>
-
         <Group className="ml-auto">{items}</Group>
       </div>
     </AppShellFooter>

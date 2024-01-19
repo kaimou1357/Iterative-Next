@@ -1,12 +1,11 @@
 "use client";
 import Link from "next/link";
 import Banner from "./components/banner";
-import { Flowbite } from "flowbite-react";
-import { Button } from "@mantine/core";
+import { AppShellMain, Button } from "@mantine/core";
 
 export default function Home() {
   return (
-    <Flowbite>
+    <AppShellMain>
       <main className="flex min-h-screen flex-col">
         <Banner />
         <div className=" container mx-auto flex  w-2/3 flex-col items-center justify-center gap-24 py-20 text-center md:flex-row ">
@@ -100,6 +99,6 @@ export default function Home() {
           </div>
         </section>
       </main>
-    </Flowbite>
+    </AppShellMain>
   );
 }
