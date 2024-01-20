@@ -91,6 +91,9 @@ export const Tool = () => {
       refreshRecommendations(projectIdStorage);
     };
 
+    refreshRecommendations(projectIdStorage);
+    refreshProjectStates(projectIdStorage);
+
     socket.on("server_recommendation", onServerRecommendation);
     socket.on("server_code", onServerCode);
     return () => {
