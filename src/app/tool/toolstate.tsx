@@ -84,7 +84,7 @@ export interface ProjectState {
 }
 
 export interface ProjectStateMessage {
-  content: string
+  content: string;
 }
 
 export type ProjectObj = {
