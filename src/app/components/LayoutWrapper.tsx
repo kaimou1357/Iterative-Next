@@ -1,8 +1,8 @@
 "use client";
-
+import { AppShell } from "@mantine/core";
 import { usePathname } from "next/navigation";
-import Footers from "./footer";
 import AppNavbar from "./navbar";
+import PageFooter from "./PageFooter";
 
 export default function LayoutWrapper({
   children,
@@ -11,18 +11,35 @@ export default function LayoutWrapper({
 }) {
   const pathname = usePathname();
   return (
-    <div
-      className={`flex flex-col ${
-        pathname === "/tool" ? "max-h-screen" : "min-h-screen"
-      }`}
-    >
-      <AppNavbar />
-      {children}
-      {pathname !== "/tool" ? (
-        <Footers />
+    <>
+      {pathname === "/tool" ? (
+        <AppShell
+          withBorder={false}
+          header={{ height: 60 }}
+          navbar={{
+            width: 50,
+            breakpoint: "sm",
+            collapsed: { mobile: true },
+          }}
+          footer={{ height: 50 }}
+          padding="md"
+        >
+          <AppNavbar />
+          {children}
+          <PageFooter />
+        </AppShell>
       ) : (
-        <div className="mt-auto min-h-20 w-full bg-slate-200 dark:bg-black"></div>
+        <AppShell
+          withBorder={false}
+          header={{ height: 60 }}
+          footer={{ height: 50 }}
+          padding="md"
+        >
+          <AppNavbar />
+          {children}
+          <PageFooter />
+        </AppShell>
       )}
-    </div>
+    </>
   );
 }

@@ -1,22 +1,12 @@
 "use client";
 import { ChangeEvent, useState } from "react";
-import {
-  Button,
-  DarkThemeToggle,
-  Flowbite,
-  Label,
-  Modal,
-  Spinner,
-  Textarea,
-} from "flowbite-react";
-import Login from "./Login";
+import { Button, Textarea } from "@mantine/core";
 import { useToolStore } from "../tool/toolstate";
 
 interface PromptInputProps {
   user: any;
   onPromptSubmit: (prompt: string) => void;
   onProjectReset: () => void;
-  onProjectSaveClicked: (openModal: boolean) => void;
   loading: boolean;
 }
 
@@ -24,7 +14,6 @@ const PromptInput = ({
   user,
   onProjectReset,
   onPromptSubmit,
-  onProjectSaveClicked,
   loading,
 }: PromptInputProps) => {
   const { prompt, setPrompt } = useToolStore();
@@ -34,12 +23,6 @@ const PromptInput = ({
     event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
   ) => {
     setPrompt(event.currentTarget.value);
-  };
-
-  const handleSaveProject = () => {
-    if (!user) {
-      setShowLoginModal(true);
-    } else onProjectSaveClicked(true);
   };
 
   const onPromptInputSubmit = () => {
@@ -52,66 +35,27 @@ const PromptInput = ({
   };
 
   return (
-    <Flowbite>
-      <div>
-        <div className="mt-4 block">
-          <Label
-            htmlFor="prompt"
-            className="text-xl font-bold"
-            value="Describe your idea in a few words.."
-          />
-        </div>
-        <Textarea
-          className="mb-2"
-          id="prompt"
-          placeholder="Build an app that.."
-          required
-          rows={4}
-          onChange={onChange}
-          value={prompt}
-          disabled={loading}
-          readOnly={loading}
-        />
-        {loading ? (
-          <div>
-            <Button>
-              <Spinner aria-label="Spinner button example" size="sm" />
-              <span className="pl-3">Loading...</span>
-            </Button>
-          </div>
-        ) : (
-          <div>
-            <div className="flex flex-row gap-1 ">
-              <Button onClick={() => onPromptInputSubmit()} size={"sm"}>
-                Build
-              </Button>
-
-              <Button color="failure" onClick={() => onProjectReset()}>
-                Clear Idea
-              </Button>
-
-              <Button color="success" onClick={handleSaveProject}>
-                Save Progress
-              </Button>
-            </div>
-          </div>
-        )}
-      </div>
-      {showLoginModal && (
-        <Modal
-          dismissible
-          show={showLoginModal}
-          onClose={() => setShowLoginModal(false)}
-        >
-          <Modal.Header>Please login</Modal.Header>
-          <Modal.Body className="w-full">
-            <div className="flex w-full justify-center">
-              <Login onLoginSuccess={onSuccessfulLogin} />
-            </div>
-          </Modal.Body>
-        </Modal>
-      )}
-    </Flowbite>
+    <div className="flex flex-col w-full items-center justify-center gap-2 max-w-[500px]">
+      <Textarea
+        className="w-full"
+        id="prompt"
+        placeholder="Build me a coffee order management system"
+        radius="xl"
+        autosize
+        onChange={onChange}
+        value={prompt}
+        disabled={loading}
+        readOnly={loading}
+      />
+      <Button
+        onClick={onPromptInputSubmit}
+        loading={loading}
+        fullWidth
+        variant="filled"
+      >
+        Build!
+      </Button>
+    </div>
   );
 };
 

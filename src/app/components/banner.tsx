@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Modal from "./modal";
 import { TypeAnimation } from "react-type-animation";
+import { Button } from "@mantine/core";
 
 export default function banner() {
   const [showBanner, setShowBanner] = useState<boolean>(false);
@@ -20,12 +21,9 @@ export default function banner() {
                 into interactive prototypes effortlessly.
               </p>
 
-              <Link
-                href="/tool"
-                className="rounded bg-blue-500 p-2 text-white "
-              >
+              <Button component={Link} variant="filled" href="/tool">
                 Start Prototyping Now!
-              </Link>
+              </Button>
             </div>
 
             <div className="mt-5 flex flex-col justify-center">

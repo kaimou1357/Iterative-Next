@@ -1,21 +1,32 @@
 "use client";
-import { Button, Label, Modal, TextInput } from "flowbite-react";
-import { useToolStore } from "../tool/toolstate";
-import { API_BASE_URL } from "./config";
-import axios from "axios";
+import {
+  Modal,
+  Button,
+  TextInput,
+  ModalTitle,
+  ModalHeader,
+  ModalBody,
+} from "@mantine/core";
 import { useState } from "react";
 import { BackendClient } from "../../../axios";
-import { redirect } from "next/dist/server/api-utils";
 import { navigatetoProject } from "../actions/actions";
+import { notifications } from "@mantine/notifications";
+import { useStytchUser } from "@stytch/nextjs";
+import Login from "./Login";
 
 interface ProjectModalProps {
   projectId: string | null;
+  opened: boolean;
+  onClose: () => void;
 }
 
-export const ProjectModal = ({ projectId }: ProjectModalProps) => {
+export const ProjectModal = ({
+  projectId,
+  opened,
+  onClose,
+}: ProjectModalProps) => {
   const [projectName, setProjectName] = useState<string>("");
-
-  const { showToast, setOpenProjectModal, openProjectModal } = useToolStore();
+  const { user } = useStytchUser();
 
   const handleSaveProject = () => {
     if (projectId === null) {
@@ -23,55 +34,72 @@ export const ProjectModal = ({ projectId }: ProjectModalProps) => {
         project_name: projectName,
       }).then((response) => {
         const projectId = response.data.project.id;
-        onCloseModal();
+        onClose();
         navigatetoProject(projectId);
       });
     } else {
       BackendClient.patch(`projects`, {
         project_id: projectId,
         project_name: projectName,
-      }).then((_) => {
-        onCloseModal();
-        showToast("Project Saved Successfully");
-      });
+      })
+        .then((_) => {
+          onClose();
+          notifications.show({
+            title: "Project Created Successfully",
+            message:
+              "Head over to the projects tab to see all your projects in one place!",
+          });
+        })
+        .catch(() => {
+          notifications.show({
+            message: "Failed to create project",
+            color: "red",
+          });
+        });
     }
   };
 
-  const onCloseModal = () => {
-    setProjectName("");
-    setOpenProjectModal(false);
+  const onSuccessfulLogin = () => {
+    onClose();
+    window.location.reload();
   };
 
   return (
     <>
-      <Modal show={openProjectModal} size="md" onClose={onCloseModal} popup>
-        <Modal.Header />
-        <Modal.Body>
-          <div className="space-y-6">
-            <h3 className="text-xl font-medium text-gray-900 dark:text-white">
-              Create your project
-            </h3>
-            <div>
-              <div className="mb-2 block">
-                <Label htmlFor="project" value="Project Name" />
-              </div>
+      {user ? (
+        <Modal opened={opened} size="md" onClose={onClose}>
+          <ModalHeader>
+            <ModalTitle>
+              <h3 className="text-xl font-medium text-gray-900 dark:text-white">
+                Create your project
+              </h3>
+            </ModalTitle>
+          </ModalHeader>
+          <ModalBody>
+            <div className="flex flex-col gap-2">
               <TextInput
-                id="name"
+                label="Project Name"
                 placeholder="My First Project"
                 value={projectName}
                 onChange={(event) => {
                   setProjectName(event.target.value);
                 }}
-                required
               />
+              <Button className="mt-2" onClick={handleSaveProject}>
+                Create Project
+              </Button>
             </div>
-            <div className="flex justify-between"></div>
-            <div className="w-full">
-              <Button onClick={handleSaveProject}>Create Project</Button>
+          </ModalBody>
+        </Modal>
+      ) : (
+        <Modal opened={opened} size="md" onClose={onClose}>
+          <ModalBody>
+            <div className="flex w-full justify-center">
+              <Login onLoginSuccess={onSuccessfulLogin} />
             </div>
-          </div>
-        </Modal.Body>
-      </Modal>
+          </ModalBody>
+        </Modal>
+      )}
     </>
   );
 };

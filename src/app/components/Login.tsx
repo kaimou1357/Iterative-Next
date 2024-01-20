@@ -38,10 +38,9 @@ const Login = ({ onLoginSuccess }: LoginProps) => {
   const styles = {
     buttons: {
       primary: {
-        backgroundColor: "#19303D",
-        borderColor: "#19303D",
-        borderRadius: "4px",
+        backgroundColor: "#228be6",
         textColor: "#FFFFFF",
+        borderRadius: "4px",
       },
     },
   };

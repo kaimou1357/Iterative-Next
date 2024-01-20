@@ -3,10 +3,10 @@
 import { useEffect, useState } from "react";
 import { Deployment } from "../types";
 import { PasscodeModal } from "@/app/components/PasscodeModal";
-import { Flowbite } from "flowbite-react";
 import { BackendClient } from "../../../../axios";
 import { LiveCodeEditor } from "@/app/components/LiveCodeEditor";
 import { convertCode } from "@/app/actions/actions";
+import { AppShellMain } from "@mantine/core";
 
 export default function DeploymentView({ params }: { params: { id: string } }) {
   const deploymentId = params.id;
@@ -56,7 +56,7 @@ export default function DeploymentView({ params }: { params: { id: string } }) {
   };
 
   return (
-    <Flowbite>
+    <AppShellMain>
       {openPasswordCollection ? (
         <PasscodeModal
           isOpen={openPasswordCollection}
@@ -65,12 +65,8 @@ export default function DeploymentView({ params }: { params: { id: string } }) {
         />
       ) : null}
       <div className="items stretch h-screen min-h-screen grow rounded-md">
-        <LiveCodeEditor
-          code={convertedCode}
-          css={null}
-          cssFramework={"DAISYUI"}
-        />
+        <LiveCodeEditor code={convertedCode} />
       </div>
-    </Flowbite>
+    </AppShellMain>
   );
 }

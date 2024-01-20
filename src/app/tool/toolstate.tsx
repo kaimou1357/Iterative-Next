@@ -5,43 +5,40 @@ import { Deployment } from "../deployments/types";
 interface ToolState {
   loading: boolean;
   prompt: string;
-  showRecommendations: boolean;
   progressLevel: number;
   reactCode: string | null;
   recommendations: Recommendation[];
   projectStates: ProjectState[];
-  openDeploymentModal: boolean;
-  openProjectModal: boolean;
   shouldShowToast: boolean;
   toastMessage: string;
+  activeProjectState: ProjectState | null;
+  hasUnreadIteration: boolean;
 
   showToast: (message: string) => void;
   setPrompt: (value: string) => void;
   removeToast: () => void;
   setReactCode: (code: string) => void;
   setLoading: (isLoading: boolean) => void;
-  setShowRecommendations: (value: boolean) => void;
   setProgressLevel: (value: number) => void;
   setRecommendations: (recommendations: Recommendation[]) => void;
   setProjectStates: (projectStates: ProjectState[]) => void;
-  setOpenDeploymentModal: (openModal: boolean) => void;
-  setOpenProjectModal: (openModal: boolean) => void;
   resetProject: () => void;
   removePrompt: (promptId: number) => void;
+  setActiveProjectState: (projectState: ProjectState) => void;
+  resetUnreadIterationState: () => void;
 }
 
 export const useToolStore = create<ToolState>()((set) => ({
   loading: false,
   prompt: "",
   recommendations: [],
-  showRecommendations: false,
   progressLevel: 5,
   projectStates: [],
   reactCode: null,
-  openDeploymentModal: false,
-  openProjectModal: false,
   shouldShowToast: false,
   toastMessage: "",
+  activeProjectState: null,
+  hasUnreadIteration: false,
 
   showToast: (message) =>
     set(() => ({ shouldShowToast: true, toastMessage: message })),
@@ -51,23 +48,26 @@ export const useToolStore = create<ToolState>()((set) => ({
       projectStates: [],
       reactCode: null,
       recommendations: [],
+      activeProjectState: null,
     })),
   setPrompt: (value) => set(() => ({ prompt: value })),
+  setActiveProjectState: (projectState: ProjectState) =>
+    set(() => ({ activeProjectState: projectState })),
   removeToast: () => set(() => ({ shouldShowToast: false })),
-  setOpenDeploymentModal: (openModal: boolean) =>
-    set(() => ({ openDeploymentModal: openModal })),
-  setOpenProjectModal: (openModal: boolean) =>
-    set(() => ({ openProjectModal: openModal })),
   setReactCode: (code) => set(() => ({ reactCode: code })),
   setLoading: (isLoading) => set(() => ({ loading: isLoading })),
-  setShowRecommendations: (value: boolean) =>
-    set(() => ({ showRecommendations: value })),
   setProgressLevel: (value: number) => set({ progressLevel: value }),
   setProjectStates: (projectStates: ProjectState[]) =>
     set(() => ({ projectStates: projectStates })),
   setRecommendations: (newRecommendations: Recommendation[]) => {
     set(() => ({
       recommendations: newRecommendations,
+      hasUnreadIteration: true,
+    }));
+  },
+  resetUnreadIterationState: () => {
+    set(() => ({
+      hasUnreadIteration: false,
     }));
   },
   removePrompt: (promptId: number) => {
@@ -78,9 +78,13 @@ export const useToolStore = create<ToolState>()((set) => ({
 }));
 
 export interface ProjectState {
-  reactCode: string | null;
-  prompt: string;
+  reactCode: string;
+  messages: ProjectStateMessage[];
   id: number;
+}
+
+export interface ProjectStateMessage {
+  content: string;
 }
 
 export type ProjectObj = {
@@ -92,8 +96,8 @@ interface Project {
   projects: ProjectObj[];
   setProjects: (projects: ProjectObj[]) => void;
   setFilteredProjects: (id: string, projects: ProjectObj[]) => void;
-  projectId: string | null;
-  setProjectId: (id: string | null) => void;
+  projectIdStorage: string | null;
+  setProjectIdStorage: (id: string) => string;
   projectName: string;
   setProjectName: (name: string) => void;
 }
@@ -117,7 +121,7 @@ export const useProjectStore = create<Project>()(
   persist(
     (set, get) => ({
       projects: [],
-      projectId: null,
+      projectIdStorage: null,
       projectName: "",
       setProjects: (projects) => set({ projects }),
       setFilteredProjects: (id, projects) =>
@@ -127,7 +131,10 @@ export const useProjectStore = create<Project>()(
           });
           return { projects: filterProjects };
         }),
-      setProjectId: (id: string | null) => set({ projectId: id }),
+      setProjectIdStorage: (id: string) => {
+        set({ projectIdStorage: id });
+        return id;
+      },
       setProjectName: (name: string) => set({ projectName: name }),
     }),
     {

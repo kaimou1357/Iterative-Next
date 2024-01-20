@@ -1,16 +1,11 @@
 import React, { useRef, useEffect } from "react";
+import { Paper } from "@mantine/core";
 
 interface LiveCodeEditorProps {
   code: string | null | undefined;
-  css: string | null;
-  cssFramework: string;
 }
 
-export const LiveCodeEditor = ({
-  code,
-  css,
-  cssFramework,
-}: LiveCodeEditorProps) => {
+export const LiveCodeEditor = ({ code }: LiveCodeEditorProps) => {
   const iframeRef = useRef<any>();
   const updateIframeContent = async () => {
     if (!iframeRef.current || !iframeRef.current.contentDocument) return;
@@ -27,7 +22,6 @@ export const LiveCodeEditor = ({
         <html>
           <head>
             ${cssHead}
-            <style>${css}</style>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.production.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.production.min.js"></script>
           </head>
@@ -46,11 +40,11 @@ export const LiveCodeEditor = ({
 
   useEffect(() => {
     updateIframeContent();
-  }, [code, css, cssFramework]);
+  }, [code]);
 
   return (
-    <div className="h-full max-h-full grow">
+    <Paper shadow="xs" p="md" className="w-full h-full">
       <iframe ref={iframeRef} width="100%" height="100%" />
-    </div>
+    </Paper>
   );
 };

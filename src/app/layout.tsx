@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { ThemeModeScript } from "flowbite-react";
 import StytchProvider from "./components/StytchProvider";
-import { Work_Sans } from "next/font/google";
-import "./globals.css";
+import AppNavbar from "./components/navbar";
+import "@mantine/core/styles.css";
+import PageFooter from "./components/PageFooter";
+import { AppShell, ColorSchemeScript, MantineProvider } from "@mantine/core";
+import { Notifications } from "@mantine/notifications";
+import "@mantine/notifications/styles.css";
 import LayoutWrapper from "./components/LayoutWrapper";
-const font = Work_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Iterative",
@@ -22,11 +24,13 @@ export default function RootLayout({
     <StytchProvider>
       <html lang="en">
         <head>
-          <ThemeModeScript />
+          <ColorSchemeScript />
         </head>
-        <body className={font.className}>
-          {" "}
-          <LayoutWrapper>{children}</LayoutWrapper>
+        <body>
+          <MantineProvider>
+            <Notifications />
+            <LayoutWrapper children={children} />
+          </MantineProvider>
         </body>
       </html>
     </StytchProvider>

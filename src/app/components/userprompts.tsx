@@ -1,27 +1,38 @@
 "use client";
 
-import { Button, Modal } from "flowbite-react";
+import {
+  Drawer,
+  Button,
+  Card,
+  Group,
+  Text,
+  Menu,
+  ActionIcon,
+  rem,
+} from "@mantine/core";
+import { Dots, Trash } from "tabler-icons-react";
+
 import {
   ProjectState,
   useDeploymentStore,
   useToolStore,
 } from "../tool/toolstate";
 import { useState } from "react";
-import Link from "next/link";
-import Login from "./Login";
 import { BackendClient } from "../../../axios";
 
 interface UserPromptsProps {
   user: any;
+  opened: boolean;
+  toggle: () => void;
   projectStates: ProjectState[];
-  authenticated: boolean;
-  onLoadClick: (reactCode: string | null) => void;
+  onLoadClick: (projectState: ProjectState) => void;
 }
 
 const UserPrompts = ({
   user,
   projectStates,
-  authenticated,
+  opened,
+  toggle,
   onLoadClick,
 }: UserPromptsProps) => {
   const { setProjectStateId, setDeploymentModalOpen } = useDeploymentStore();
@@ -50,62 +61,57 @@ const UserPrompts = ({
   };
 
   return (
-    <div className="w-full h-full">
-      <div className="mb-3 text-xl font-bold text-center">Design Journey</div>
-      <ul className="flex max-h-full w-full flex-col gap-4 overflow-y-auto rounded-md ">
+    <Drawer opened={opened} onClose={toggle} title={"Design Journey"}>
+      <Drawer.Body className="flex flex-col gap-4">
         {projectStates.map((p, idx) => (
-          <div key={idx} className="flex flex-col">
-            <h5
-              data-tooltip-target="tooltip_default"
-              className="text-1xl text-wrap font-bold tracking-tight text-gray-900 dark:text-white"
-            >
-              {p.prompt}
-            </h5>
-            <div className="flex flex-wrap gap-1">
-              <Button
-                onClick={() => onLoadClick(p.reactCode)}
-                color="success"
-                size={"xs"}
-              >
-                Load
-              </Button>
+          <Card key={idx} shadow="sm" padding="lg" radius="md" withBorder>
+            <Card.Section inheritPadding py="xs">
+              <Group justify="end">
+                <Menu withinPortal position="bottom-end" shadow="sm">
+                  <Menu.Target>
+                    <ActionIcon variant="subtle" color="gray">
+                      <Dots style={{ width: rem(16), height: rem(16) }} />
+                    </ActionIcon>
+                  </Menu.Target>
 
+                  <Menu.Dropdown>
+                    <Menu.Item
+                      onClick={() => onRemovePromptClick(p.id)}
+                      leftSection={
+                        <Trash style={{ width: rem(14), height: rem(14) }} />
+                      }
+                      color="red"
+                    >
+                      Delete
+                    </Menu.Item>
+                  </Menu.Dropdown>
+                </Menu>
+              </Group>
+            </Card.Section>
+            <Text size="sm" c="dimmed" mb="6">
+              {p.messages[0].content}
+            </Text>
+            <Group justify="space-around">
               <Button
-                onClick={() => onCreateDeploymentClick(p.id)}
-                color="purple"
-                size={"xs"}
-                // className="my-auto rounded-full bg-purple-700 p-3 text-sm text-white dark:bg-cyan-500 "
+                fullWidth
+                mt="md"
+                radius="md"
+                onClick={() => onLoadClick(p)}
+                variant="filled"
               >
-                Create Deployment
+                Load in Canvas
               </Button>
-
-              <Button
-                onClick={() => onRemovePromptClick(p.id)}
-                color="failure"
-                size={"xs"}
-                // className="my-auto rounded-full bg-purple-700 p-3 text-sm text-white dark:bg-cyan-500 "
-              >
-                Delete
-              </Button>
-            </div>
-          </div>
+              {/* <Button
+                  onClick={() => onRemovePromptClick(p.id)}
+                  variant="filled"
+                >
+                  Delete
+                </Button> */}
+            </Group>
+          </Card>
         ))}
-      </ul>
-      {showLoginModal && (
-        <Modal
-          dismissible
-          show={showLoginModal}
-          onClose={() => setShowLoginModal(false)}
-        >
-          <Modal.Header>Please login</Modal.Header>
-          <Modal.Body>
-            <div className="flex w-full justify-center">
-              <Login onLoginSuccess={onSuccessfulLogin} />
-            </div>
-          </Modal.Body>
-        </Modal>
-      )}
-    </div>
+      </Drawer.Body>
+    </Drawer>
   );
 };
 
