@@ -21,7 +21,7 @@ export const GenerationProgressbar = () => {
         }
         return prev;
       });
-    }, 2000);
+    }, 4000);
   }, []);
 
   return (

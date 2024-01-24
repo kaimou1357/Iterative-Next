@@ -20,7 +20,7 @@ import { Sidebar } from "../components/Sidebar";
 import { GenerationProgressbar } from "../components/GenerationProgressbar";
 import { PromptSuggestions } from "../components/PromptSuggestions";
 import { ProjectState, useProjectStore, useToolStore } from "../tool/toolstate";
-let socket: Socket<DefaultEventsMap, DefaultEventsMap> = io(SOCKET_IO_URL);
+import { socket } from "../socket";
 
 export const Tool = () => {
   const {
@@ -51,6 +51,7 @@ export const Tool = () => {
   const { user } = useStytchUser();
 
   useEffect(() => {
+    socket.connect();
     createProject();
 
     return () => {
