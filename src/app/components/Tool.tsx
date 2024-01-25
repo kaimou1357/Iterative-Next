@@ -1,10 +1,7 @@
 "use client";
 import React, { useCallback } from "react";
 import { RecommendationsList } from "../components/RecommendationsList";
-import io, { Socket } from "socket.io-client";
-import { SOCKET_IO_URL } from "../components/config";
 import { useEffect } from "react";
-import { DefaultEventsMap } from "@socket.io/component-emitter";
 import PromptBox from "../components/userprompts";
 import PromptInput from "../components/promptinput";
 import { useStytchUser } from "@stytch/nextjs";
