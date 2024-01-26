@@ -7,6 +7,6 @@ const SOCKET_IO_URL =
     ? "http://localhost:8000"
     : "https://api.goiterative.com";
 
-const CONVERTER_URL = "http://converter.goiterative.com";
+const CONVERTER_URL = "https://converter.goiterative.com";
 
 export { API_BASE_URL, SOCKET_IO_URL, CONVERTER_URL };
