@@ -1,6 +1,6 @@
 "use client";
 import { ChangeEvent, useState } from "react";
-import { Button, Textarea } from "@mantine/core";
+import { Button, Text, Textarea } from "@mantine/core";
 import { useToolStore } from "../tool/toolstate";
 
 interface PromptInputProps {
@@ -55,6 +55,9 @@ const PromptInput = ({
       >
         Build!
       </Button>
+      <Text className="self-start" c="dimmed" size="xs">
+        *The system currently generates web applications only.
+      </Text>
     </div>
   );
 };

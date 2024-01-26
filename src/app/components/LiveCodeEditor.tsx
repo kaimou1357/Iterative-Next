@@ -10,20 +10,35 @@ export const LiveCodeEditor = ({ code }: LiveCodeEditorProps) => {
   const updateIframeContent = async () => {
     if (!iframeRef.current || !iframeRef.current.contentDocument) return;
     const iframeDoc = iframeRef.current.contentDocument;
-
     iframeDoc.open();
     if (code === null) {
       iframeDoc.write("");
     } else {
-      const cssHead = `
-        <script src="https://cdn.tailwindcss.com"></script>
-      `;
       iframeDoc.write(`
         <html>
           <head>
-            ${cssHead}
             <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.production.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.production.min.js"></script>
+            <link
+              rel="stylesheet"
+              href="https://fonts.googleapis.com/icon?family=Material+Icons"
+            />
+            <link rel="preconnect" href="https://fonts.googleapis.com" />
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+            <link
+              rel="stylesheet"
+              href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap"
+            />
+            <style>
+              body { font-family: Roboto, sans-serif; }
+            </style>
+            <script>
+              window.require = (name) => {
+                if (name === 'react') return React
+                if (name === 'react-dom') return ReactDOM
+                throw new Error('Failed to require ' + JSON.stringify(name))
+              }
+            </script>
           </head>
           <body>
             <div id="root"></div>
