@@ -33,6 +33,8 @@ export const Tool = () => {
     setPrompt,
     activeProjectState,
     setActiveProjectState,
+    hasError,
+    setErrorState,
   } = useToolStore();
 
   const [openedDesignJourney, { toggle: toggleDesignJourney }] =
@@ -104,8 +106,12 @@ export const Tool = () => {
     const convertCodeFromServer = async () => {
       if (activeProjectState !== null) {
         const code = activeProjectState.reactCode;
-        const convertedCode = await convertCode(code);
-        setReactCode(convertedCode);
+        try {
+          const convertedCode = await convertCode(code);
+          setReactCode(convertedCode);
+        } catch {
+          setErrorState(true);
+        }
       }
     };
     convertCodeFromServer();

@@ -11,7 +11,6 @@ import { AppShell } from "@mantine/core";
 export default function AppNavbar() {
   const { user } = useStytchUser();
   const stytchClient = useStytch();
-  const pathname = usePathname();
 
   const handleLogout = useCallback(() => {
     stytchClient.session.revoke();
@@ -19,17 +18,6 @@ export default function AppNavbar() {
 
   const isAuthenticated = user !== null;
 
-  if (pathname.includes("/deployments/")) {
-    return (
-      <AppShell.Header>
-        <Navbar fluid className="flex justify-center">
-          <Link href={"/tool"}>
-            <Button>Build your Prototype</Button>
-          </Link>
-        </Navbar>
-      </AppShell.Header>
-    );
-  }
   return (
     <AppShell.Header withBorder={false}>
       <Navbar fluid>

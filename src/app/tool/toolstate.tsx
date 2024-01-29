@@ -13,6 +13,7 @@ interface ToolState {
   toastMessage: string;
   activeProjectState: ProjectState | null;
   hasUnreadIteration: boolean;
+  hasError: boolean;
 
   showToast: (message: string) => void;
   setPrompt: (value: string) => void;
@@ -26,6 +27,7 @@ interface ToolState {
   removePrompt: (promptId: number) => void;
   setActiveProjectState: (projectState: ProjectState) => void;
   resetUnreadIterationState: () => void;
+  setErrorState: (errorState: boolean) => void;
 }
 
 export const useToolStore = create<ToolState>()((set) => ({
@@ -39,9 +41,11 @@ export const useToolStore = create<ToolState>()((set) => ({
   toastMessage: "",
   activeProjectState: null,
   hasUnreadIteration: false,
+  hasError: false,
 
   showToast: (message) =>
     set(() => ({ shouldShowToast: true, toastMessage: message })),
+  setErrorState: (errorState: boolean) => set(() => ({ hasError: errorState })),
   resetProject: () =>
     set(() => ({
       prompts: [],
