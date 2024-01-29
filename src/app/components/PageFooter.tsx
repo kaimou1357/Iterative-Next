@@ -23,7 +23,7 @@ export default function PageFooter() {
         <Group className="ml-auto">
           {isDeployments ? (
             <Link href="/tool">
-              <Button>Build your prototype</Button>
+              <Button>Build with Iterative</Button>
             </Link>
           ) : (
             items
